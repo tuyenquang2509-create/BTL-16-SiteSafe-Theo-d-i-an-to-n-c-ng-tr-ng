@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SiteSafe — Quản lý an toàn công trường</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar" id="sidebar">
+    <a class="brand" href="#" data-route="dashboard"><span class="brand-logo">S</span><span>Site<span class="brand-light">Safe</span><small>CONSTRUCTION SAFETY</small></span></a>
+    <div class="site-switch"><span class="pulse"></span><div><small>CÔNG TRƯỜNG ĐANG CHỌN</small><strong>Riverside – Khối A</strong></div><span>⌄</span></div>
+    <div class="nav-scroll">
+      <div class="nav-group"><div class="nav-label">TỔNG QUAN</div>
+        <button class="nav-item active" data-route="dashboard"><span>▦</span>Tổng quan</button>
+        <button class="nav-item" data-route="risk-map"><span>⌖</span>Bản đồ rủi ro <em class="nav-count">3</em></button>
+      </div>
+      <div class="nav-group"><div class="nav-label">AN TOÀN HIỆN TRƯỜNG</div>
+        <button class="nav-item" data-route="checklist"><span>☷</span>Checklist an toàn</button>
+        <button class="nav-item" data-route="hazards"><span>⚠</span>Nguy cơ / sự cố <em class="nav-count warning">8</em></button>
+        <button class="nav-item" data-route="inspections"><span>◷</span>Kiểm tra hiện trường</button>
+        <button class="nav-item" data-route="actions"><span>✓</span>Khắc phục</button>
+      </div>
+      <div class="nav-group"><div class="nav-label">QUẢN LÝ DỰ ÁN</div>
+        <button class="nav-item" data-route="zones"><span>▧</span>Khu vực</button>
+        <button class="nav-item" data-route="sites"><span>⌂</span>Công trường</button>
+        <button class="nav-item" data-route="reports"><span>▤</span>Báo cáo an toàn</button>
+      </div>
+      <div class="nav-group"><div class="nav-label">QUẢN TRỊ HỆ THỐNG</div>
+        <button class="nav-item" data-route="templates"><span>☷</span>Mẫu checklist</button>
+        <button class="nav-item" data-route="users"><span>♙</span>Người dùng</button>
+      </div>
+      <div class="nav-group"><div class="nav-label">TRỢ LÝ AI</div>
+        <button class="nav-item" data-route="ai"><span>✧</span>Trợ lý SiteSafe AI <span class="ai-pill">AI</span></button>
+      </div>
+    </div>
+    <div class="sidebar-bottom"><div class="help-card"><span class="help-icon">?</span><div><strong>Cần hỗ trợ?</strong><small>Xem hướng dẫn sử dụng</small></div><span>↗</span></div>
+      <button class="profile"><span class="avatar">ĐH</span><span class="profile-text"><strong>Đỗ Hạnh</strong><small>Quản trị viên</small></span><span class="dots">•••</span></button>
+    </div>
+  </aside>
+  <main class="main">
+    <header class="topbar"><button id="menuToggle" class="menu-toggle">☰</button><div class="crumbs"><span>SiteSafe</span><span>/</span><strong id="crumbTitle">Tổng quan</strong></div>
+      <div class="top-actions"><span class="connection"><i></i> Hệ thống hoạt động</span><button class="top-icon" id="notifications" title="Thông báo">♧<b></b></button><div class="top-avatar">ĐH</div></div>
+    </header>
+    <section class="content" id="content" aria-live="polite"></section>
+    <footer class="app-footer">© 2026 SiteSafe <span>·</span> Nền tảng hỗ trợ quản lý an toàn công trường <span class="demo-label">BẢN DEMO FRONTEND</span></footer>
+  </main>
+</div>
+<div class="modal-layer" id="modalLayer" aria-hidden="true"><section class="modal" role="dialog" aria-modal="true"><header class="modal-header"><div><span class="eyebrow">SITESAFE · QUẢN LÝ DỮ LIỆU</span><h2 id="modalTitle">Thêm dữ liệu</h2></div><button class="close" id="modalClose">×</button></header><form id="dataForm"><div id="modalFields" class="modal-fields"></div><div class="modal-actions"><button type="button" class="btn btn-ghost" id="modalCancel">Hủy</button><button class="btn btn-primary" type="submit">Lưu thông tin</button></div></form></section></div>
+<div id="toast" class="toast"></div>
+<script src="app.js"></script>
+</body></html>
