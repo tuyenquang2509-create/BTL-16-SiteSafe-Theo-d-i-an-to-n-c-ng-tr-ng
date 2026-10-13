@@ -1,0 +1,301 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SiteSafe - Lịch kiểm tra</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="brand">
+        <i class="fa-solid fa-shield-halved"></i>
+        <span>SiteSafe</span>
+      </div>
+      <div class="role-title">CÁN BỘ AN TOÀN</div>
+      <nav class="menu">
+        <a href="#main-content" class="menu-item">Tổng quan an toàn</a>
+        <a href="#main-content" class="menu-item">Chi tiết nguy cơ</a>
+        <a href="#" class="menu-item active"
+          ><div class="active-indicator"></div>
+          Lịch kiểm tra</a
+        >
+        <a href="#main-content" class="menu-item">AI phân loại nguy cơ</a>
+      </nav>
+      <div class="sidebar-footer">
+        <div class="project-info">
+          <strong>RIVERSIDE - KHỐI A</strong>
+          <span>RS - A · Đang thi công</span>
+        </div>
+        <div class="footer-links">
+          <a href="#">Trợ giúp & hướng dẫn</a>
+          <a href="#">Hồ sơ cá nhân</a>
+          <a href="#">Đăng xuất</a>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content" id="main-content">
+      <!-- Header -->
+      <header class="top-header">
+        <div class="header-left">
+          <button
+            class="mobile-menu-btn"
+            type="button"
+            aria-label="Mở menu điều hướng"
+            aria-expanded="false"
+            aria-controls="sidebar"
+          >
+            <i class="fa-solid fa-bars"></i>
+          </button>
+          <span
+            >Riverside - Khối A
+            <i class="fa-solid fa-chevron-down text-small"></i
+          ></span>
+        </div>
+        <div class="header-right">
+          <button class="icon-btn" type="button" aria-label="Thông báo">
+            <i class="fa-regular fa-bell"></i>
+          </button>
+          <div class="user-profile">Trần An - Cán bộ an toàn</div>
+        </div>
+      </header>
+
+      <!-- Content Area -->
+      <div class="content-wrapper">
+        <div class="page-header animate-item">
+          <div class="title-section">
+            <div class="breadcrumb">Cán bộ an toàn / Lịch kiểm tra</div>
+            <h1>Lịch kiểm tra</h1>
+            <p>
+              Lập lịch, theo dõi kết quả và giữ lý do khi thay đổi kế hoạch.
+            </p>
+          </div>
+          <button class="btn btn-primary" type="button" data-scroll-target="create-schedule">
+            <i class="fa-solid fa-plus"></i> Lên lịch kiểm tra
+          </button>
+        </div>
+
+        <!-- Filters -->
+        <div class="filters animate-item">
+          <div class="input-group">
+            <label>Tìm kiếm</label>
+            <div class="input-with-icon">
+              <i class="fa-solid fa-magnifying-glass"></i>
+              <input
+                id="search-input"
+                type="text"
+                aria-label="Tìm kiếm cuộc kiểm tra"
+                placeholder="Mã, nội dung hoặc người phụ trách"
+              />
+            </div>
+          </div>
+          <div class="input-group">
+            <label>Công trường</label>
+            <select aria-label="Chọn công trường">
+              <option>Riverside - Khối A</option>
+            </select>
+          </div>
+          <div class="input-group">
+            <label>Trạng thái</label>
+            <select id="status-filter" aria-label="Lọc theo trạng thái">
+              <option value="all">Tất cả trạng thái</option>
+              <option value="running">Đang thực hiện</option>
+              <option value="scheduled">Đã lên lịch</option>
+              <option value="completed">Hoàn thành</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Tabs -->
+        <div class="tabs animate-item" role="tablist" aria-label="Chế độ xem lịch kiểm tra">
+          <button
+            class="tab-btn active"
+            id="tab-danh-sach"
+            type="button"
+            role="tab"
+            aria-selected="true"
+            aria-controls="danh-sach"
+            data-target="danh-sach"
+          >
+            Danh sách
+          </button>
+          <button
+            class="tab-btn"
+            id="tab-lich-tuan"
+            type="button"
+            role="tab"
+            aria-selected="false"
+            aria-controls="lich-tuan"
+            data-target="lich-tuan"
+          >
+            Lịch tuần
+          </button>
+        </div>
+
+        <!-- Table Card -->
+        <div class="card animate-item" id="danh-sach" role="tabpanel" aria-labelledby="tab-danh-sach">
+          <div class="card-header">
+            <h3>Các cuộc kiểm tra</h3>
+          </div>
+          <div class="table-responsive">
+            <table>
+              <thead>
+                <tr>
+                  <th>Mã / Khu vực</th>
+                  <th>Người kiểm tra</th>
+                  <th>Thời gian</th>
+                  <th>Trạng thái</th>
+                  <th>Thao tác</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>IN-018 · Z-A2</strong></td>
+                  <td>Trần An</td>
+                  <td>03/10 · 09:00</td>
+                  <td>
+                    <span class="status-badge running">Đang thực hiện</span>
+                  </td>
+                  <td><a href="#" class="action-link">Mở checklist</a></td>
+                </tr>
+                <tr>
+                  <td><strong>IN-019 · Z-K1</strong></td>
+                  <td>Mai Lan</td>
+                  <td>04/10 · 08:00</td>
+                  <td>
+                    <span class="status-badge scheduled">Đã lên lịch</span>
+                  </td>
+                  <td><a href="#" class="action-link">Đổi lịch</a></td>
+                </tr>
+                <tr>
+                  <td><strong>IN-017 · Z-A1</strong></td>
+                  <td>Trần An</td>
+                  <td>02/10 · 10:00</td>
+                  <td>
+                    <span class="status-badge completed">Hoàn thành</span>
+                  </td>
+                  <td><a href="#" class="action-link">Xem kết quả</a></td>
+                </tr>
+                <tr>
+                  <td><strong>IN-020 · Z-B1</strong></td>
+                  <td>Mai Lan</td>
+                  <td>05/10 · 08:00</td>
+                  <td>
+                    <span class="status-badge draft">Bản nháp</span>
+                  </td>
+                  <td><a href="#create-schedule" class="action-link">Sửa lịch</a></td>
+                </tr>
+              </tbody>
+            </table>
+            <p class="empty-state" hidden>Không tìm thấy cuộc kiểm tra phù hợp.</p>
+          </div>
+        </div>
+
+        <!-- Two Column Layout -->
+        <div class="grid-2-col animate-item">
+          <!-- Result Card -->
+          <div class="card result-card">
+            <h3 class="card-title">IN-018 · Kết quả kiểm tra</h3>
+            <span class="status-badge running mt-2">Đang thực hiện</span>
+            <p class="mt-3">
+              CL-018 · Mẫu TMP-01 v2.1 8 mục - 7 Đạt - 1 Không đạt
+            </p>
+            <div class="warning-box">
+              <strong>Mục không đạt cần theo dõi</strong><br />
+              Lan can bảo vệ - đã liên kết HZ-024. Không xóa mục này khi hoàn
+              thành kiểm tra.
+            </div>
+            <div class="btn-group mt-3">
+              <button class="btn btn-primary">Xem checklist</button>
+              <button class="btn btn-outline">Xem nguy cơ</button>
+            </div>
+          </div>
+
+          <!-- Schedule Card -->
+          <div class="card schedule-card" id="lich-tuan" role="tabpanel" aria-labelledby="tab-lich-tuan">
+            <h3 class="card-title">Lịch tuần · 01–07/10</h3>
+            <div class="schedule-list mt-3">
+              <p>Thứ Sáu 02/10 · 10:00 · IN-017 ✓</p>
+              <p>
+                Thứ Bảy 03/10 · 09:00 · IN-018 <span class="dot-running"></span>
+              </p>
+              <p>Chủ Nhật 04/10 · 08:00 · IN-019 ◯</p>
+              <p>Thứ Hai 05/10 · 08:00 · IN-020 nháp</p>
+            </div>
+            <p class="text-muted text-small mt-3">
+              Dạng lịch thay thế bảng; mobile dùng danh sách theo ngày.
+            </p>
+          </div>
+        </div>
+
+        <!-- Form Card 1 -->
+        <div class="card animate-item" id="create-schedule">
+          <h3 class="card-title">Mẫu hộp thoại · Lên lịch kiểm tra</h3>
+          <div class="form-grid mt-3">
+            <div class="form-group">
+              <label>Khu vực *</label>
+              <select>
+                <option>Z-K1 · Kho vật tư</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Mẫu checklist *</label>
+              <select>
+                <option>TMP-03 · Kho vật tư v1.2</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Người kiểm tra *</label>
+              <select>
+                <option>Mai Lan</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Hạn hoàn thành *</label>
+              <input type="text" value="04/10/2026 · 08:00" />
+            </div>
+          </div>
+          <div class="btn-group mt-3">
+            <button class="btn btn-primary">Lưu lịch</button>
+            <button class="btn btn-outline">Hủy</button>
+          </div>
+        </div>
+
+        <!-- Form Card 2 -->
+        <div class="card animate-item mb-4">
+          <h3 class="card-title">Đổi lịch / Hủy có lý do</h3>
+          <div class="form-group mt-3">
+            <label>Lý do *</label>
+            <input
+              type="text"
+              value="Khu vực tạm dừng thi công, chuyển kiểm tra sang 05/10."
+            />
+          </div>
+          <div class="btn-group mt-3">
+            <button class="btn btn-primary">Xác nhận đổi lịch</button>
+            <button class="btn btn-outline">Xác nhận hủy</button>
+            <button class="btn btn-outline border-none">Giữ lịch</button>
+          </div>
+          <p class="text-muted text-small mt-2">
+            Thông báo người kiểm tra; giữ kết quả và ảnh đã ghi nhận, đánh dấu
+            Đã hủy thay vì xóa.
+          </p>
+        </div>
+      </div>
+    </main>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <script src="script.js"></script>
+  </body>
+</html>
