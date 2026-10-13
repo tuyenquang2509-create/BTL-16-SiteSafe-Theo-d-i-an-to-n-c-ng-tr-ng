@@ -1,4 +1,4 @@
-# BTL-16 – SiteSafe – Theo dõi an toàn công trường
+<img width="1920" height="925" alt="image" src="https://github.com/user-attachments/assets/dcf80e1f-3e7e-48b9-95bc-2e85f193620c" /># BTL-16 – SiteSafe – Theo dõi an toàn công trường
 
 ## CSE122 – Phát triển ứng dụng Web cơ bản
 
@@ -132,3 +132,7 @@ Mỗi giao diện thực tế được duyệt cần gắn với:
 - Tùng – Worker
 - Tiến – Safety Officer
 - Tuyên – Site Manager + Admin
+- ## 8. Video demo dự án
+
+- Video trình bày và demo sản phẩm: [Xem video tại đây](DAN_LINK_VIDEO_CUA_EM)
+- Thiết kế Figma: [https://www.figma.com/design/FU0CPChHb0LapRRTIAsuIS/BTL-16-%E2%80%93-SiteSafe-%E2%80%93-Theo-d%C3%B5i-an-to%C3%A0n-c%C3%B4ng-tr%C6%B0%E1%BB%9Dng?node-id=6-33534&t=OjZwVz7H814ni5uR-1]]
