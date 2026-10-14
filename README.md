@@ -50,7 +50,7 @@ Thiết kế Figma của dự án SiteSafe:
 
 https://www.figma.com/design/FU0CPChHb0LapRRTIAsuIS/BTL-16-%E2%80%93-SiteSafe-%E2%80%93-Theo-d%C3%B5i-an-to%C3%A0n-c%C3%B4ng-tr%C6%B0%E1%BB%9Dng
 
-## 7. Link video trình bày
+## 7. Link video trình bày https://youtu.be/tl9hz6HfiqM?si=5Ceq4yX6iTDvSe0c
 
 Video trình bày quá trình thiết kế, xây dựng giao diện, giải thích mã nguồn và demo chức năng của trang Lịch kiểm tra.
 
