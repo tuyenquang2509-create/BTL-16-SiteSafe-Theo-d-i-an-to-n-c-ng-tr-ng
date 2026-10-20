@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SiteSafe – Theo dõi an toàn công trường</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+<div class="app-shell">
+  <aside class="sidebar" id="sidebar">
+    <div class="brand"><span class="brand-mark">✓</span><span>SiteSafe</span></div>
+    <div class="role-label">CÁN BỘ AN TOÀN</div>
+    <nav id="nav">
+      <button class="nav-item active" data-page="dashboard"><span>▦</span>Tổng quan an toàn</button>
+      <button class="nav-item" data-page="risks"><span>⚠</span>Chi tiết nguy cơ</button>
+      <button class="nav-item" data-page="inspections"><span>☷</span>Lịch kiểm tra</button>
+      <button class="nav-item" data-page="actions"><span>✓</span>Hành động khắc phục</button>
+      <button class="nav-item" data-page="zones"><span>⌖</span>Khu vực công trường</button>
+      <button class="nav-item" data-page="reports"><span>▥</span>Báo cáo an toàn</button>
+      <button class="nav-item" data-page="checklists"><span>☑</span>Mẫu checklist</button>
+      <button class="nav-item" data-page="users"><span>♙</span>Người dùng</button>
+      <button class="nav-item" data-page="ai"><span>✦</span>Trợ lý AI</button>
+    </nav>
+    <div class="sidebar-bottom">
+      <div class="site-mini"><strong>RIVERSIDE – KHỐI A</strong><span>RS-A · Đang thi công</span></div>
+      <button class="nav-item" data-page="help"><span>ⓘ</span>Trợ giúp & hướng dẫn</button>
+      <button class="nav-item" data-page="profile"><span>♙</span>Hồ sơ cá nhân</button>
+      <button class="nav-item" id="logout"><span>↪</span>Đăng xuất</button>
+    </div>
+  </aside>
+
+  <main class="workspace">
+    <header class="topbar">
+      <button class="mobile-menu" id="mobileMenu" aria-label="Mở menu">☰</button>
+      <button class="site-switch" id="siteSwitch">Riverside – Khối A <span>⌄</span></button>
+      <div class="topbar-right"><button class="icon-btn" id="notifications" title="Thông báo">♧<i></i></button><div class="user-chip"><div class="avatar">TA</div><div><strong>Trần An</strong><small>Cán bộ an toàn</small></div></div></div>
+    </header>
+    <section class="page-content" id="pageContent"></section>
+  </main>
+</div>
+<div class="toast" id="toast"></div>
+<div class="modal-backdrop" id="modalBackdrop">
+  <section class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal-head"><h2 id="modalTitle">Thêm mới</h2><button class="icon-btn" id="closeModal">✕</button></div>
+    <form id="modalForm"><div id="modalFields"></div><div class="modal-actions"><button type="button" class="btn btn-light" id="cancelModal">Hủy</button><button class="btn btn-primary" type="submit">Lưu thông tin</button></div></form>
+  </section>
+</div>
+<script src="script.js"></script>
+</body>
+</html>
