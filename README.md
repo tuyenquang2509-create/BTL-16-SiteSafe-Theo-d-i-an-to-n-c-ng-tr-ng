@@ -70,11 +70,11 @@ Nếu nguy cơ được ghi nhận rời rạc, thiếu người phụ trách ho
 ## 10. Thành viên nhóm và phân công
 Mỗi thành viên phụ trách 7 trong tổng số 21 màn hình. Tiến phụ trách thêm khung giao diện và điều hướng dùng chung; Tuyên phụ trách kiểm thử tích hợp, đây là đầu việc kiểm thử chứ không phải màn hình thứ 22.
 
-| Thành viên | Màn hình được giao | Số lượng | Phần việc thêm | Nhánh |
+| Người phụ trách | Màn hình được giao | Số lượng | Phần việc thêm | Nhánh |
 |---|---|---:|---|---|
-| Tiến | Giới thiệu; Đăng nhập; Đăng ký tài khoản; Hồ sơ cá nhân; Không tìm thấy trang; Checklist an toàn; Báo nguy cơ | 7 | Tạo khung giao diện chung, thanh điều hướng, nút đăng nhập/đăng xuất và quy tắc chuyển trang để cả nhóm sử dụng | `feature/worker-safety-flow` |
-| Tuyên | Nguy cơ của tôi; AI tạo checklist; Tổng quan an toàn; Chi tiết nguy cơ; Lịch kiểm tra; AI phân loại nguy cơ; Bản đồ rủi ro | 7 | Kiểm thử tích hợp các màn hình và luồng xử lý nguy cơ | `feature/safety-operations` |
-| Tùng | Hành động khắc phục; Báo cáo an toàn; AI điểm nóng; Tổng quan quản trị viên; Mẫu checklist; Khu vực; Người dùng | 7 | — | `feature/manager-admin` |
+| **Người 1 — Tiến** | Giới thiệu; Đăng nhập; Đăng ký tài khoản; Hồ sơ cá nhân; Không tìm thấy trang; Checklist an toàn; Báo nguy cơ | 7 | Tạo khung giao diện chung, thanh điều hướng, nút đăng nhập/đăng xuất và quy tắc chuyển trang để cả nhóm sử dụng | `feature/worker-safety-flow` |
+| **Người 2 — Tuyên** | Nguy cơ của tôi; AI tạo checklist; Tổng quan an toàn; Chi tiết nguy cơ; Lịch kiểm tra; AI phân loại nguy cơ; Bản đồ rủi ro | 7 | Kiểm thử tích hợp các màn hình và luồng xử lý nguy cơ | `feature/safety-operations` |
+| **Người 3 — Tùng** | Hành động khắc phục; Báo cáo an toàn; AI điểm nóng; Tổng quan quản trị viên; Mẫu checklist; Khu vực; Người dùng | 7 | — | `feature/manager-admin` |
 
 **Tổng cộng: 21 màn hình (7–7–7).** Mỗi thành viên hoàn thiện phần việc được giao từ giao diện, xử lý nghiệp vụ và dữ liệu đến responsive, nhánh Git, PR và video OBS. Phối hợp tích hợp các màn hình dùng chung trước khi kiểm thử toàn bộ luồng.
 
