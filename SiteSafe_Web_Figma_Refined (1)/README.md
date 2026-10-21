@@ -72,9 +72,9 @@ Nếu nguy cơ được ghi nhận rời rạc, thiếu người phụ trách ho
 
 | Thành viên | Lát cắt gợi ý | Nhánh |
 |---|---|---|
-| SV1 | Công nhân: checklist và báo cáo nguy cơ | `feature/worker-safety-flow` |
-| SV2 | Cán bộ an toàn: nguy cơ, kiểm tra, khắc phục | `feature/safety-operations` |
-| SV3 | Quản lý/quản trị: khu vực, báo cáo, người dùng, tích hợp | `feature/manager-admin` |
+| Hoàng Minh Tiến | Công nhân: checklist và báo cáo nguy cơ | `feature/worker-safety-flow` |
+| Nguyễn Quang Tuyên | Cán bộ an toàn: nguy cơ, kiểm tra, khắc phục | `feature/safety-operations` |
+| Ngô Thanh Tùng | Quản lý/quản trị: khu vực, báo cáo, người dùng, tích hợp | `feature/manager-admin` |
 
 ## 11. Quy trình Git đề xuất
 - `main`: bản ổn định; `dev`: tích hợp; `feature/...`, `fix/...`, `docs/...`: nhánh công việc.
