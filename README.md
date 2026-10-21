@@ -116,7 +116,7 @@ Figma: https://www.figma.com/design/FU0CPChHb0LapRRTIAsuIS/BTL-16-%E2%80%93-Site
 **Lưu ý:** các số liệu trên dashboard là dữ liệu minh họa theo frame thiết kế, không phải số liệu công trường thật. AI, xác thực và backend vẫn đang được mô phỏng ở frontend.
 
 
-## Cập nhật giao diện theo Figma (20/10/2026)
+## Cập nhật giao diện theo Figma (07/10/2026)
 
 - Bảng màu được đồng bộ theo tông xanh teal, xanh navy và nền xanh xám rất nhạt; sidebar tối, vùng nội dung sáng.
 - Font Inter, cỡ chữ và khoảng cách biểu mẫu được tinh chỉnh theo tham chiếu Figma.
