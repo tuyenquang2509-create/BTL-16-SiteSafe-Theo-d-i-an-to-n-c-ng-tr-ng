@@ -1,9 +1,0 @@
-/* Responsive overrides for SiteSafe */
-@media (max-width: 992px) {
-  .grid { grid-template-columns: repeat(2, 1fr); }
-}
-@media (max-width: 600px) {
-  .grid { grid-template-columns: 1fr; }
-  header { padding: 14px; }
-  .card { padding: 15px; }
-}
