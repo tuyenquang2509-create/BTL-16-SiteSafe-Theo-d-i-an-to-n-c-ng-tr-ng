@@ -68,6 +68,7 @@ Nếu nguy cơ được ghi nhận rời rạc, thiếu người phụ trách ho
 4. Chuyển vai trò tại thanh bên để kiểm tra các luồng khác nhau.
 
 ## 10. Thành viên nhóm và phân công
+<<<<<<< HEAD
 Mỗi thành viên phụ trách 7 trong tổng số 21 màn hình. Tiến phụ trách thêm khung giao diện và điều hướng dùng chung; Tuyên phụ trách kiểm thử tích hợp, đây là đầu việc kiểm thử chứ không phải màn hình thứ 22.
 
 | Người phụ trách | Màn hình được giao | Số lượng | Phần việc thêm | Nhánh |
@@ -77,6 +78,15 @@ Mỗi thành viên phụ trách 7 trong tổng số 21 màn hình. Tiến phụ 
 | **Người 3 — Tùng** | Hành động khắc phục; Báo cáo an toàn; AI điểm nóng; Tổng quan quản trị viên; Mẫu checklist; Khu vực; Người dùng | 7 | — | `feature/manager-admin` |
 
 **Tổng cộng: 21 màn hình (7–7–7).** Mỗi thành viên hoàn thiện phần việc được giao từ giao diện, xử lý nghiệp vụ và dữ liệu đến responsive, nhánh Git, PR và video OBS. Phối hợp tích hợp các màn hình dùng chung trước khi kiểm thử toàn bộ luồng.
+=======
+Điền tên thành viên thật trước khi nộp. Mỗi thành viên phải có lát cắt dọc hoàn chỉnh: phân tích → thiết kế → HTML/CSS/JS → dữ liệu → responsive → nhánh Git → PR → video OBS.
+
+| Thành viên | Lát cắt gợi ý | Nhánh |
+|---|---|---|
+| SV1 | Công nhân: checklist và báo cáo nguy cơ | `feature/worker-safety-flow` |
+| SV2 | Cán bộ an toàn: nguy cơ, kiểm tra, khắc phục | `feature/safety-operations` |
+| SV3 | Quản lý/quản trị: khu vực, báo cáo, người dùng, tích hợp | `feature/manager-admin` |
+>>>>>>> 2742699125c83669401b1f35fe46fbcb5a06f7f8
 
 ## 11. Quy trình Git đề xuất
 - `main`: bản ổn định; `dev`: tích hợp; `feature/...`, `fix/...`, `docs/...`: nhánh công việc.
@@ -118,7 +128,11 @@ Figma: https://www.figma.com/design/FU0CPChHb0LapRRTIAsuIS/BTL-16-%E2%80%93-Site
 **Lưu ý:** các số liệu trên dashboard là dữ liệu minh họa theo frame thiết kế, không phải số liệu công trường thật. AI, xác thực và backend vẫn đang được mô phỏng ở frontend.
 
 
+<<<<<<< HEAD
 ## Cập nhật giao diện theo Figma (20/10/2026)
+=======
+## Cập nhật giao diện theo Figma (07/10/2026)
+>>>>>>> 2742699125c83669401b1f35fe46fbcb5a06f7f8
 
 - Bảng màu được đồng bộ theo tông xanh teal, xanh navy và nền xanh xám rất nhạt; sidebar tối, vùng nội dung sáng.
 - Font Inter, cỡ chữ và khoảng cách biểu mẫu được tinh chỉnh theo tham chiếu Figma.
