@@ -68,13 +68,15 @@ Nếu nguy cơ được ghi nhận rời rạc, thiếu người phụ trách ho
 4. Chuyển vai trò tại thanh bên để kiểm tra các luồng khác nhau.
 
 ## 10. Thành viên nhóm và phân công
-Điền tên thành viên thật trước khi nộp. Mỗi thành viên phải có lát cắt dọc hoàn chỉnh: phân tích → thiết kế → HTML/CSS/JS → dữ liệu → responsive → nhánh Git → PR → video OBS.
+Mỗi thành viên phụ trách 7 trong tổng số 21 màn hình. Tiến phụ trách thêm khung giao diện và điều hướng dùng chung; Tuyên phụ trách kiểm thử tích hợp, đây là đầu việc kiểm thử chứ không phải màn hình thứ 22.
 
-| Thành viên | Lát cắt gợi ý | Nhánh |
-|---|---|---|
-| SV1 | Công nhân: checklist và báo cáo nguy cơ | `feature/worker-safety-flow` |
-| SV2 | Cán bộ an toàn: nguy cơ, kiểm tra, khắc phục | `feature/safety-operations` |
-| SV3 | Quản lý/quản trị: khu vực, báo cáo, người dùng, tích hợp | `feature/manager-admin` |
+| Thành viên | Màn hình được giao | Số lượng | Phần việc thêm | Nhánh |
+|---|---|---:|---|---|
+| Tiến | Giới thiệu; Đăng nhập; Đăng ký tài khoản; Hồ sơ cá nhân; Không tìm thấy trang; Checklist an toàn; Báo nguy cơ | 7 | Tạo khung giao diện chung, thanh điều hướng, nút đăng nhập/đăng xuất và quy tắc chuyển trang để cả nhóm sử dụng | `feature/worker-safety-flow` |
+| Tuyên | Nguy cơ của tôi; AI tạo checklist; Tổng quan an toàn; Chi tiết nguy cơ; Lịch kiểm tra; AI phân loại nguy cơ; Bản đồ rủi ro | 7 | Kiểm thử tích hợp các màn hình và luồng xử lý nguy cơ | `feature/safety-operations` |
+| Tùng | Hành động khắc phục; Báo cáo an toàn; AI điểm nóng; Tổng quan quản trị viên; Mẫu checklist; Khu vực; Người dùng | 7 | — | `feature/manager-admin` |
+
+**Tổng cộng: 21 màn hình (7–7–7).** Mỗi thành viên hoàn thiện phần việc được giao từ giao diện, xử lý nghiệp vụ và dữ liệu đến responsive, nhánh Git, PR và video OBS. Phối hợp tích hợp các màn hình dùng chung trước khi kiểm thử toàn bộ luồng.
 
 ## 11. Quy trình Git đề xuất
 - `main`: bản ổn định; `dev`: tích hợp; `feature/...`, `fix/...`, `docs/...`: nhánh công việc.
