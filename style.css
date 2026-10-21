@@ -172,4 +172,67 @@ body{font-family:Inter,Arial,sans-serif;background:var(--fig-bg);color:var(--fig
 .not-found-foot{margin-top:26px}
 @media(max-width:600px){.not-found-page{padding:24px 18px}.not-found-content{margin-top:38px}.not-found-content h1{font-size:26px}.not-found-actions{flex-direction:column;align-items:stretch}.not-found-actions a{justify-content:center}.not-found-illustration{height:190px}}
 
+.admin-reference{display:grid;gap:14px;color:var(--fig-ink);font-size:12px}
+.admin-reference .figma-page-title{align-items:center}
+.admin-reference .figma-page-title h1{font-size:24px;margin-bottom:4px}
+.admin-reference .figma-page-title p{font-size:12px}
+.admin-reference .figma-page-title .btn-primary{min-height:36px;padding:8px 12px;font-size:12px}
+.admin-reference .data-caption{font-size:10px;margin-top:-7px}
+.admin-reference .admin-filters{gap:10px}
+.admin-reference .admin-filters label{gap:5px;font-size:11px}
+.admin-reference .admin-filters input,.admin-reference .admin-filters select{height:38px;padding:0 10px;font-size:11px;border-color:var(--fig-line)}
+.admin-reference .figma-card{padding:14px;background:#fff;border:1px solid var(--fig-line);border-radius:9px;box-shadow:0 2px 10px rgba(19,66,88,.035)}
+.admin-reference .figma-card h2{font-size:14px;line-height:1.4;margin:0 0 10px}
+.admin-reference .figma-card p{font-size:11px;line-height:1.5;margin:6px 0;color:var(--fig-ink)}
+.admin-reference .table-wrap{border:0;border-radius:0;overflow-x:auto}
+.admin-reference table{min-width:580px}
+.admin-reference th,.admin-reference td{padding:8px 9px;font-size:10px}
+.admin-reference th{font-size:9px;text-transform:none;letter-spacing:0;color:#405869;background:#f1f5f9}
+.admin-reference td{color:#304453}
+.admin-reference .admin-table-card h2{margin-bottom:8px}
+.admin-reference .admin-link{border:0;background:transparent;padding:0;color:#087f8c;text-align:left;font-size:10px;font-weight:700}
+.admin-reference .admin-link:hover{text-decoration:underline}
+.admin-reference .admin-two-col{display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:start}
+.admin-reference .admin-form-card{padding:13px}
+.admin-reference .admin-form-card h2{font-size:12px;margin-bottom:9px}
+.admin-reference .form-field{gap:4px;margin-bottom:9px}
+.admin-reference .form-field label{font-size:10px;color:#344a57}
+.admin-reference .form-field input,.admin-reference .form-field select,.admin-reference .form-field textarea{width:100%;min-height:32px;padding:7px 9px;border:1px solid #dce6eb;border-radius:6px;font-size:10px;color:#263f50}
+.admin-reference .form-field textarea{min-height:70px}
+.admin-reference .form-field>small,.admin-reference small{font-size:9px;color:#71899a;line-height:1.45}
+.admin-reference .admin-form-actions{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.admin-reference .btn.btn-sm{min-height:27px;padding:6px 9px;font-size:10px;border-radius:6px}
+.admin-reference .admin-form-card>p{font-size:10px}
+.admin-reference .admin-warning{padding:9px 11px;border:1px solid #b9847c;border-radius:6px;background:#fff3ef;color:#854c45;font-size:10px;line-height:1.5}
+.admin-reference .admin-tint-green{background:#bff4c2}
+.admin-reference .admin-tint-pink{background:#f1c9f2}
+.admin-reference .admin-tint-orange{background:#ffe3ca}
+.admin-reference .admin-tint-red{background:#f7d0d0}
+.admin-reference .admin-form-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 12px}
+.admin-reference .admin-span-all{grid-column:1/-1}
+.admin-reference .admin-check-label{display:flex!important;align-items:center;gap:6px;min-height:32px;padding:6px 9px;border:1px solid #dce6eb;border-radius:6px;background:#fff}
+.admin-reference .admin-check-label input{width:auto!important;min-height:0!important}
+.admin-reference .admin-site-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.admin-reference .admin-site-card{min-height:138px}
+.admin-reference .admin-site-card h2{margin-bottom:3px}
+.admin-reference .admin-site-card .admin-status{margin:8px 0}
+.admin-reference .admin-zone-map{display:grid;gap:8px;padding:10px;border-radius:8px;background:#edf2f5}
+.admin-reference .admin-zone-map>small{font-size:9px}
+.admin-reference .admin-zone-map-row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.admin-reference .admin-map-zone{padding:12px;border:1px solid;border-radius:7px;min-height:82px}
+.admin-reference .admin-map-zone strong{font-size:11px}
+.admin-reference .admin-map-zone p{margin:7px 0;font-size:10px}
+.admin-reference .admin-map-zone.danger{border-color:#bd6a63;background:#fff0ed;color:#7d3934}
+.admin-reference .admin-map-zone.warning{border-color:#c7a65c;background:#fff5dd;color:#765b20}
+.admin-reference .admin-map-zone.safe{border-color:#91c3a1;background:#e8f6ec;color:#336846}
+.admin-reference .admin-map-divider{padding:7px;text-align:center;background:#fff;color:#6b7c85;font-size:9px}
+.admin-reference .reference-foot{font-size:9px}
+@media(min-width:781px){body[data-initial-role="admin"] .sidebar{height:100vh;align-self:flex-start;position:sticky;top:0}}
+@media(max-width:780px){
+  .admin-reference .admin-two-col,.admin-reference .admin-site-grid{grid-template-columns:1fr}
+  .admin-reference .figma-page-title{align-items:flex-start}
+  .admin-reference .admin-form-grid{grid-template-columns:1fr}
+  .admin-reference .admin-span-all{grid-column:auto}
+}
+
 .field-reference-page{display:grid;gap:16px}.field-reference-page .page-heading{margin-bottom:0}.field-reference-page .data-caption,.data-caption{color:var(--fig-muted,#6b7890);font-size:12px}.field-reference-page .figma-card{padding:20px;background:#fff;border:1px solid var(--fig-line,#dceaf0);border-radius:10px}.field-reference-page .figma-card h2{margin:0 0 10px;font-size:16px}.field-reference-page .figma-card p{color:var(--fig-muted,#6b7890);line-height:1.55}.field-reference-page .figma-card .notice{margin:14px 0}.field-reference-page .reference-count{margin:0;color:var(--fig-muted,#6b7890);font-size:12px}.worker-report-list{display:grid;gap:14px}.worker-report-card{padding:18px;border:1px solid var(--fig-line,#dceaf0);border-radius:10px;background:#fff}.worker-report-card>div:first-child{display:flex;align-items:flex-start;justify-content:space-between;gap:14px}.worker-report-card h2{margin:0;font-size:15px;color:var(--fig-ink,#172b4d)}.worker-report-card p{color:var(--fig-muted,#6b7890);line-height:1.55}.worker-report-meta,.hazard-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.report-evidence{padding:12px;border-radius:8px;background:#f1f7fa;color:var(--fig-ink,#172b4d)}.report-evidence p{margin:8px 0 0;font-size:12px}.inspection-week-list p{padding:10px 0;margin:0;border-bottom:1px solid var(--fig-line,#dceaf0)}.inspection-week-list p:last-child{border-bottom:0}.reference-foot{margin:0;color:var(--fig-muted,#6b7890);font-size:11px}.risk-detail-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;padding:14px;border-radius:9px;background:#f4f8fb}.risk-detail-grid>div{display:grid;gap:6px}.risk-detail-grid strong,.risk-detail-label{font-size:12px;color:var(--fig-ink,#172b4d)}.risk-detail-label{color:var(--fig-muted,#6b7890)}.risk-detail-section{padding:14px 0;border-bottom:1px solid var(--fig-line,#dceaf0)}.risk-detail-section h3{margin:0 0 8px;font-size:13px}.risk-detail-section p{margin:6px 0;color:var(--fig-muted,#6b7890);line-height:1.5}.risk-detail-section .badge{margin-left:6px}.risk-detail-section:last-of-type{border-bottom:0}@media(max-width:780px){.worker-report-card>div:first-child{display:grid}.field-reference-page .figma-card{padding:15px}.risk-detail-grid{grid-template-columns:1fr}}
