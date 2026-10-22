@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="SiteSafe - hệ thống theo dõi an toàn công trường nhiều vai trò">
+  <title>Cán bộ an toàn – Tổng quan | SiteSafe</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/dashboard.css">
+  <link rel="stylesheet" href="../css/admin-home.css">
+  <link rel="stylesheet" href="../css/risks.css">
+  <link rel="stylesheet" href="../css/checklists.css">
+  <link rel="stylesheet" href="../css/actions.css">
+  <link rel="stylesheet" href="../css/zones.css">
+  <link rel="stylesheet" href="../css/worker-report.css">
+  <link rel="stylesheet" href="../css/sites.css">
+  <link rel="stylesheet" href="../css/404.css">
+  <link rel="stylesheet" href="../css/users.css">
+  <link rel="stylesheet" href="../css/help.css">
+  <link rel="stylesheet" href="../css/worker-checklist.css">
+  <link rel="stylesheet" href="../css/ai.css">
+  <link rel="stylesheet" href="../css/inspections.css">
+  <link rel="stylesheet" href="../css/index.css">
+  <link rel="stylesheet" href="../css/reports.css">
+  <link rel="stylesheet" href="../css/manager-home.css">
+  <link rel="stylesheet" href="../css/worker-history.css">
+  <link rel="stylesheet" href="../css/profile.css">
+  <link rel="stylesheet" href="../css/worker-home.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body data-initial-page="dashboard" data-initial-role="safety">
+<div class="app-shell">
+  <aside class="sidebar" id="sidebar" aria-label="Điều hướng chính">
+    <div class="brand"><span class="brand-mark">✓</span><span>SiteSafe</span></div>
+    <div class="role-label">VAI TRÒ ĐANG MÔ PHỎNG</div>
+    <div class="form-field" style="padding:0 7px"><label for="roleSelect">Chuyển vai trò</label><select id="roleSelect" class="field-control"><option value="safety">Cán bộ an toàn</option><option value="worker">Công nhân</option><option value="manager">Quản lý công trường</option><option value="admin">Quản trị hệ thống</option></select></div>
+    <nav id="nav" aria-label="Các màn hình"></nav>
+    <div class="sidebar-bottom"><div class="site-mini"><strong>RIVERSIDE – KHỐI A</strong><span>RS-A · Đang thi công</span></div><button class="nav-item" data-page="help"><span>ⓘ</span>Trợ giúp & hướng dẫn</button><button class="nav-item" data-page="profile"><span>♙</span>Hồ sơ cá nhân</button></div>
+  </aside>
+  <main class="workspace">
+    <header class="topbar"><button class="mobile-menu" id="mobileMenu" aria-label="Mở menu">☰</button><button class="site-switch" id="siteSwitch">Riverside – Khối A <span>⌄</span></button><div class="topbar-right"><button class="icon-btn" id="notifications" title="Thông báo" aria-label="Thông báo">♧<i></i></button><div class="user-chip"><div class="avatar" id="avatar">TA</div><div><strong id="userName">Trần An</strong><small id="userRole">Cán bộ an toàn</small></div></div></div></header>
+    <section class="page-content" id="pageContent" aria-live="polite">
+<!-- Nội dung HTML của màn hình; JavaScript xử lý dữ liệu và thao tác -->
+<div class="figma-dashboard">
+  <div class="crumb">Cán bộ an toàn / Tổng quan an toàn</div>
+  <div class="figma-page-title"><div><h1>Tổng quan an toàn</h1><p>Đầu ca 03/10 · cập nhật 08:55 · tập trung những việc cần bạn xem xét.</p></div><button class="btn btn-primary" data-page="risks">Xem hàng chờ duyệt</button></div>
+  <div class="data-caption">Dữ liệu minh họa · 03/10/2026 · Không phải số liệu thực tế</div>
+  <div class="dashboard-filters">
+   <label>Tìm kiếm<input id="dashboardSearch" type="search" placeholder="⌕  Mã, nội dung hoặc người phụ trách"></label>
+   <label>Công trường<select id="dashboardSite"><option>Riverside – Khối A</option><option>Toàn bộ công trường</option></select></label>
+   <label>Bộ lọc<select id="dashboardFilter"><option value="all">Hôm nay · tất cả khu vực</option><option value="high">Ưu tiên cao</option><option value="overdue">Quá hạn</option><option value="pending">Chờ duyệt</option></select></label>
+  </div>
+  <div class="figma-stats">
+   <article class="figma-stat"><span>Nguy cơ đang mở</span><strong>24</strong><small>6 khu vực đang theo dõi</small></article>
+   <article class="figma-stat"><span>Ưu tiên cao</span><strong>7</strong><small>Cần kiểm tra trong ca</small></article>
+   <article class="figma-stat"><span>Hành động quá hạn</span><strong>3</strong><small>Nhắc người phụ trách</small></article>
+   <article class="figma-stat"><span>Chờ duyệt</span><strong>5</strong><small>Chưa xác nhận nguy cơ</small></article>
+  </div>
+  <div class="figma-alert"><strong>⚠ &nbsp;3 hành động đã quá hạn</strong><p>Z-A2 có 2 việc, Z-A1 có 1 việc. Xem hạn và người phụ trách trước khi giao thêm việc.</p><button class="text-btn" data-page="actions">Xem hành động khắc phục →</button></div>
+  <div class="figma-dashboard-columns">
+   <section class="figma-card trend-card"><div class="figma-card-head"><div><h2>Xu hướng nguy cơ mới</h2><p>27/09–03/10/2026 · nguồn: báo cáo hiện trường</p></div><span class="figma-pill">Nguy cơ ghi nhận mới</span></div>
+    <div class="figma-chart"><div class="figma-bar-col"><b>8</b><div class="figma-bar" style="height:80px"></div><small>27/9</small></div><div class="figma-bar-col"><b>6</b><div class="figma-bar" style="height:60px"></div><small>28/9</small></div><div class="figma-bar-col"><b>9</b><div class="figma-bar" style="height:90px"></div><small>29/9</small></div><div class="figma-bar-col"><b>5</b><div class="figma-bar" style="height:50px"></div><small>30/9</small></div><div class="figma-bar-col"><b>11</b><div class="figma-bar" style="height:110px"></div><small>1/10</small></div><div class="figma-bar-col"><b>7</b><div class="figma-bar" style="height:70px"></div><small>2/10</small></div><div class="figma-bar-col"><b>10</b><div class="figma-bar" style="height:100px"></div><small>3/10</small></div></div>
+    <div class="figma-legend"><span><i></i>Nguy cơ ghi nhận mới</span><span><i class="pale"></i>Đã xử lý</span></div>
+   </section>
+   <section class="figma-card queue-card"><div class="figma-card-head"><div><h2>Việc cần xem xét</h2><p>Ưu tiên theo mức độ và thời hạn</p></div><button class="text-btn" data-page="risks">Xem tất cả →</button></div>
+    <div class="figma-queue-item"><span class="queue-icon danger">!</span><div><strong>Lan can tầng 4 chưa hoàn thiện</strong><p>RS-024 · Khối A · Tầng 4</p></div><span class="badge red">Cao</span></div>
+    <div class="figma-queue-item"><span class="queue-icon warning">⌁</span><div><strong>Dây điện đi qua lối đi</strong><p>RS-023 · Khối A · Tầng 2</p></div><span class="badge orange">Trung bình</span></div>
+    <div class="figma-queue-item"><span class="queue-icon danger">!</span><div><strong>Thiếu biển cảnh báo khu vực nâng hạ</strong><p>RS-021 · Bãi vật liệu</p></div><span class="badge red">Cao</span></div>
+   </section>
+  </div>
+  <section class="figma-card figma-recent"><div class="figma-card-head"><div><h2>Nguy cơ cần theo dõi</h2><p>Các nguy cơ đang mở trong công trường</p></div><button class="btn btn-light btn-sm" data-page="risks">Mở danh sách</button></div><div id="dashboardRiskRows"><div class="table-wrap"><table><thead><tr><th>Mã / Nguy cơ</th><th>Khu vực</th><th>Mức độ</th><th>Trạng thái</th><th>Người phụ trách</th><th>Thao tác</th></tr></thead><tbody><tr><td><div class="cell-title">Lan can tầng 4 chưa hoàn thiện</div><div class="subcell">RS-024 · 2026-10-20</div></td><td>Khối A · Tầng 4</td><td><span class="badge red">Cao</span></td><td><span class="badge red">Mới ghi nhận</span></td><td>Nguyễn Văn Nam</td><td><div class="actions-cell"><button class="text-btn" data-action="view-risk" data-id="RS-024">Chi tiết</button><button class="text-btn" data-action="edit-risk" data-id="RS-024">Sửa</button></div></td></tr><tr><td><div class="cell-title">Dây điện đi qua lối đi</div><div class="subcell">RS-023 · 2026-10-19</div></td><td>Khối A · Tầng 2</td><td><span class="badge orange">Trung bình</span></td><td><span class="badge orange">Đang xử lý</span></td><td>Trần Minh Đức</td><td><div class="actions-cell"><button class="text-btn" data-action="view-risk" data-id="RS-023">Chi tiết</button><button class="text-btn" data-action="edit-risk" data-id="RS-023">Sửa</button></div></td></tr><tr><td><div class="cell-title">Thiếu biển cảnh báo khu vực nâng hạ</div><div class="subcell">RS-021 · 2026-10-18</div></td><td>Bãi vật liệu</td><td><span class="badge red">Cao</span></td><td><span class="badge orange">Đang xử lý</span></td><td>Lê Quốc Huy</td><td><div class="actions-cell"><button class="text-btn" data-action="view-risk" data-id="RS-021">Chi tiết</button><button class="text-btn" data-action="edit-risk" data-id="RS-021">Sửa</button></div></td></tr></tbody></table></div></div></section>
+  <div class="figma-footnote">SiteSafe · Bản mô phỏng phục vụ học tập. Luôn xác minh tại hiện trường trước khi đưa ra quyết định an toàn.</div>
+ </div>
+</section>
+  </main>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<div class="modal-backdrop" id="modalBackdrop"><section class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><div class="modal-head"><h2 id="modalTitle">Thêm mới</h2><button class="icon-btn" id="closeModal" aria-label="Đóng">✕</button></div><div class="modal-body" id="modalBody"></div></section></div>
+<script src="../js/dashboard.js"></script>
+<script src="../js/risks.js"></script>
+<script src="../js/inspections.js"></script>
+<script src="../js/actions.js"></script>
+<script src="../js/zones.js"></script>
+<script src="../js/reports.js"></script>
+<script src="../js/checklists.js"></script>
+<script src="../js/users.js"></script>
+<script src="../js/sites.js"></script>
+<script src="../js/ai.js"></script>
+<script src="../js/worker-home.js"></script>
+<script src="../js/worker-checklist.js"></script>
+<script src="../js/worker-report.js"></script>
+<script src="../js/worker-history.js"></script>
+<script src="../js/manager-home.js"></script>
+<script src="../js/admin-home.js"></script>
+<script src="../js/help.js"></script>
+<script src="../js/profile.js"></script>
+<script src="../js/adminSiteModal.js"></script>
+<script src="../js/adminUsersPage.js"></script>
+<script src="../js/adminChecklistsPage.js"></script>
+<script src="../js/adminZonesPage.js"></script>
+<script src="../js/script.js"></script>
+</body></html>
