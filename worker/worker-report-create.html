@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="SiteSafe - hệ thống theo dõi an toàn công trường nhiều vai trò">
+  <title>Công nhân – Báo cáo nguy cơ | SiteSafe</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/dashboard.css">
+  <link rel="stylesheet" href="../css/admin-home.css">
+  <link rel="stylesheet" href="../css/risks.css">
+  <link rel="stylesheet" href="../css/checklists.css">
+  <link rel="stylesheet" href="../css/actions.css">
+  <link rel="stylesheet" href="../css/zones.css">
+  <link rel="stylesheet" href="../css/worker-report.css">
+  <link rel="stylesheet" href="../css/sites.css">
+  <link rel="stylesheet" href="../css/404.css">
+  <link rel="stylesheet" href="../css/users.css">
+  <link rel="stylesheet" href="../css/help.css">
+  <link rel="stylesheet" href="../css/worker-checklist.css">
+  <link rel="stylesheet" href="../css/ai.css">
+  <link rel="stylesheet" href="../css/inspections.css">
+  <link rel="stylesheet" href="../css/index.css">
+  <link rel="stylesheet" href="../css/reports.css">
+  <link rel="stylesheet" href="../css/manager-home.css">
+  <link rel="stylesheet" href="../css/worker-history.css">
+  <link rel="stylesheet" href="../css/profile.css">
+  <link rel="stylesheet" href="../css/worker-home.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body data-initial-page="worker-report" data-initial-role="worker">
+<div class="app-shell">
+  <aside class="sidebar" id="sidebar" aria-label="Điều hướng chính">
+    <div class="brand"><span class="brand-mark">✓</span><span>SiteSafe</span></div>
+    <div class="role-label">VAI TRÒ ĐANG MÔ PHỎNG</div>
+    <div class="form-field" style="padding:0 7px"><label for="roleSelect">Chuyển vai trò</label><select id="roleSelect" class="field-control"><option value="safety">Cán bộ an toàn</option><option value="worker">Công nhân</option><option value="manager">Quản lý công trường</option><option value="admin">Quản trị hệ thống</option></select></div>
+    <nav id="nav" aria-label="Các màn hình"></nav>
+    <div class="sidebar-bottom"><div class="site-mini"><strong>RIVERSIDE – KHỐI A</strong><span>RS-A · Đang thi công</span></div><button class="nav-item" data-page="help"><span>ⓘ</span>Trợ giúp & hướng dẫn</button><button class="nav-item" data-page="profile"><span>♙</span>Hồ sơ cá nhân</button></div>
+  </aside>
+  <main class="workspace">
+    <header class="topbar"><button class="mobile-menu" id="mobileMenu" aria-label="Mở menu">☰</button><button class="site-switch" id="siteSwitch">Riverside – Khối A <span>⌄</span></button><div class="topbar-right"><button class="icon-btn" id="notifications" title="Thông báo" aria-label="Thông báo">♧<i></i></button><div class="user-chip"><div class="avatar" id="avatar">TA</div><div><strong id="userName">Trần An</strong><small id="userRole">Cán bộ an toàn</small></div></div></div></header>
+    <section class="page-content" id="pageContent" aria-live="polite">
+<!-- Nội dung HTML của màn hình; JavaScript xử lý dữ liệu và thao tác -->
+<div class="page-heading"><div><div class="eyebrow">SITESAFE / Nhân sự hiện trường</div><h1>Báo cáo nguy cơ</h1><p>Gửi mô tả quan sát được để cán bộ an toàn xác minh.</p></div><div class="heading-actions"></div></div><section class="content-card"><form id="workerReportForm"><div class="form-field"><label for="wr-title">Tên nguy cơ *</label><input id="wr-title" name="title" required minlength="5" placeholder="Ví dụ: Dây điện nằm ngang lối đi"></div><div class="form-grid"><div class="form-field"><label for="wr-zone">Khu vực *</label><select id="wr-zone" name="zone"><option>Khối A · Tầng 4</option><option>Khối A · Tầng 2</option><option>Bãi vật liệu</option><option>Kho vật tư</option></select></div><div class="form-field"><label for="wr-level">Mức độ quan sát *</label><select id="wr-level" name="level"><option>Chưa xác định</option><option>Cao</option><option>Trung bình</option><option>Thấp</option></select></div></div><div class="form-field"><label for="wr-desc">Mô tả *</label><textarea id="wr-desc" name="desc" required minlength="10" placeholder="Mô tả vị trí, điều kiện và nguy cơ có thể xảy ra"></textarea></div><div class="notice">Mức độ do người báo cáo chọn chỉ là thông tin ban đầu. Cán bộ an toàn cần xác minh.</div><button class="btn btn-primary" type="submit">Gửi báo cáo</button></form></section>
+</section>
+  </main>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<div class="modal-backdrop" id="modalBackdrop"><section class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><div class="modal-head"><h2 id="modalTitle">Thêm mới</h2><button class="icon-btn" id="closeModal" aria-label="Đóng">✕</button></div><div class="modal-body" id="modalBody"></div></section></div>
+<script src="../js/dashboard.js"></script>
+<script src="../js/risks.js"></script>
+<script src="../js/inspections.js"></script>
+<script src="../js/actions.js"></script>
+<script src="../js/zones.js"></script>
+<script src="../js/reports.js"></script>
+<script src="../js/checklists.js"></script>
+<script src="../js/users.js"></script>
+<script src="../js/sites.js"></script>
+<script src="../js/ai.js"></script>
+<script src="../js/worker-home.js"></script>
+<script src="../js/worker-checklist.js"></script>
+<script src="../js/worker-report.js"></script>
+<script src="../js/worker-history.js"></script>
+<script src="../js/manager-home.js"></script>
+<script src="../js/admin-home.js"></script>
+<script src="../js/help.js"></script>
+<script src="../js/profile.js"></script>
+<script src="../js/adminSiteModal.js"></script>
+<script src="../js/adminUsersPage.js"></script>
+<script src="../js/adminChecklistsPage.js"></script>
+<script src="../js/adminZonesPage.js"></script>
+<script src="../js/script.js"></script>
+</body></html>
