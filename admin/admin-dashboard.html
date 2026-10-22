@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="SiteSafe - hệ thống theo dõi an toàn công trường nhiều vai trò">
+  <title>Quản trị – Tổng quan hệ thống | SiteSafe</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/dashboard.css">
+  <link rel="stylesheet" href="../css/admin-home.css">
+  <link rel="stylesheet" href="../css/risks.css">
+  <link rel="stylesheet" href="../css/checklists.css">
+  <link rel="stylesheet" href="../css/actions.css">
+  <link rel="stylesheet" href="../css/zones.css">
+  <link rel="stylesheet" href="../css/worker-report.css">
+  <link rel="stylesheet" href="../css/sites.css">
+  <link rel="stylesheet" href="../css/404.css">
+  <link rel="stylesheet" href="../css/users.css">
+  <link rel="stylesheet" href="../css/help.css">
+  <link rel="stylesheet" href="../css/worker-checklist.css">
+  <link rel="stylesheet" href="../css/ai.css">
+  <link rel="stylesheet" href="../css/inspections.css">
+  <link rel="stylesheet" href="../css/index.css">
+  <link rel="stylesheet" href="../css/reports.css">
+  <link rel="stylesheet" href="../css/manager-home.css">
+  <link rel="stylesheet" href="../css/worker-history.css">
+  <link rel="stylesheet" href="../css/profile.css">
+  <link rel="stylesheet" href="../css/worker-home.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body data-initial-page="admin-home" data-initial-role="admin">
+<div class="app-shell">
+  <aside class="sidebar" id="sidebar" aria-label="Điều hướng chính">
+    <div class="brand"><span class="brand-mark">✓</span><span>SiteSafe</span></div>
+    <div class="role-label">VAI TRÒ ĐANG MÔ PHỎNG</div>
+    <div class="form-field" style="padding:0 7px"><label for="roleSelect">Chuyển vai trò</label><select id="roleSelect" class="field-control"><option value="safety">Cán bộ an toàn</option><option value="worker">Công nhân</option><option value="manager">Quản lý công trường</option><option value="admin">Quản trị hệ thống</option></select></div>
+    <nav id="nav" aria-label="Các màn hình"></nav>
+    <div class="sidebar-bottom"><div class="site-mini"><strong>RIVERSIDE – KHỐI A</strong><span>RS-A · Đang thi công</span></div><button class="nav-item" data-page="help"><span>ⓘ</span>Trợ giúp & hướng dẫn</button><button class="nav-item" data-page="profile"><span>♙</span>Hồ sơ cá nhân</button></div>
+  </aside>
+  <main class="workspace">
+    <header class="topbar"><button class="mobile-menu" id="mobileMenu" aria-label="Mở menu">☰</button><button class="site-switch" id="siteSwitch">Riverside – Khối A <span>⌄</span></button><div class="topbar-right"><button class="icon-btn" id="notifications" title="Thông báo" aria-label="Thông báo">♧<i></i></button><div class="user-chip"><div class="avatar" id="avatar">TA</div><div><strong id="userName">Trần An</strong><small id="userRole">Cán bộ an toàn</small></div></div></div></header>
+    <section class="page-content" id="pageContent" aria-live="polite">
+<!-- Nội dung HTML của màn hình; JavaScript xử lý dữ liệu và thao tác -->
+<div class="page-heading"><div><div class="eyebrow">SITESAFE / Quản trị hệ thống</div><h1>Tổng quan hệ thống</h1><p>Quản lý danh mục, người dùng và cấu hình dữ liệu demo.</p></div><div class="heading-actions"><button class="btn btn-primary " data-action="users">Quản lý người dùng</button></div></div><div class="stats-grid"><article class="stat-card"><div class="stat-top"><span>Người dùng</span><span class="stat-icon">♙</span></div><div class="stat-value">4</div><div class="stat-note">Các tài khoản mẫu</div></article><article class="stat-card"><div class="stat-top"><span>Khu vực</span><span class="stat-icon">⌖</span></div><div class="stat-value">4</div><div class="stat-note">Danh mục công trường</div></article><article class="stat-card"><div class="stat-top"><span>Mẫu checklist</span><span class="stat-icon">☑</span></div><div class="stat-value">3</div><div class="stat-note">Mẫu kiểm tra</div></article><article class="stat-card"><div class="stat-top"><span>Thông báo chưa đọc</span><span class="stat-icon">♧</span></div><div class="stat-value">2</div><div class="stat-note">Thông báo mô phỏng</div></article></div><section class="content-card"><h2>Kiểm soát dữ liệu</h2><p>Dữ liệu lưu cục bộ trên trình duyệt bằng LocalStorage. Đây không phải xác thực thật; không sử dụng thông tin tài khoản thật.</p><button class="btn btn-light " data-action="backup-json">Tải bản sao dữ liệu JSON</button> <button class="btn btn-danger " data-action="reset-demo">Khôi phục dữ liệu demo</button></section>
+</section>
+  </main>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<div class="modal-backdrop" id="modalBackdrop"><section class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><div class="modal-head"><h2 id="modalTitle">Thêm mới</h2><button class="icon-btn" id="closeModal" aria-label="Đóng">✕</button></div><div class="modal-body" id="modalBody"></div></section></div>
+<script src="../js/dashboard.js"></script>
+<script src="../js/risks.js"></script>
+<script src="../js/inspections.js"></script>
+<script src="../js/actions.js"></script>
+<script src="../js/zones.js"></script>
+<script src="../js/reports.js"></script>
+<script src="../js/checklists.js"></script>
+<script src="../js/users.js"></script>
+<script src="../js/sites.js"></script>
+<script src="../js/ai.js"></script>
+<script src="../js/worker-home.js"></script>
+<script src="../js/worker-checklist.js"></script>
+<script src="../js/worker-report.js"></script>
+<script src="../js/worker-history.js"></script>
+<script src="../js/manager-home.js"></script>
+<script src="../js/admin-home.js"></script>
+<script src="../js/help.js"></script>
+<script src="../js/profile.js"></script>
+<script src="../js/adminSiteModal.js"></script>
+<script src="../js/adminUsersPage.js"></script>
+<script src="../js/adminChecklistsPage.js"></script>
+<script src="../js/adminZonesPage.js"></script>
+<script src="../js/script.js"></script>
+</body></html>

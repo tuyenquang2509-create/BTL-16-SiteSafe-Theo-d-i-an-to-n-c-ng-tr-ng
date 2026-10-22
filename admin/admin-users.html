@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="SiteSafe - hệ thống theo dõi an toàn công trường nhiều vai trò">
+  <title>Quản trị – Người dùng | SiteSafe</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/dashboard.css">
+  <link rel="stylesheet" href="../css/admin-home.css">
+  <link rel="stylesheet" href="../css/risks.css">
+  <link rel="stylesheet" href="../css/checklists.css">
+  <link rel="stylesheet" href="../css/actions.css">
+  <link rel="stylesheet" href="../css/zones.css">
+  <link rel="stylesheet" href="../css/worker-report.css">
+  <link rel="stylesheet" href="../css/sites.css">
+  <link rel="stylesheet" href="../css/404.css">
+  <link rel="stylesheet" href="../css/users.css">
+  <link rel="stylesheet" href="../css/help.css">
+  <link rel="stylesheet" href="../css/worker-checklist.css">
+  <link rel="stylesheet" href="../css/ai.css">
+  <link rel="stylesheet" href="../css/inspections.css">
+  <link rel="stylesheet" href="../css/index.css">
+  <link rel="stylesheet" href="../css/reports.css">
+  <link rel="stylesheet" href="../css/manager-home.css">
+  <link rel="stylesheet" href="../css/worker-history.css">
+  <link rel="stylesheet" href="../css/profile.css">
+  <link rel="stylesheet" href="../css/worker-home.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body data-initial-page="users" data-initial-role="admin">
+<div class="app-shell">
+  <aside class="sidebar" id="sidebar" aria-label="Điều hướng chính">
+    <div class="brand"><span class="brand-mark">✓</span><span>SiteSafe</span></div>
+    <div class="role-label">VAI TRÒ ĐANG MÔ PHỎNG</div>
+    <div class="form-field" style="padding:0 7px"><label for="roleSelect">Chuyển vai trò</label><select id="roleSelect" class="field-control"><option value="safety">Cán bộ an toàn</option><option value="worker">Công nhân</option><option value="manager">Quản lý công trường</option><option value="admin">Quản trị hệ thống</option></select></div>
+    <nav id="nav" aria-label="Các màn hình"></nav>
+    <div class="sidebar-bottom"><div class="site-mini"><strong>RIVERSIDE – KHỐI A</strong><span>RS-A · Đang thi công</span></div><button class="nav-item" data-page="help"><span>ⓘ</span>Trợ giúp & hướng dẫn</button><button class="nav-item" data-page="profile"><span>♙</span>Hồ sơ cá nhân</button></div>
+  </aside>
+  <main class="workspace">
+    <header class="topbar"><button class="mobile-menu" id="mobileMenu" aria-label="Mở menu">☰</button><button class="site-switch" id="siteSwitch">Riverside – Khối A <span>⌄</span></button><div class="topbar-right"><button class="icon-btn" id="notifications" title="Thông báo" aria-label="Thông báo">♧<i></i></button><div class="user-chip"><div class="avatar" id="avatar">TA</div><div><strong id="userName">Trần An</strong><small id="userRole">Cán bộ an toàn</small></div></div></div></header>
+    <section class="page-content" id="pageContent" aria-live="polite">
+<!-- Nội dung HTML của màn hình; JavaScript xử lý dữ liệu và thao tác -->
+<div class="admin-reference">
+    <div class="crumb">Quản trị viên / Người dùng</div>
+    <div class="figma-page-title"><div><h1>Người dùng</h1><p>Mời thành viên, gán công trường và quản lý quyền truy cập.</p></div><button class="btn btn-primary " data-action="new-user">+ Mời thành viên</button></div>
+    <div class="data-caption">Dữ liệu minh họa · 03/10/2026 · Không phải số liệu thực tế</div>
+    <div class="dashboard-filters admin-filters">
+      <label>Tìm kiếm<input id="searchInput" type="search" placeholder="Mã, nội dung hoặc người phụ trách" value=""></label>
+      <label>Công trường<select aria-label="Công trường"><option>Riverside – Khối A</option><option>Riverside – Khối B</option></select></label>
+      <label>Bộ lọc<select id="statusFilter"><option selected>Tất cả</option><option >Đang hoạt động</option><option >Đã khóa</option></select></label>
+    </div>
+    <section class="figma-card admin-table-card"><h2>Thành viên công trường</h2><div class="table-wrap"><table><thead><tr><th>Thành viên</th><th>Vai trò</th><th>Công trường</th><th>Trạng thái / hoạt động</th></tr></thead><tbody>
+    <tr><td><button class="admin-link" data-action="edit-user" data-id="U-001">Trần An · tran an</button></td><td>Cán bộ an toàn</td><td>RS-A</td><td>Đang hoạt động · 08:45</td></tr><tr><td><button class="admin-link" data-action="edit-user" data-id="U-002">Nguyễn Văn Nam · nam nguyen</button></td><td>Công nhân</td><td>RS-B</td><td>Đang hoạt động · 09:20</td></tr><tr><td><button class="admin-link" data-action="edit-user" data-id="U-003">Lê Minh Quân · quan le</button></td><td>Quản lý công trường</td><td>RS-A</td><td>Đang hoạt động · 09:30</td></tr><tr><td><button class="admin-link" data-action="edit-user" data-id="U-004">Phạm Thu Hà · ha pham</button></td><td>Quản trị hệ thống</td><td>RS-B</td><td>Đang hoạt động · 08:30</td></tr>
+    </tbody></table></div></section>
+    <div class="admin-two-col">
+      <form class="figma-card admin-form-card" id="adminInviteForm"><h2>Mẫu hộp thoại · Mời thành viên</h2>
+        <div class="form-field"><label for="inviteEmail">Email *</label><input id="inviteEmail" name="email" type="email" value="binh.vu@riverside.example" required></div>
+        <div class="form-field"><label for="inviteRole">Vai trò được gán *</label><select id="inviteRole" name="role"><option>Cán bộ an toàn</option><option>Công nhân</option><option>Quản lý công trường</option><option>Quản trị hệ thống</option></select></div>
+        <div class="form-field"><label for="inviteSite">Công trường được phép *</label><select id="inviteSite" name="site"><option value="RS-A">Riverside – Khối A</option><option value="RS-B">Riverside – Khối B</option></select></div>
+        <small>Chỉ hiện quyền mà quản trị viên hiện tại được cấp phép gán.</small><div class="admin-form-actions"><button class="btn btn-primary btn-sm" type="submit">Gửi lời mời</button><button class="btn btn-light btn-sm" type="reset">Hủy</button></div>
+      </form>
+      <form class="figma-card admin-form-card" id="adminRoleForm" data-user-id="U-001"><h2>Xác nhận thay đổi quyền</h2>
+        <p>Trần An → Cán bộ an toàn · Công trường → RS-A Người phê duyệt → Đỗ Hạnh</p>
+        <div class="form-field"><label for="roleTarget">Vai trò mới *</label><select id="roleTarget" name="role"><option>Cán bộ an toàn</option><option>Công nhân</option><option>Quản lý công trường</option><option>Quản trị hệ thống</option></select></div>
+        <div class="form-field"><label for="siteTarget">Công trường được gán *</label><select id="siteTarget" name="site"><option value="RS-A">Riverside – Khối A</option><option value="RS-B">Riverside – Khối B</option></select></div>
+        <div class="form-field"><label for="roleReason">Lý do *</label><input id="roleReason" name="reason" value="Gia nhập tổ cấp pha theo lời mời RS-A." required></div>
+        <div class="admin-form-actions"><button class="btn btn-primary btn-sm" type="submit">Xác nhận cấp quyền</button><button class="btn btn-light btn-sm" type="button" data-action="edit-user" data-id="U-001">Giữ nguyên</button></div>
+      </form>
+    </div>
+    <form class="figma-card admin-form-card" id="adminSuspendForm" data-user-id="U-001"><h2>Tạm ngưng tài khoản, không xóa tác giả</h2>
+      <div class="form-field"><label for="suspendReason">Lý do tạm ngưng *</label><input id="suspendReason" name="reason" value="Thành viên đã kết thúc phân công tại công trường." required></div>
+      <p>Thành viên không đăng nhập được sau khi tạm ngưng. Báo cáo, ảnh và lịch sử do người này tạo vẫn giữ nguyên.</p>
+      <div class="admin-form-actions"><button class="btn btn-primary btn-sm" type="submit">Xác nhận tạm ngưng</button><button class="btn btn-light btn-sm" type="reset">Hủy</button></div>
+    </form>
+    <div class="admin-warning">Không thể tạm ngưng quản trị viên cuối cùng.<br>Đỗ Hạnh là quản trị viên hoạt động cuối cùng trong phạm vi này. Bổ sung quản trị viên hợp lệ trước khi thay đổi.</div>
+    <p class="reference-foot">admin-user-management.html · Quyền thao tác theo vai trò được gán. Mọi thay đổi ghi lịch sử và minh chứng.</p>
+  </div>
+</section>
+  </main>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<div class="modal-backdrop" id="modalBackdrop"><section class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><div class="modal-head"><h2 id="modalTitle">Thêm mới</h2><button class="icon-btn" id="closeModal" aria-label="Đóng">✕</button></div><div class="modal-body" id="modalBody"></div></section></div>
+<script src="../js/dashboard.js"></script>
+<script src="../js/risks.js"></script>
+<script src="../js/inspections.js"></script>
+<script src="../js/actions.js"></script>
+<script src="../js/zones.js"></script>
+<script src="../js/reports.js"></script>
+<script src="../js/checklists.js"></script>
+<script src="../js/users.js"></script>
+<script src="../js/sites.js"></script>
+<script src="../js/ai.js"></script>
+<script src="../js/worker-home.js"></script>
+<script src="../js/worker-checklist.js"></script>
+<script src="../js/worker-report.js"></script>
+<script src="../js/worker-history.js"></script>
+<script src="../js/manager-home.js"></script>
+<script src="../js/admin-home.js"></script>
+<script src="../js/help.js"></script>
+<script src="../js/profile.js"></script>
+<script src="../js/adminSiteModal.js"></script>
+<script src="../js/adminUsersPage.js"></script>
+<script src="../js/adminChecklistsPage.js"></script>
+<script src="../js/adminZonesPage.js"></script>
+<script src="../js/script.js"></script>
+</body></html>

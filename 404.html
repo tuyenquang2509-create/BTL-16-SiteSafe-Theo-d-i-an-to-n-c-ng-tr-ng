@@ -5,7 +5,27 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="description" content="Không tìm thấy trang SiteSafe">
   <title>Không tìm thấy trang – SiteSafe</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <link rel="stylesheet" href="css/admin-home.css">
+  <link rel="stylesheet" href="css/risks.css">
+  <link rel="stylesheet" href="css/checklists.css">
+  <link rel="stylesheet" href="css/actions.css">
+  <link rel="stylesheet" href="css/zones.css">
+  <link rel="stylesheet" href="css/worker-report.css">
+  <link rel="stylesheet" href="css/sites.css">
+  <link rel="stylesheet" href="css/404.css">
+  <link rel="stylesheet" href="css/users.css">
+  <link rel="stylesheet" href="css/help.css">
+  <link rel="stylesheet" href="css/worker-checklist.css">
+  <link rel="stylesheet" href="css/ai.css">
+  <link rel="stylesheet" href="css/inspections.css">
+  <link rel="stylesheet" href="css/index.css">
+  <link rel="stylesheet" href="css/reports.css">
+  <link rel="stylesheet" href="css/manager-home.css">
+  <link rel="stylesheet" href="css/worker-history.css">
+  <link rel="stylesheet" href="css/profile.css">
+  <link rel="stylesheet" href="css/worker-home.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -40,33 +60,6 @@
     <p class="not-found-note">Đây là trang không tìm thấy, không phải thông báo từ chối quyền truy cập.</p>
     <footer class="not-found-foot">404.html · SiteSafe – Theo dõi an toàn công trường</footer>
   </main>
-  <script>
-    document.getElementById('goBack').addEventListener('click', () => {
-      if (history.length > 1) history.back();
-      else location.href = 'index.html';
-    });
-    document.getElementById('pageSearch').addEventListener('submit', (event) => {
-      event.preventDefault();
-    });
-    document.getElementById('pageQuery').addEventListener('input', (event) => {
-      const query = event.target.value.trim().toLocaleLowerCase('vi');
-      const pages = [
-        {terms:['checklist','kiểm tra'],label:'Checklist',url:'worker-checklist.html'},
-        {terms:['nguy cơ','rủi ro'],label:'Nguy cơ',url:'safety-risks.html'},
-        {terms:['báo cáo'],label:'Báo cáo',url:'safety-reports.html'},
-        {terms:['hồ sơ','profile'],label:'Hồ sơ cá nhân',url:'shared-profile.html'},
-        {terms:['tổng quan','dashboard'],label:'Tổng quan',url:'safety-dashboard.html'}
-      ];
-      const page = pages.find(item => item.terms.some(term => term.includes(query) || query.includes(term)));
-      const result = document.getElementById('pageSearchResult');
-      if (!query) {
-        result.textContent = '';
-      } else if (page) {
-        result.innerHTML = `Trang phù hợp: <a href="${page.url}">${page.label} →</a>`;
-      } else {
-        result.textContent = 'Chưa tìm thấy trang phù hợp. Thử “checklist”, “nguy cơ” hoặc “báo cáo”.';
-      }
-    });
-  </script>
+  <script src="js/404.js"></script>
 </body>
 </html>
