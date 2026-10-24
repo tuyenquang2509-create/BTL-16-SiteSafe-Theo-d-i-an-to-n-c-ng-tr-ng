@@ -1,33 +1,31 @@
-<!doctype html>
+<!DOCTYPE html>
+
 <html lang="vi">
 <head>
-  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="description" content="SiteSafe - hệ thống theo dõi an toàn công trường nhiều vai trò">
-  <title>Công nhân – Checklist của tôi | SiteSafe</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../css/style.css">
-  <link rel="stylesheet" href="../css/worker-checklist.css">
+<meta charset="utf-8"/><meta content="width=device-width,initial-scale=1" name="viewport"/>
+<meta content="SiteSafe - hệ thống theo dõi an toàn công trường nhiều vai trò" name="description"/>
+<title>Công nhân – Checklist của tôi | SiteSafe</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="../css/style.css" rel="stylesheet"/>
+<link href="../css/worker-checklist.css" rel="stylesheet"/>
 </head>
 <body data-initial-page="worker-checklist" data-initial-role="worker">
 <div class="app-shell">
-  <aside class="sidebar" id="sidebar" aria-label="Điều hướng chính">
-    <div class="brand"><span class="brand-mark">✓</span><span>SiteSafe</span></div>
-    <div class="role-label">VAI TRÒ ĐANG MÔ PHỎNG</div>
-    <div class="form-field" style="padding:0 7px"><label for="roleSelect">Chuyển vai trò</label><select id="roleSelect" class="field-control"><option value="safety">Cán bộ an toàn</option><option value="worker">Công nhân</option><option value="manager">Quản lý công trường</option><option value="admin">Quản trị hệ thống</option></select></div>
-    <nav id="nav" aria-label="Các màn hình"></nav>
-    <div class="sidebar-bottom"><div class="site-mini"><strong>RIVERSIDE – KHỐI A</strong><span>RS-A · Đang thi công</span></div><button class="nav-item" data-page="help"><span>ⓘ</span>Trợ giúp & hướng dẫn</button><button class="nav-item" data-page="profile"><span>♙</span>Hồ sơ cá nhân</button></div>
-  </aside>
-  <main class="workspace">
-    <header class="topbar"><button class="mobile-menu" id="mobileMenu" aria-label="Mở menu">☰</button><button class="site-switch" id="siteSwitch">Riverside – Khối A <span>⌄</span></button><div class="topbar-right"><button class="icon-btn" id="notifications" title="Thông báo" aria-label="Thông báo">♧<i></i></button><div class="user-chip"><div class="avatar" id="avatar">TA</div><div><strong id="userName">Trần An</strong><small id="userRole">Cán bộ an toàn</small></div></div></div></header>
-    <section class="page-content" id="pageContent" aria-live="polite">
-<!-- Nội dung HTML của màn hình; JavaScript xử lý dữ liệu và thao tác -->
-<div class="page-heading"><div><div class="eyebrow">SITESAFE / Nhân sự hiện trường</div><h1>Checklist của tôi</h1><p>Tự kiểm tra điều kiện an toàn trước khi bắt đầu công việc.</p></div><div class="heading-actions"><button class="btn btn-light " data-action="open-worker-ai">Tạo checklist đề xuất</button><button class="btn btn-primary " data-action="save-worker-checklist">Lưu kết quả</button></div></div><section class="content-card"><h2>Checklist làm việc trên cao</h2><p>Khối A · Tầng 4 · Cập nhật theo mẫu demo</p><div class="check-row"><input type="checkbox" id="check-0"><label for="check-0">Đã được phổ biến biện pháp an toàn đầu ca<small>Đánh dấu sau khi đã kiểm tra thực tế.</small></label></div><div class="check-row"><input type="checkbox" id="check-1"><label for="check-1">Đã kiểm tra dây đai và điểm neo phù hợp<small>Đánh dấu sau khi đã kiểm tra thực tế.</small></label></div><div class="check-row"><input type="checkbox" id="check-2"><label for="check-2">Khu vực mép sàn có lan can / rào chắn<small>Nếu chưa đạt, dừng việc và báo cán bộ an toàn.</small></label></div><div class="check-row"><input type="checkbox" id="check-3"><label for="check-3">Lối di chuyển không có vật cản<small>Đánh dấu sau khi đã kiểm tra thực tế.</small></label></div><div class="check-row"><input type="checkbox" id="check-4"><label for="check-4">Dụng cụ được kiểm tra trước khi sử dụng<small>Đánh dấu sau khi đã kiểm tra thực tế.</small></label></div><div class="check-row"><input type="checkbox" id="check-5"><label for="check-5">Biết vị trí liên lạc khi có sự cố<small>Đánh dấu sau khi đã kiểm tra thực tế.</small></label></div><div class="notice">Nếu có bất kỳ mục quan trọng nào chưa đạt, không xác nhận hoàn thành; báo người giám sát.</div><button class="btn btn-primary " data-action="save-worker-checklist">Gửi checklist</button></section>
-</section>
-  </main>
+<aside aria-label="Điều hướng chính" class="sidebar" id="sidebar">
+<div class="brand"><span class="brand-mark">✓</span><span>SiteSafe</span></div>
+<div class="role-label">NHÂN SỰ HIỆN TRƯỜNG</div>
+<div class="form-field" style="padding:0 7px"><label for="roleSelect">Chuyển vai trò (demo)</label><select class="field-control" id="roleSelect"><option value="safety">Cán bộ an toàn</option><option value="worker">Nhân sự hiện trường</option><option value="manager">Quản lý công trường</option><option value="admin">Quản trị hệ thống</option></select></div>
+<nav aria-label="Các màn hình" id="nav"></nav>
+<div class="sidebar-bottom"><div class="site-mini"><strong>RIVERSIDE – KHỐI A</strong><span>RS-A · Đang thi công</span></div><button class="nav-item" data-page="help"><span>ⓘ</span>Trợ giúp &amp; hướng dẫn</button><button class="nav-item" data-page="profile"><span>♙</span>Hồ sơ cá nhân</button></div>
+</aside>
+<main class="workspace">
+<header class="topbar"><button aria-label="Mở menu" class="mobile-menu" id="mobileMenu">☰</button><button class="site-switch" id="siteSwitch">Riverside – Khối A <span>⌄</span></button><div class="topbar-right"><button aria-label="Thông báo" class="icon-btn" id="notifications" title="Thông báo">♧<i></i></button><div class="user-chip"><div class="avatar" id="avatar">TA</div><div><strong id="userName">Trần An</strong><small id="userRole">Cán bộ an toàn</small></div></div></div></header>
+<section aria-live="polite" class="page-content" id="pageContent"><div class="fg-screen"><div class="fg-crumb">Nhân sự hiện trường / Checklist an toàn</div><div class="fg-heading"><div><h1>Checklist an toàn</h1><p>CL-018 · Kiểm tra trước ca · Nguyễn Minh · 03/10/2026</p></div><button class="btn btn-primary" data-demo="submit-checklist" title="Minh họa giao diện — chức năng này chưa được kết nối">Gửi checklist</button></div><div class="fg-caption">Dữ liệu minh họa · 03/10/2026 · Không phải số liệu thực tế</div><section class="fg-panel"><div class="fg-section-head"><div><h2>Ngữ cảnh kiểm tra</h2></div></div><div class="fg-form-grid"><label class="fg-field"><span>Công trường *</span><input type="text" value="Riverside – Khối A"/></label><label class="fg-field"><span>Khu vực *</span><select><option>Z-A2 · Tầng 2</option><option>Khác</option></select></label><label class="fg-field"><span>Loại công việc *</span><select><option>Làm việc trên cao</option><option>Khác</option></select></label><label class="fg-field"><span>Mẫu đang dùng</span><input type="text" value="TMP-01 · v2.1 · Đã phát hành"/></label></div></section><section class="fg-panel"><div class="fg-section-head"><div><h2>Bước 2 / 4 · Bảo vệ mép sàn</h2><p>Đã trả lời 4 / 8 mục · Bản nháp lưu lúc 08:40</p></div></div><div class="fg-steps"><span>1. Chuẩn bị</span><span>2. Mép sàn</span><span>3. Thiết bị</span><span>4. Xem lại</span></div><div class="fg-note fg-red"><strong>Lan can bảo vệ đủ chiều cao và liên tục *</strong><div class="fg-radio"><label><input name="rail" type="radio"/> Đạt</label><label><input checked="" name="rail" type="radio"/> Không đạt</label><label><input name="rail" type="radio"/> Không áp dụng</label></div><div class="fg-form-grid"><label class="fg-field fg-wide"><span>Ghi chú khi không đạt *</span><textarea rows="3">Mép sàn phía đông chưa có lan can; có người đang tiếp cận.</textarea></label></div><div class="fg-note fg-yellow">Liên kết nguy cơ HZ-024 · Mục không đạt được giữ trong CL-018.</div></div><div class="fg-note fg-blue">Dải chắn chân ngăn vật rơi * <div class="fg-radio"><label><input checked="" name="bar" type="radio"/> Đạt</label><label><input name="bar" type="radio"/> Không đạt</label></div></div><div class="fg-note fg-blue">Lối tiếp cận được giới hạn và có cảnh báo * <div class="fg-radio"><label><input checked="" name="entry" type="radio"/> Đạt</label><label><input name="entry" type="radio"/> Không đạt</label></div></div><div class="fg-actions"><button class="btn btn-primary" data-demo="next-checklist" title="Minh họa giao diện — chức năng này chưa được kết nối">Tiếp tục →</button><button class="btn btn-light" data-demo="preview" title="Minh họa giao diện — chức năng này chưa được kết nối">← Quay lại</button><button class="btn btn-light" data-demo="save-checklist" title="Minh họa giao diện — chức năng này chưa được kết nối">Lưu nháp</button></div></section><section class="fg-panel"><div class="fg-section-head"><div><h2>Bước xem lại và xác nhận</h2></div></div><div class="fg-note fg-blue">8 mục · 7 Đạt · 1 Không đạt · 0 Không áp dụng · Liên kết HZ-024</div><label class="fg-check"><input type="checkbox"/> Tôi xác nhận kết quả phản ánh quan sát thực tế.</label><div class="fg-actions"><button class="btn btn-primary" data-demo="submit-checklist" title="Minh họa giao diện — chức năng này chưa được kết nối">Gửi checklist để duyệt</button><button class="btn btn-light" data-demo="preview" title="Minh họa giao diện — chức năng này chưa được kết nối">Sửa kết quả</button></div></section><div class="fg-footer">worker-checklist.html · Quyền thao tác theo vai trò được gán. Mọi thay đổi giữ lịch sử và minh chứng.</div></div></section>
+</main>
 </div>
-<div class="toast" id="toast" role="status" aria-live="polite"></div>
-<div class="modal-backdrop" id="modalBackdrop"><section class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><div class="modal-head"><h2 id="modalTitle">Thêm mới</h2><button class="icon-btn" id="closeModal" aria-label="Đóng">✕</button></div><div class="modal-body" id="modalBody"></div></section></div>
-  <script src="../js/script.js"></script>
-  <script src="../js/worker-checklist.js"></script>
+<div aria-live="polite" class="toast" id="toast" role="status"></div>
+<div class="modal-backdrop" id="modalBackdrop"><section aria-labelledby="modalTitle" aria-modal="true" class="modal" role="dialog"><div class="modal-head"><h2 id="modalTitle">Thêm mới</h2><button aria-label="Đóng" class="icon-btn" id="closeModal">✕</button></div><div class="modal-body" id="modalBody"></div></section></div>
+<script src="../js/script.js"></script>
+<script src="../js/worker-checklist.js"></script>
 </body></html>

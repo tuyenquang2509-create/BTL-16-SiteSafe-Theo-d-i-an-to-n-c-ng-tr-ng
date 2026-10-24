@@ -1,33 +1,34 @@
-<!doctype html>
+<!DOCTYPE html>
+
 <html lang="vi">
 <head>
-  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="description" content="SiteSafe - hệ thống theo dõi an toàn công trường nhiều vai trò">
-  <title>Công nhân – Lịch sử báo cáo | SiteSafe</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../css/style.css">
-  <link rel="stylesheet" href="../css/worker-report-history.css">
+<meta charset="utf-8"/><meta content="width=device-width,initial-scale=1" name="viewport"/>
+<meta content="SiteSafe - hệ thống theo dõi an toàn công trường nhiều vai trò" name="description"/>
+<title>Công nhân – Lịch sử báo cáo | SiteSafe</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="../css/style.css" rel="stylesheet"/>
+<link href="../css/worker-report-history.css" rel="stylesheet"/>
 </head>
 <body data-initial-page="worker-history" data-initial-role="worker">
 <div class="app-shell">
-  <aside class="sidebar" id="sidebar" aria-label="Điều hướng chính">
-    <div class="brand"><span class="brand-mark">✓</span><span>SiteSafe</span></div>
-    <div class="role-label">VAI TRÒ ĐANG MÔ PHỎNG</div>
-    <div class="form-field" style="padding:0 7px"><label for="roleSelect">Chuyển vai trò</label><select id="roleSelect" class="field-control"><option value="safety">Cán bộ an toàn</option><option value="worker">Công nhân</option><option value="manager">Quản lý công trường</option><option value="admin">Quản trị hệ thống</option></select></div>
-    <nav id="nav" aria-label="Các màn hình"></nav>
-    <div class="sidebar-bottom"><div class="site-mini"><strong>RIVERSIDE – KHỐI A</strong><span>RS-A · Đang thi công</span></div><button class="nav-item" data-page="help"><span>ⓘ</span>Trợ giúp & hướng dẫn</button><button class="nav-item" data-page="profile"><span>♙</span>Hồ sơ cá nhân</button></div>
-  </aside>
-  <main class="workspace">
-    <header class="topbar"><button class="mobile-menu" id="mobileMenu" aria-label="Mở menu">☰</button><button class="site-switch" id="siteSwitch">Riverside – Khối A <span>⌄</span></button><div class="topbar-right"><button class="icon-btn" id="notifications" title="Thông báo" aria-label="Thông báo">♧<i></i></button><div class="user-chip"><div class="avatar" id="avatar">TA</div><div><strong id="userName">Trần An</strong><small id="userRole">Cán bộ an toàn</small></div></div></div></header>
-    <section class="page-content" id="pageContent" aria-live="polite">
+<aside aria-label="Điều hướng chính" class="sidebar" id="sidebar">
+<div class="brand"><span class="brand-mark">✓</span><span>SiteSafe</span></div>
+<div class="role-label">NHÂN SỰ HIỆN TRƯỜNG</div>
+<div class="form-field" style="padding:0 7px"><label for="roleSelect">Chuyển vai trò (demo)</label><select class="field-control" id="roleSelect"><option value="safety">Cán bộ an toàn</option><option value="worker">Nhân sự hiện trường</option><option value="manager">Quản lý công trường</option><option value="admin">Quản trị hệ thống</option></select></div>
+<nav aria-label="Các màn hình" id="nav"></nav>
+<div class="sidebar-bottom"><div class="site-mini"><strong>RIVERSIDE – KHỐI A</strong><span>RS-A · Đang thi công</span></div><button class="nav-item" data-page="help"><span>ⓘ</span>Trợ giúp &amp; hướng dẫn</button><button class="nav-item" data-page="profile"><span>♙</span>Hồ sơ cá nhân</button></div>
+</aside>
+<main class="workspace">
+<header class="topbar"><button aria-label="Mở menu" class="mobile-menu" id="mobileMenu">☰</button><button class="site-switch" id="siteSwitch">Riverside – Khối A <span>⌄</span></button><div class="topbar-right"><button aria-label="Thông báo" class="icon-btn" id="notifications" title="Thông báo">♧<i></i></button><div class="user-chip"><div class="avatar" id="avatar">TA</div><div><strong id="userName">Trần An</strong><small id="userRole">Cán bộ an toàn</small></div></div></div></header>
+<section aria-live="polite" class="page-content" id="pageContent">
 <!-- Nội dung HTML của màn hình; JavaScript xử lý dữ liệu và thao tác -->
-<div class="field-reference-page"><div class="crumb">Nhân sự hiện trường / Nguy cơ của tôi</div><div class="figma-page-title"><div><h1>Nguy cơ của tôi</h1><p>Theo dõi phản hồi và bổ sung minh chứng cho báo cáo của bạn.</p></div><button class="btn btn-primary " data-action="worker-report">+ Báo nguy cơ</button></div><div class="data-caption">Dữ liệu minh họa · Không phải số liệu an toàn thực tế.</div><div class="dashboard-filters"><label>Tìm kiếm<input id="searchInput" class="field-control" placeholder="Mã, nội dung hoặc người phụ trách" value=""></label><label>Công trường<select class="field-control"><option>Riverside – Khối A</option></select></label><label>Bộ lọc<select id="statusFilter" class="field-control"><option selected>Tất cả</option><option >Mới ghi nhận</option></select></label></div><p class="reference-count">1 báo cáo phù hợp · Nội dung và minh chứng gốc được giữ nguyên.</p><div class="worker-report-list"><article class="worker-report-card"><div><h2>RS-024 · Lan can tầng 4 chưa hoàn thiện</h2><p>Khối A · Tầng 4 · 2026-10-20 · Người phụ trách: Nguyễn Văn Nam</p></div><div class="worker-report-meta"><span class="badge red">Ưu tiên Cao</span> <span class="badge red">Mới ghi nhận</span></div><p>Khu vực mép sàn phía Đông chưa có lan can bảo vệ.</p><div class="hazard-actions"><button class="btn btn-primary btn-sm" data-action="view-risk" data-id="RS-024">Xem chi tiết / lịch sử</button><button class="btn btn-light btn-sm" data-action="worker-evidence" data-id="RS-024">Bổ sung minh chứng</button></div></article><p class="reference-foot">worker-report-history.html · Thay đổi được lưu trong dữ liệu demo.</p></div>
-</section>
-  </main>
+<div class="field-reference-page"><div class="crumb">Nhân sự hiện trường / Nguy cơ của tôi</div><div class="figma-page-title"><div><h1>Nguy cơ của tôi</h1><p>Theo dõi phản hồi và bổ sung minh chứng cho báo cáo của bạn.</p></div><button class="btn btn-primary" data-demo="worker-report" title="Minh họa giao diện — chức năng này chưa được kết nối">+ Báo nguy cơ</button></div><div class="data-caption">Dữ liệu minh họa · Không phải số liệu an toàn thực tế.</div><div class="dashboard-filters"><label>Tìm kiếm<input class="field-control" id="searchInput" placeholder="Mã, nội dung hoặc người phụ trách" value=""/></label><label>Công trường<select class="field-control"><option>Riverside – Khối A</option></select></label><label>Bộ lọc<select class="field-control" id="statusFilter"><option selected="">Tất cả</option><option>Mới ghi nhận</option></select></label></div><p class="reference-count">1 báo cáo phù hợp · Nội dung và minh chứng gốc được giữ nguyên.</p><div class="worker-report-list"><article class="worker-report-card"><div><h2>RS-024 · Lan can tầng 4 chưa hoàn thiện</h2><p>Khối A · Tầng 4 · 2026-10-20 · Người phụ trách: Nguyễn Văn Nam</p></div><div class="worker-report-meta"><span class="badge red">Ưu tiên Cao</span> <span class="badge red">Mới ghi nhận</span></div><p>Khu vực mép sàn phía Đông chưa có lan can bảo vệ.</p><div class="hazard-actions"><button class="btn btn-primary btn-sm" data-action="view-risk" data-id="RS-024">Xem chi tiết / lịch sử</button><button class="btn btn-light btn-sm" data-action="worker-evidence" data-id="RS-024">Bổ sung minh chứng</button></div></article><p class="reference-foot">worker-report-history.html · Thay đổi được lưu trong dữ liệu demo.</p></div>
+</div></section>
+</main>
 </div>
-<div class="toast" id="toast" role="status" aria-live="polite"></div>
-<div class="modal-backdrop" id="modalBackdrop"><section class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><div class="modal-head"><h2 id="modalTitle">Thêm mới</h2><button class="icon-btn" id="closeModal" aria-label="Đóng">✕</button></div><div class="modal-body" id="modalBody"></div></section></div>
-  <script src="../js/script.js"></script>
-  <script src="../js/worker-report-history.js"></script>
+<div aria-live="polite" class="toast" id="toast" role="status"></div>
+<div class="modal-backdrop" id="modalBackdrop"><section aria-labelledby="modalTitle" aria-modal="true" class="modal" role="dialog"><div class="modal-head"><h2 id="modalTitle">Thêm mới</h2><button aria-label="Đóng" class="icon-btn" id="closeModal">✕</button></div><div class="modal-body" id="modalBody"></div></section></div>
+<script src="../js/script.js"></script>
+<script src="../js/worker-report-history.js"></script>
 </body></html>

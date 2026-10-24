@@ -1,54 +1,31 @@
-<!doctype html>
+<!DOCTYPE html>
+
 <html lang="vi">
 <head>
-  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="description" content="SiteSafe - hệ thống theo dõi an toàn công trường nhiều vai trò">
-  <title>Quản trị – Mẫu checklist | SiteSafe</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../css/style.css">
-  <link rel="stylesheet" href="../css/admin-checklist-templates.css">
+<meta charset="utf-8"/><meta content="width=device-width,initial-scale=1" name="viewport"/>
+<meta content="SiteSafe - hệ thống theo dõi an toàn công trường nhiều vai trò" name="description"/>
+<title>Quản trị – Mẫu checklist | SiteSafe</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="../css/style.css" rel="stylesheet"/>
+<link href="../css/admin-checklist-templates.css" rel="stylesheet"/>
 </head>
 <body data-initial-page="checklists" data-initial-role="admin">
 <div class="app-shell">
-  <aside class="sidebar" id="sidebar" aria-label="Điều hướng chính">
-    <div class="brand"><span class="brand-mark">✓</span><span>SiteSafe</span></div>
-    <div class="role-label">VAI TRÒ ĐANG MÔ PHỎNG</div>
-    <div class="form-field" style="padding:0 7px"><label for="roleSelect">Chuyển vai trò</label><select id="roleSelect" class="field-control"><option value="safety">Cán bộ an toàn</option><option value="worker">Công nhân</option><option value="manager">Quản lý công trường</option><option value="admin">Quản trị hệ thống</option></select></div>
-    <nav id="nav" aria-label="Các màn hình"></nav>
-    <div class="sidebar-bottom"><div class="site-mini"><strong>RIVERSIDE – KHỐI A</strong><span>RS-A · Đang thi công</span></div><button class="nav-item" data-page="help"><span>ⓘ</span>Trợ giúp & hướng dẫn</button><button class="nav-item" data-page="profile"><span>♙</span>Hồ sơ cá nhân</button></div>
-  </aside>
-  <main class="workspace">
-    <header class="topbar"><button class="mobile-menu" id="mobileMenu" aria-label="Mở menu">☰</button><button class="site-switch" id="siteSwitch">Riverside – Khối A <span>⌄</span></button><div class="topbar-right"><button class="icon-btn" id="notifications" title="Thông báo" aria-label="Thông báo">♧<i></i></button><div class="user-chip"><div class="avatar" id="avatar">TA</div><div><strong id="userName">Trần An</strong><small id="userRole">Cán bộ an toàn</small></div></div></div></header>
-    <section class="page-content" id="pageContent" aria-live="polite">
-<!-- Nội dung HTML của màn hình; JavaScript xử lý dữ liệu và thao tác -->
-<div class="admin-reference">
-    <div class="crumb">Quản trị viên / Mẫu checklist</div>
-    <div class="figma-page-title"><div><h1>Mẫu checklist</h1><p>Quản lý nhóm kiểm tra và phiên bản bất biến; mẫu đã phát hành không bị ghi đè.</p></div><button class="btn btn-primary " data-action="new-checklist">+ Tạo mẫu</button></div>
-    <div class="data-caption">Dữ liệu minh họa · 03/10/2026 · Không phải số liệu thực tế</div>
-    <div class="dashboard-filters admin-filters">
-      <label>Tìm kiếm<input id="searchInput" placeholder="Mã, nội dung hoặc người phụ trách" value=""></label>
-      <label>Công trường<select><option>Riverside – Khối A</option><option>Riverside – Khối B</option></select></label>
-      <label>Bộ lọc<select id="statusFilter"><option selected>Tất cả</option><option >Đang sử dụng</option><option >Bản nháp</option><option >Lưu trữ</option></select></label>
-    </div>
-    <section class="figma-card admin-tint-green"><h2>Thư viện mẫu</h2><div class="table-wrap"><table><thead><tr><th>Mẫu / loại công việc</th><th>Phiên bản</th><th>Trạng thái</th><th>Cập nhật bởi</th></tr></thead><tbody>
-    <tr><td><button class="admin-link" data-action="edit-checklist" data-id="CL-01">CL-01 · An toàn làm việc trên cao</button></td><td>v2.1</td><td>Đã phát hành</td><td>Trần An · 01/10</td></tr><tr><td><button class="admin-link" data-action="edit-checklist" data-id="CL-02">CL-02 · Kiểm tra thiết bị nâng</button></td><td>v1.3</td><td>Đã phát hành</td><td>Mai Lan · 28/09</td></tr><tr><td><button class="admin-link" data-action="edit-checklist" data-id="CL-03">CL-03 · An toàn điện tạm</button></td><td>v1.3</td><td>Bản nháp</td><td>Trần An · 03/10</td></tr>
-    </tbody></table></div></section>
-    <section class="figma-card admin-tint-pink"><h2>Trình chỉnh sửa: CL-01 v2.2</h2><p>Bản nháp tạo từ phiên bản đã phát hành.</p>
-      <div class="admin-form-grid"><div class="form-field"><label>Tên mẫu *</label><input value="An toàn làm việc trên cao"></div><div class="form-field"><label>Loại công việc *</label><select><option>Làm việc trên cao</option><option>Thiết bị</option><option>Điện</option></select></div>
-      <div class="form-field admin-span-all"><label>Nhóm kiểm tra *</label><input value="Bảo vệ mép sàn"></div><div class="form-field admin-span-all"><label>Nội dung mục *</label><input value="Lan can bảo vệ đủ chiều cao và liên tục"></div>
-      <div class="form-field"><label>Kiểu trả lời *</label><select><option>Đạt / Không đạt / Không áp dụng</option></select></div><div class="form-field"><label>Quy tắc minh chứng</label><label class="admin-check-label"><input type="checkbox" checked> Bắt buộc ghi chú và ảnh nếu Không đạt</label></div></div>
-      <div class="admin-form-actions"><button class="btn btn-primary btn-sm" data-action="edit-checklist" data-id="CL-01">+ Thêm mục</button><button class="btn btn-light btn-sm" data-action="edit-checklist" data-id="CL-01">+ Thêm nhóm</button><button class="btn btn-light btn-sm" data-action="edit-checklist" data-id="CL-01">Lưu nháp</button><button class="btn btn-light btn-sm" data-action="edit-checklist" data-id="CL-01">Xem trước</button></div>
-    </section>
-    <div class="admin-two-col"><section class="figma-card admin-tint-orange"><h2>Xem trước mẫu</h2><strong>Bảo vệ mép sàn · 3 mục</strong><p>1. Lan can bảo vệ đủ chiều cao cao 2. Dải chân chắn ngăn vật rơi 3. Lối tiếp cận có cảnh báo</p><small>Không đạt → yêu cầu ghi chú + ảnh → tạo nguy cơ có liên kết.</small></section><section class="figma-card admin-tint-red"><h2>Lịch sử phiên bản</h2><p>v2.2 · Bản nháp · Trần An · 03/10 v2.1 · Đã phát hành · Trần An · 01/10 · CL-018 v2.0 · Đã lưu trữ · 15/09</p><div class="admin-warning">Giữ phiên bản lịch sử<br>CL-018 / IN-018 dùng TMP-01 v2.1. Mọi thay đổi của mẫu đã phát hành tạo phiên bản riêng.</div></section></div>
-    <section class="figma-card"><h2>Phát hành / nhân bản / lưu trữ</h2><div class="admin-form-actions"><button class="btn btn-primary btn-sm" data-action="toggle-checklist" data-id="CL-01">Phát hành v2.2</button><button class="btn btn-light btn-sm" data-action="new-checklist">Nhân bản mẫu</button><button class="btn btn-light btn-sm" data-action="toggle-checklist" data-id="CL-01">Lưu trữ v2.0</button></div><div class="form-field"><label>Ghi chú thay đổi *</label><input value="Bổ sung kiểm tra điểm neo; không thay lịch sử kiểm tra cũ."></div><p>Xác nhận phát hành chỉ khi có đủ nhóm, nội dung và quy tắc minh chứng.</p><button class="btn btn-primary btn-sm" data-action="toggle-checklist" data-id="CL-01">Xác nhận phát hành</button></section>
-    <p class="reference-foot">admin-checklist-template-management.html · Quyền thao tác theo vai trò được gán. Mọi thay đổi ghi lịch sử và minh chứng.</p>
-  </div>
-</section>
-  </main>
+<aside aria-label="Điều hướng chính" class="sidebar" id="sidebar">
+<div class="brand"><span class="brand-mark">✓</span><span>SiteSafe</span></div>
+<div class="role-label">QUẢN TRỊ VIÊN</div>
+<div class="form-field" style="padding:0 7px"><label for="roleSelect">Chuyển vai trò (demo)</label><select class="field-control" id="roleSelect"><option value="safety">Cán bộ an toàn</option><option value="worker">Nhân sự hiện trường</option><option value="manager">Quản lý công trường</option><option value="admin">Quản trị hệ thống</option></select></div>
+<nav aria-label="Các màn hình" id="nav"></nav>
+<div class="sidebar-bottom"><div class="site-mini"><strong>RIVERSIDE – KHỐI A</strong><span>RS-A · Đang thi công</span></div><button class="nav-item" data-page="help"><span>ⓘ</span>Trợ giúp &amp; hướng dẫn</button><button class="nav-item" data-page="profile"><span>♙</span>Hồ sơ cá nhân</button></div>
+</aside>
+<main class="workspace">
+<header class="topbar"><button aria-label="Mở menu" class="mobile-menu" id="mobileMenu">☰</button><button class="site-switch" id="siteSwitch">Riverside – Khối A <span>⌄</span></button><div class="topbar-right"><button aria-label="Thông báo" class="icon-btn" id="notifications" title="Thông báo">♧<i></i></button><div class="user-chip"><div class="avatar" id="avatar">TA</div><div><strong id="userName">Trần An</strong><small id="userRole">Cán bộ an toàn</small></div></div></div></header>
+<section aria-live="polite" class="page-content" id="pageContent"><div class="fg-screen"><div class="fg-crumb">Quản trị viên / Mẫu checklist</div><div class="fg-heading"><div><h1>Mẫu checklist</h1><p>Quản lý mẫu đã duyệt, phiên bản và nội dung kiểm tra.</p></div><button class="btn btn-primary" data-action="new-checklist">+ Tạo mẫu</button></div><div class="fg-caption">Dữ liệu minh họa · 03/10/2026 · Không phải số liệu thực tế</div><section class="fg-panel"><div class="fg-section-head"><div><h2>Danh sách mẫu checklist</h2></div></div><div class="table-wrap"><table class="fg-table"><thead><tr><th>Mã / Tên mẫu</th><th>Loại công việc</th><th>Phiên bản</th><th>Trạng thái</th><th>Thao tác</th></tr></thead><tbody><tr><td>TMP-01 · Làm việc trên cao</td><td>Làm việc trên cao</td><td>v2.1</td><td><span class="fg-pill fg-green">Đã phát hành</span></td><td><button class="btn btn-light" data-action="new-checklist">Xem / sửa</button></td></tr><tr><td>TMP-02 · Điện tạm</td><td>Công tác điện</td><td>v1.4</td><td><span class="fg-pill fg-green">Đã phát hành</span></td><td><button class="btn btn-light" data-action="new-checklist">Xem / sửa</button></td></tr><tr><td>TMP-03 · Kho vật tư</td><td>Kho vật tư</td><td>v1.2</td><td><span class="fg-pill fg-green">Đã phát hành</span></td><td><button class="btn btn-light" data-action="new-checklist">Xem / sửa</button></td></tr><tr><td>TMP-04 · Giàn giáo</td><td>Giàn giáo</td><td>v0.9</td><td><span class="fg-pill fg-yellow">Bản nháp</span></td><td><button class="btn btn-light" data-action="new-checklist">Sửa bản nháp</button></td></tr></tbody></table></div></section><section class="fg-panel"><div class="fg-section-head"><div><h2>Tạo / chỉnh sửa mẫu</h2></div></div><div class="fg-form-grid"><label class="fg-field"><span>Tên mẫu *</span><input type="text" value="Kiểm tra làm việc trên cao"/></label><label class="fg-field"><span>Loại công việc *</span><select><option>Làm việc trên cao</option><option>Khác</option></select></label><label class="fg-field"><span>Phiên bản</span><input type="text" value="v2.2"/></label><label class="fg-field"><span>Trạng thái</span><select><option>Bản nháp</option><option>Khác</option></select></label></div><div class="fg-note fg-yellow">Mẫu đã phát hành cần tạo phiên bản mới khi chỉnh sửa. Checklist cũ giữ nguyên phiên bản gốc.</div><div class="fg-actions"><button class="btn btn-primary" data-action="new-checklist">Lưu bản nháp</button><button class="btn btn-light" data-action="new-checklist">Phát hành phiên bản</button></div></section><div class="fg-footer">admin-checklist-templates.html · Quyền thao tác theo vai trò được gán. Mọi thay đổi giữ lịch sử và minh chứng.</div></div></section>
+</main>
 </div>
-<div class="toast" id="toast" role="status" aria-live="polite"></div>
-<div class="modal-backdrop" id="modalBackdrop"><section class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><div class="modal-head"><h2 id="modalTitle">Thêm mới</h2><button class="icon-btn" id="closeModal" aria-label="Đóng">✕</button></div><div class="modal-body" id="modalBody"></div></section></div>
-  <script src="../js/script.js"></script>
-  <script src="../js/admin-checklist-templates.js"></script>
+<div aria-live="polite" class="toast" id="toast" role="status"></div>
+<div class="modal-backdrop" id="modalBackdrop"><section aria-labelledby="modalTitle" aria-modal="true" class="modal" role="dialog"><div class="modal-head"><h2 id="modalTitle">Thêm mới</h2><button aria-label="Đóng" class="icon-btn" id="closeModal">✕</button></div><div class="modal-body" id="modalBody"></div></section></div>
+<script src="../js/script.js"></script>
+<script src="../js/admin-checklist-templates.js"></script>
 </body></html>

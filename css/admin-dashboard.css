@@ -1,3 +1,6 @@
 /* CSS rieng cho admin-dashboard. Cac quy tac goc duoc giu trong style.css de dam bao tuong thich. */
 /* SiteSafe · kiểu dáng riêng: admin-home */
 
+
+/* Figma: page-specific finishing for admin-dashboard */
+body[data-initial-role="admin"] .page-content > :first-child{scroll-margin-top:85px}

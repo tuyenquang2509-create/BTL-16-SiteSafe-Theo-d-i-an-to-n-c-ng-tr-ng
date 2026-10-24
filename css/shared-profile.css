@@ -30,3 +30,6 @@
 @media (max-width:760px){.profile-top-grid{grid-template-columns:1fr}
 .profile-form-grid{grid-template-columns:1fr}
 .profile-full-field{grid-column:auto}}
+
+/* Figma: page-specific finishing for shared-profile */
+body[data-initial-role="safety"] .page-content > :first-child{scroll-margin-top:85px}

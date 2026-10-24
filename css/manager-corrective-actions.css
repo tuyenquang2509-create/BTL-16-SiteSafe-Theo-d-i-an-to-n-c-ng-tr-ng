@@ -1,3 +1,6 @@
 /* CSS rieng cho manager-corrective-actions. Cac quy tac goc duoc giu trong style.css de dam bao tuong thich. */
 /* SiteSafe · kiểu dáng riêng: actions */
 
+
+/* Figma: page-specific finishing for manager-corrective-actions */
+body[data-initial-role="manager"] .page-content > :first-child{scroll-margin-top:85px}

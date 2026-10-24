@@ -1,3 +1,6 @@
 /* CSS rieng cho shared-help. Cac quy tac goc duoc giu trong style.css de dam bao tuong thich. */
 /* SiteSafe · kiểu dáng riêng: help */
 
+
+/* Figma: page-specific finishing for shared-help */
+body[data-initial-role="safety"] .page-content > :first-child{scroll-margin-top:85px}

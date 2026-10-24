@@ -23,7 +23,7 @@ if (loginForm) {
     registerMessage.textContent = '';
     registerMessage.className = 'auth-message';
   };
-  const showApp = () => { loginScreen.style.display = 'none'; appShell.style.display = 'flex'; };
+  const showApp = () => { loginScreen.style.display = 'none'; appShell.style.display = 'flex'; window.scrollTo(0, 0); };
   document.getElementById('showRegister').addEventListener('click', showRegister);
   document.getElementById('showLogin').addEventListener('click', showLogin);
   loginForm.addEventListener('submit', (event) => {
@@ -73,7 +73,8 @@ if (loginForm) {
     showLogin();
     loginError.textContent = '';
     appShell.style.display = 'none';
-    loginScreen.style.display = 'flex';
+    loginScreen.style.display = 'grid';
+    window.scrollTo(0, 0);
   });
 }
 

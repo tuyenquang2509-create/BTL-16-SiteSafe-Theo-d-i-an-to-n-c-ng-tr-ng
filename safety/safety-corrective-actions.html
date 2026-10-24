@@ -1,33 +1,31 @@
-<!doctype html>
+<!DOCTYPE html>
+
 <html lang="vi">
 <head>
-  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="description" content="SiteSafe - hệ thống theo dõi an toàn công trường nhiều vai trò">
-  <title>Cán bộ an toàn – Hành động khắc phục | SiteSafe</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../css/style.css">
-  <link rel="stylesheet" href="../css/safety-corrective-actions.css">
+<meta charset="utf-8"/><meta content="width=device-width,initial-scale=1" name="viewport"/>
+<meta content="SiteSafe - hệ thống theo dõi an toàn công trường nhiều vai trò" name="description"/>
+<title>Cán bộ an toàn – Hành động khắc phục | SiteSafe</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="../css/style.css" rel="stylesheet"/>
+<link href="../css/safety-corrective-actions.css" rel="stylesheet"/>
 </head>
 <body data-initial-page="actions" data-initial-role="safety">
 <div class="app-shell">
-  <aside class="sidebar" id="sidebar" aria-label="Điều hướng chính">
-    <div class="brand"><span class="brand-mark">✓</span><span>SiteSafe</span></div>
-    <div class="role-label">VAI TRÒ ĐANG MÔ PHỎNG</div>
-    <div class="form-field" style="padding:0 7px"><label for="roleSelect">Chuyển vai trò</label><select id="roleSelect" class="field-control"><option value="safety">Cán bộ an toàn</option><option value="worker">Công nhân</option><option value="manager">Quản lý công trường</option><option value="admin">Quản trị hệ thống</option></select></div>
-    <nav id="nav" aria-label="Các màn hình"></nav>
-    <div class="sidebar-bottom"><div class="site-mini"><strong>RIVERSIDE – KHỐI A</strong><span>RS-A · Đang thi công</span></div><button class="nav-item" data-page="help"><span>ⓘ</span>Trợ giúp & hướng dẫn</button><button class="nav-item" data-page="profile"><span>♙</span>Hồ sơ cá nhân</button></div>
-  </aside>
-  <main class="workspace">
-    <header class="topbar"><button class="mobile-menu" id="mobileMenu" aria-label="Mở menu">☰</button><button class="site-switch" id="siteSwitch">Riverside – Khối A <span>⌄</span></button><div class="topbar-right"><button class="icon-btn" id="notifications" title="Thông báo" aria-label="Thông báo">♧<i></i></button><div class="user-chip"><div class="avatar" id="avatar">TA</div><div><strong id="userName">Trần An</strong><small id="userRole">Cán bộ an toàn</small></div></div></div></header>
-    <section class="page-content" id="pageContent" aria-live="polite">
-<!-- Nội dung HTML của màn hình; JavaScript xử lý dữ liệu và thao tác -->
-<div class="page-heading"><div><div class="eyebrow">SITESAFE / Cán bộ an toàn</div><h1>Hành động khắc phục</h1><p>Theo dõi biện pháp, người chịu trách nhiệm, hạn hoàn thành và trạng thái.</p></div><div class="heading-actions"><button class="btn btn-primary " data-action="new-action">+ Tạo hành động</button></div></div><section class="panel"><div class="toolbar"><input class="field-control search-control" id="searchInput" placeholder="Tìm hành động hoặc mã nguy cơ…" value="" aria-label="Tìm kiếm"><select class="field-control" id="statusFilter" aria-label="Lọc trạng thái"><option selected>Tất cả</option><option >Chưa thực hiện</option><option >Đang thực hiện</option><option >Hoàn thành</option><option >Cao</option><option >Trung bình</option></select><button class="btn btn-primary " data-action="export-actions">Xuất CSV</button></div><div class="table-wrap"><table><thead><tr><th>Mã / Hành động</th><th>Nguy cơ liên quan</th><th>Người phụ trách</th><th>Hạn hoàn thành</th><th>Ưu tiên</th><th>Trạng thái</th><th></th></tr></thead><tbody><tr><td><div class="cell-title">Lắp lan can tạm tầng 4</div><div class="subcell">KP-052</div></td><td>RS-024</td><td>Nguyễn Văn Nam</td><td>2026-10-21</td><td><span class="badge red">Cao</span></td><td><span class="badge red">Chưa thực hiện</span></td><td><div class="actions-cell"><button class="text-btn" data-action="edit-action" data-id="KP-052">Sửa</button><button class="text-btn" data-action="advance-action" data-id="KP-052">Tiến độ</button></div></td></tr><tr><td><div class="cell-title">Bọc bảo vệ dây điện</div><div class="subcell">KP-051</div></td><td>RS-023</td><td>Trần Minh Đức</td><td>2026-10-20</td><td><span class="badge orange">Trung bình</span></td><td><span class="badge orange">Đang thực hiện</span></td><td><div class="actions-cell"><button class="text-btn" data-action="edit-action" data-id="KP-051">Sửa</button><button class="text-btn" data-action="advance-action" data-id="KP-051">Tiến độ</button></div></td></tr><tr><td><div class="cell-title">Bổ sung biển cảnh báo nâng hạ</div><div class="subcell">KP-049</div></td><td>RS-021</td><td>Lê Quốc Huy</td><td>2026-10-20</td><td><span class="badge red">Cao</span></td><td><span class="badge orange">Đang thực hiện</span></td><td><div class="actions-cell"><button class="text-btn" data-action="edit-action" data-id="KP-049">Sửa</button><button class="text-btn" data-action="advance-action" data-id="KP-049">Tiến độ</button></div></td></tr></tbody></table></div></section>
-</section>
-  </main>
+<aside aria-label="Điều hướng chính" class="sidebar" id="sidebar">
+<div class="brand"><span class="brand-mark">✓</span><span>SiteSafe</span></div>
+<div class="role-label">CÁN BỘ AN TOÀN</div>
+<div class="form-field" style="padding:0 7px"><label for="roleSelect">Chuyển vai trò (demo)</label><select class="field-control" id="roleSelect"><option value="safety">Cán bộ an toàn</option><option value="worker">Nhân sự hiện trường</option><option value="manager">Quản lý công trường</option><option value="admin">Quản trị hệ thống</option></select></div>
+<nav aria-label="Các màn hình" id="nav"></nav>
+<div class="sidebar-bottom"><div class="site-mini"><strong>RIVERSIDE – KHỐI A</strong><span>RS-A · Đang thi công</span></div><button class="nav-item" data-page="help"><span>ⓘ</span>Trợ giúp &amp; hướng dẫn</button><button class="nav-item" data-page="profile"><span>♙</span>Hồ sơ cá nhân</button></div>
+</aside>
+<main class="workspace">
+<header class="topbar"><button aria-label="Mở menu" class="mobile-menu" id="mobileMenu">☰</button><button class="site-switch" id="siteSwitch">Riverside – Khối A <span>⌄</span></button><div class="topbar-right"><button aria-label="Thông báo" class="icon-btn" id="notifications" title="Thông báo">♧<i></i></button><div class="user-chip"><div class="avatar" id="avatar">TA</div><div><strong id="userName">Trần An</strong><small id="userRole">Cán bộ an toàn</small></div></div></div></header>
+<section aria-live="polite" class="page-content" id="pageContent"><div class="fg-screen"><div class="fg-crumb">Cán bộ an toàn / Hành động khắc phục</div><div class="fg-heading"><div><h1>Hành động khắc phục</h1><p>Theo dõi việc được giao và xác minh sau khắc phục.</p></div><button class="btn btn-primary" data-action="new-action">Tạo mới</button></div><div class="fg-caption">Dữ liệu minh họa · 03/10/2026 · Không phải số liệu thực tế</div><section class="fg-panel"><div class="fg-section-head"><div><h2>Bộ lọc</h2></div></div><div class="fg-form-grid"><label class="fg-field"><span>Tìm kiếm</span><input type="search" value="Mã hoặc nội dung"/></label><label class="fg-field"><span>Công trường</span><select><option>Riverside – Khối A</option><option>Khác</option></select></label><label class="fg-field"><span>Khoảng thời gian</span><select><option>03/10/2026</option><option>Khác</option></select></label></div></section><section class="fg-panel"><div class="fg-section-head"><div><h2>Danh sách</h2></div></div><div class="table-wrap"><table class="fg-table"><thead><tr><th>Mã / nội dung</th><th>Phụ trách</th><th>Hạn</th><th>Trạng thái</th></tr></thead><tbody><tr><td>CA-012 · Lan can</td><td>Lê Hoàng</td><td>04/10</td><td><span class="fg-pill fg-blue">Đang khắc phục</span></td></tr><tr><td>CA-009 · Lối tiếp cận</td><td>Lê Hoàng</td><td>02/10</td><td><span class="fg-pill fg-red">Quá hạn</span></td></tr><tr><td>CA-011 · Lối đi</td><td>Mai Lan</td><td>03/10</td><td><span class="fg-pill fg-yellow">Chờ xác minh</span></td></tr></tbody></table></div></section><div class="fg-note fg-blue">Quyết định xác nhận và đóng nguy cơ chỉ được thực hiện bởi cán bộ an toàn có thẩm quyền.</div><div class="fg-footer">safety-corrective-actions.html · Quyền thao tác theo vai trò được gán. Mọi thay đổi giữ lịch sử và minh chứng.</div></div></section>
+</main>
 </div>
-<div class="toast" id="toast" role="status" aria-live="polite"></div>
-<div class="modal-backdrop" id="modalBackdrop"><section class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><div class="modal-head"><h2 id="modalTitle">Thêm mới</h2><button class="icon-btn" id="closeModal" aria-label="Đóng">✕</button></div><div class="modal-body" id="modalBody"></div></section></div>
-  <script src="../js/script.js"></script>
-  <script src="../js/safety-corrective-actions.js"></script>
+<div aria-live="polite" class="toast" id="toast" role="status"></div>
+<div class="modal-backdrop" id="modalBackdrop"><section aria-labelledby="modalTitle" aria-modal="true" class="modal" role="dialog"><div class="modal-head"><h2 id="modalTitle">Thêm mới</h2><button aria-label="Đóng" class="icon-btn" id="closeModal">✕</button></div><div class="modal-body" id="modalBody"></div></section></div>
+<script src="../js/script.js"></script>
+<script src="../js/safety-corrective-actions.js"></script>
 </body></html>

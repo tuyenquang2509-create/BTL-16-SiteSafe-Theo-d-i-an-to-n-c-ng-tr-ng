@@ -11,3 +11,11 @@ Các trang thuộc các thư mục `admin/`, `worker/`, `manager/`, `safety/`; t
 ## Kiểm tra
 
 Đã kiểm tra cú pháp JS và đường dẫn tài nguyên cục bộ. Chưa kiểm thử toàn bộ hành vi bằng trình duyệt. Trước khi merge vào main, cần thử đăng nhập, điều hướng vai trò, CRUD, tìm kiếm, lọc và modal.
+
+
+## Cập nhật giao diện theo PDF Figma
+- Đăng nhập/đăng ký: bố cục hai cột navy và xanh nhạt theo trang 2–3.
+- Các trang nghiệp vụ: cập nhật màu sắc, sidebar, topbar, thẻ và nút theo hệ thống thiết kế.
+- Không thay đổi các file JavaScript hay luồng đăng nhập demo.
+- Mỗi HTML tiếp tục nạp 2 CSS và 2 JS.
+- Đây là bước đồng bộ giao diện cơ sở; chưa phải bản tái dựng chính xác từng màn hình của toàn bộ 20 trang PDF.
