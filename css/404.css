@@ -1,3 +1,4 @@
+/* CSS rieng cho 404. Cac quy tac goc duoc giu trong style.css de dam bao tuong thich. */
 /* SiteSafe · kiểu dáng riêng: 404 */
 .not-found-page{min-height:100vh;padding:36px clamp(20px,4.5vw,56px);background:#eaf2fb;color:#17374b}
 .not-found-brand{display:flex;justify-content:center;align-items:center;gap:9px;color:#17374b;font-size:20px;font-weight:800}

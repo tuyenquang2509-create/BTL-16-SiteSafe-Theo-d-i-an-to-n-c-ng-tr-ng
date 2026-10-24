@@ -1,3 +1,0 @@
-/* SiteSafe · kiểu dáng riêng: dashboard */
-.figma-dashboard-columns{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(320px,1fr);gap:16px;align-items:stretch}
-@media (max-width:1000px){.figma-dashboard-columns{grid-template-columns:1fr}}

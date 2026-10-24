@@ -1,2 +1,10 @@
-/* SiteSafe · Giao diện riêng: worker-checklist */
-function workerChecklist(){return `${heading('Checklist của tôi','Tự kiểm tra điều kiện an toàn trước khi bắt đầu công việc.',btn('Tạo checklist đề xuất','open-worker-ai','light')+btn('Lưu kết quả','save-worker-checklist'))}<section class="content-card"><h2>Checklist làm việc trên cao</h2><p>Khối A · Tầng 4 · Cập nhật theo mẫu demo</p>${['Đã được phổ biến biện pháp an toàn đầu ca','Đã kiểm tra dây đai và điểm neo phù hợp','Khu vực mép sàn có lan can / rào chắn','Lối di chuyển không có vật cản','Dụng cụ được kiểm tra trước khi sử dụng','Biết vị trí liên lạc khi có sự cố'].map((x,i)=>`<div class="check-row"><input type="checkbox" id="check-${i}"><label for="check-${i}">${x}<small>${i===2?'Nếu chưa đạt, dừng việc và báo cán bộ an toàn.':'Đánh dấu sau khi đã kiểm tra thực tế.'}</small></label></div>`).join('')}<div class="notice">Nếu có bất kỳ mục quan trọng nào chưa đạt, không xác nhận hoàn thành; báo người giám sát.</div>${btn('Gửi checklist','save-worker-checklist')}</section>`}
+/* Chuc nang rieng cho trang: worker-checklist.
+ * Cac xu ly nghiep vu va renderers hien tai van duoc giu trong script.js
+ * de tuong thich voi cac lien ket/hanh dong xuyen man hinh.
+ */
+window.addEventListener('storage', function (event) {
+  if (event.key === 'sitesafe-v2-data' && typeof loadDB === 'function') {
+    db = loadDB();
+    if (typeof renderPage === 'function') renderPage();
+  }
+});
