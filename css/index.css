@@ -1,3 +1,4 @@
+/* CSS rieng cho index. Cac quy tac goc duoc giu trong style.css de dam bao tuong thich. */
 /* SiteSafe · kiểu dáng riêng: index */
 .login-screen{min-height:100vh;display:grid;grid-template-columns:minmax(0,1.08fr) minmax(380px,.92fr);background:#fff;color:#172b4d}
 .login-visual{position:relative;display:flex;flex-direction:column;justify-content:space-between;min-height:100vh;padding:42px clamp(28px,5vw,76px);overflow:hidden;background:radial-gradient(ellipse at 82% 20%,#2b77d4 0,transparent 38%),linear-gradient(140deg,#102b55 0%,#174d91 58%,#0f3972 100%);color:white}

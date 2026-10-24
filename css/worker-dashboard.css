@@ -1,0 +1,8 @@
+/* CSS rieng cho worker-dashboard. Cac quy tac goc duoc giu trong style.css de dam bao tuong thich. */
+/* SiteSafe · kiểu dáng riêng: worker-home */
+.worker-report-list{display:grid;gap:14px}
+.worker-report-card{padding:18px;border:1px solid var(--fig-line,#dceaf0);border-radius:10px;background:#fff}
+.worker-report-card>div:first-child{display:flex;align-items:flex-start;justify-content:space-between;gap:14px}
+.worker-report-card h2{margin:0;font-size:15px;color:var(--fig-ink,#172b4d)}
+.worker-report-card p{color:var(--fig-muted,#6b7890);line-height:1.55}
+@media (max-width:780px){.worker-report-card>div:first-child{display:grid}}

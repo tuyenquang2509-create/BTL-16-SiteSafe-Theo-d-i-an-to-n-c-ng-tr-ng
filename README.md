@@ -1,22 +1,13 @@
-# SiteSafe – HTML ưu tiên, JS xử lý tương tác
+# SiteSafe – cấu trúc 2 CSS + 2 JS mỗi trang
 
-- Mỗi trang HTML chứa sẵn giao diện ban đầu: tiêu đề, bảng, nút và khối nội dung.
-- `script.js` không dựng lại nội dung HTML khi trang được tải lần đầu; các thao tác thêm/sửa/xóa và lọc vẫn có thể dựng lại phần dữ liệu động.
-- Menu điều hướng và chuyển vai trò sử dụng file HTML riêng khi có; các trang chưa có file tương ứng (ví dụ quản trị công trường) vẫn dùng cơ chế dự phòng trong JS.
-- Đã sửa lỗi mở thông báo (`$` thành `$$`).
-- Dữ liệu mô phỏng lưu trong localStorage của trình duyệt, không phải hệ thống backend.
-- Đây là bản cải tiến bảo toàn chức năng, **không phải** bản đã loại bỏ toàn bộ HTML động trong JS. Hãy kiểm thử trên trình duyệt trước khi gộp vào main.
+Mỗi HTML nạp **css/style.css** (CSS dùng chung), **css/<tên-trang>.css** (CSS trang), **js/script.js** (JavaScript dùng chung), và **js/<tên-trang>.js** (JavaScript trang).
 
-Chạy: `python -m http.server 8000` trong thư mục giải nén rồi mở `http://localhost:8000/index.html`.
+Các trang thuộc các thư mục `admin/`, `worker/`, `manager/`, `safety/`; trang đăng nhập và trang dùng chung vẫn ở thư mục gốc. Đường dẫn tương đối đã được cập nhật.
 
+## Lưu ý về cách tổ chức hiện tại
 
-## Cấu trúc thư mục
+Để hạn chế làm hỏng những tính năng cũ, `style.css` vẫn bao gồm các quy tắc CSS của các mô-đun cũ theo đúng thứ tự ban đầu. File CSS riêng chứa quy tắc liên quan tới trang (một phần trùng với CSS chung, không đổi kết quả hiển thị). `script.js` vẫn chứa các hàm dựng giao diện và xử lý liên trang vốn trước đây nằm trong nhiều file JS; file JS riêng xử lý việc đồng bộ dữ liệu giữa các tab (riêng `index.js` xử lý đăng nhập và `404.js` xử lý trang 404). Vì thế, đây là bản **giảm số lượng liên kết và bảo toàn tương thích**, chưa phải bản tách triệt để toàn bộ logic nghiệp vụ theo từng trang.
 
-- `admin/`, `worker/`, `manager/`, `safety/`: các trang HTML theo vai trò, giữ nguyên tên file.
-- `js/`: tất cả JavaScript, gồm `script.js`, `index.js` và các module.
-- `css/`: tất cả CSS.
-- Thư mục gốc: `index.html`, `404.html`, `shared-help.html`, `shared-profile.html`, `README.md`.
+## Kiểm tra
 
-Đã cập nhật đường dẫn CSS/JS của HTML, đường dẫn điều hướng trong `js/script.js` và gợi ý ở trang 404. Đường dẫn điều hướng được tính từ thư mục gốc của ứng dụng, không phụ thuộc vào trang hiện tại.
-
-Chạy bằng máy chủ tĩnh ở thư mục này (ví dụ `python -m http.server 8000`), rồi mở `http://localhost:8000/index.html`. Hãy thử lại đăng nhập, menu, đổi vai trò, biểu mẫu và CRUD trước khi đưa lên `main`.
+Đã kiểm tra cú pháp JS và đường dẫn tài nguyên cục bộ. Chưa kiểm thử toàn bộ hành vi bằng trình duyệt. Trước khi merge vào main, cần thử đăng nhập, điều hướng vai trò, CRUD, tìm kiếm, lọc và modal.
