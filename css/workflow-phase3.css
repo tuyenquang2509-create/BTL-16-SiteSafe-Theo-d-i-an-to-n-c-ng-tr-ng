@@ -9,4 +9,5 @@
 #workflowReviewForm .fg-form-grid{margin-top:12px}
 #workflowReviewForm>.fg-field{max-width:420px}
 #wfReviewStatus{padding:10px 0;color:#0f766e;font-weight:600}
+.workflow-result{margin:14px 0 0;padding:12px 14px;border-radius:10px;background:#eaf8f8;color:#0f766e;font-weight:600;line-height:1.5}
 @media(max-width:700px){.workflow-item{align-items:stretch;flex-direction:column}.workflow-item .btn{align-self:flex-start}}

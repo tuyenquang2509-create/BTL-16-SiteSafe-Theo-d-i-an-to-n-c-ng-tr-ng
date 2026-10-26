@@ -35,7 +35,7 @@
    document.getElementById('wfDue').value=due?.value||'';
    form.requestSubmit();
   };
-  onClick(b=>b===main||b.textContent.includes('Xác nhận và giao hành động'),()=>apply(decision?.value||'Đã xác nhận'));
+  onClick(b=>b===main||(review?.contains(b)&&b.dataset.action==='new-action'),()=>apply(decision?.value||'Đã xác nhận'));
   onClick(b=>b.textContent.trim()==='Yêu cầu bổ sung',()=>{if(decision)decision.value='Cần bổ sung';apply('Cần bổ sung')});
   onClick(b=>b.textContent.trim()==='Từ chối có lý do',()=>{if(decision)decision.value='Từ chối';apply('Từ chối')});
   const verify=section('CA-012');if(verify){const check=verify.querySelector('input[type=checkbox]');const btn=document.createElement('button');btn.type='button';btn.className='btn btn-light';btn.textContent='Xem các yêu cầu chờ xác minh';verify.querySelector('.fg-actions')?.append(btn);btn.addEventListener('click',()=>{if(!check?.checked){notify('Hãy xác nhận đã kiểm tra minh chứng và hiện trường trước khi xác minh.');return}document.getElementById('workflowVerify')?.scrollIntoView({behavior:'smooth',block:'center'});notify('Chọn hành động đang chờ xác minh ở danh sách bên dưới.')});}
