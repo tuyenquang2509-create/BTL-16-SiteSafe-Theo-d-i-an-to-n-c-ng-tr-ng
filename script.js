@@ -1,0 +1,1183 @@
+/* SiteSafe - CSE122 prototype. Data is mock data persisted in localStorage; AI is a transparent simulation, not a live LLM. */
+const $ = (s, root=document) => root.querySelector(s);
+const $$ = (s, root=document) => [...root.querySelectorAll(s)];
+const STORE_KEY = 'sitesafe-v2-data';
+const PROFILE_KEY = 'sitesafe-demo-profile';
+const profileDefaults = {name:'Trần An',email:'an.tran@riverside.example',phone:'090 222 3344',photo:'',notifications:{risk:true,actions:true,inspections:true,ai:false,app:true,email:true,digest:'07:00'}};
+function loadProfile(){try{return {...profileDefaults,...JSON.parse(localStorage.getItem(PROFILE_KEY)||'{}')}}catch{return {...profileDefaults}}}
+let profileData=loadProfile();let profilePhotoUrl=typeof profileData.photo==='string'&&/^data:image\/(png|jpeg);base64,/.test(profileData.photo)?profileData.photo:'';
+let profileSaved=true;
+const WORKER_CHECKLIST_KEY='sitesafe-worker-checklist-v1';
+const WORKER_RISK_DRAFT_KEY='sitesafe-worker-risk-draft-v1';
+let workerRiskDraft={};
+let workerRiskFiles=[];
+let expandedWorkerRiskId='HZ-024';
+let workerRiskArchivedIds=[];
+try{const archived=JSON.parse(localStorage.getItem('sitesafe-worker-risk-archive-v1')||'[]');workerRiskArchivedIds=Array.isArray(archived)?archived:[]}catch(error){console.error('Unable to load worker risk archive state.',error)}
+const workerRiskDemo=[
+  {id:'HZ-024',title:'Thiếu lan can tại mép sàn',zone:'Z-A2 · Tầng 2',date:'03/10/2026 · 08:42',owner:'Nguyễn Minh',level:'Cao',status:'Chờ duyệt',desc:'Mép sàn phía đông chưa có lan can; có người đang tiếp cận.',evidenceNames:['edge-before.jpg','access-view.jpg'],checklist:'CL-018',color:'default',demo:true},
+  {id:'HZ-023',title:'Dây điện qua lối đi',zone:'Z-A1 · Tầng 1',date:'01/10/2026 · 15:20',owner:'Lê Hoàng',level:'Vừa',status:'Đang khắc phục',desc:'Dây điện tạm băng qua lối di chuyển.',color:'green',demo:true},
+  {id:'HZ-022',title:'Vật tư chắn lối thoát',zone:'Z-K1 · Kho vật tư',date:'02/10/2026 · 10:15',owner:'Trần An',level:'Vừa',status:'Chờ xác minh',desc:'Vật tư để sát lối thoát hiểm.',color:'cyan',demo:true},
+  {id:'HZ-021',title:'Biển cảnh báo đã bổ sung',zone:'Z-A1 · Tầng 1',date:'09/09/2026 · 09:05',owner:'Trần An',level:'Thấp',status:'Đã đóng',desc:'Biển cảnh báo đã được lắp bổ sung.',color:'pink',demo:true}
+];
+const workerChecklistItems=[
+  {id:'edge-rail',title:'Lan can bảo vệ đủ chiều cao và liên tục',critical:true,link:'HZ-024'},
+  {id:'toe-board',title:'Dải chân chắn ngăn vật rơi'},
+  {id:'access-route',title:'Lối tiếp cận được giới hạn và có cảnh báo'},
+  {id:'harness',title:'Dây đai an toàn và điểm neo phù hợp'},
+  {id:'scaffold',title:'Sàn thao tác và giàn giáo ổn định'},
+  {id:'tools',title:'Dụng cụ được kiểm tra trước khi sử dụng'},
+  {id:'weather',title:'Điều kiện thời tiết phù hợp để làm việc'},
+  {id:'briefing',title:'Đã phổ biến biện pháp an toàn đầu ca'}
+];
+function loadWorkerChecklist(){
+  const defaults={step:2,site:'Riverside – Khối A',zone:'Z-A2 · Tầng 2',work:'Làm việc trên cao',template:'TMP-01 · v2.1 · Đã phát hành',statuses:Object.fromEntries(workerChecklistItems.map((item,index)=>[item.id,index===0?'fail':'pass'])),notes:{'edge-rail':'Mép sàn phía đông chưa có lan can; có người đang tiếp cận.'},evidenceNames:[],confirmed:false};
+  try{
+    const saved=localStorage.getItem(WORKER_CHECKLIST_KEY);
+    if(!saved)return defaults;
+    const parsed=JSON.parse(saved);
+    return {...defaults,...parsed,step:Math.min(4,Math.max(1,Number(parsed.step)||defaults.step)),statuses:{...defaults.statuses,...parsed.statuses},notes:{...defaults.notes,...parsed.notes},evidenceNames:Array.isArray(parsed.evidenceNames)?parsed.evidenceNames:[]};
+  }catch(error){
+    console.error('Unable to load the worker checklist draft.',error);
+    return defaults;
+  }
+}
+let workerChecklistState=loadWorkerChecklist();
+let workerChecklistFiles=[];
+const seed = {
+  risks:[
+    {id:'RS-024',title:'Lan can tầng 4 chưa hoàn thiện',zone:'Khối A · Tầng 4',level:'Cao',status:'Mới ghi nhận',owner:'Nguyễn Văn Nam',date:'2026-10-20',desc:'Khu vực mép sàn phía Đông chưa có lan can bảo vệ.'},
+    {id:'RS-023',title:'Dây điện đi qua lối đi',zone:'Khối A · Tầng 2',level:'Trung bình',status:'Đang xử lý',owner:'Trần Minh Đức',date:'2026-10-19',desc:'Dây điện tạm băng ngang lối di chuyển của công nhân.'},
+    {id:'RS-021',title:'Thiếu biển cảnh báo khu vực nâng hạ',zone:'Bãi vật liệu',level:'Cao',status:'Đang xử lý',owner:'Lê Quốc Huy',date:'2026-10-18',desc:'Khu vực hoạt động của cần trục chưa được đặt biển cảnh báo.'},
+    {id:'RS-019',title:'Vật liệu xếp chưa gọn',zone:'Kho vật tư',level:'Thấp',status:'Đã khắc phục',owner:'Phạm Văn Long',date:'2026-10-16',desc:'Một số vật liệu để sát lối đi nội bộ.'}
+  ],
+  inspections:[
+    {id:'KT-108',title:'Kiểm tra giàn giáo tầng 4',zone:'Khối A · Tầng 4',date:'2026-10-21',time:'08:30',assignee:'Trần An',status:'Đã lên lịch',note:'Kiểm tra lan can và sàn thao tác'},
+    {id:'KT-107',title:'Kiểm tra thiết bị nâng',zone:'Bãi vật liệu',date:'2026-10-20',time:'14:00',assignee:'Nguyễn Văn Nam',status:'Đang thực hiện',note:'Kiểm tra nhật ký bảo dưỡng'},
+    {id:'KT-106',title:'Kiểm tra điện tạm',zone:'Khối A · Tầng 2',date:'2026-10-19',time:'09:00',assignee:'Trần An',status:'Hoàn thành',note:'Đã kiểm tra tủ điện'},
+    {id:'KT-104',title:'Kiểm tra kho vật tư',zone:'Kho vật tư',date:'2026-10-18',time:'10:00',assignee:'Lê Quốc Huy',status:'Hoàn thành',note:'Đảm bảo lối đi thông thoáng'}
+  ],
+  actions:[
+    {id:'KP-052',title:'Lắp lan can tạm tầng 4',risk:'RS-024',owner:'Nguyễn Văn Nam',due:'2026-10-21',priority:'Cao',status:'Đang thực hiện',progress:40,note:'Rào chắn khu vực trong khi chờ lắp lan can'},
+    {id:'KP-051',title:'Bọc bảo vệ dây điện',risk:'RS-023',owner:'Trần Minh Đức',due:'2026-10-20',priority:'Trung bình',status:'Đang thực hiện',progress:20,note:'Dẫn dây qua máng bảo vệ'},
+    {id:'KP-049',title:'Bổ sung biển cảnh báo nâng hạ',risk:'RS-021',owner:'Lê Quốc Huy',due:'2026-10-20',priority:'Cao',status:'Chờ xác minh',progress:100,note:'Bổ sung rào mềm và biển báo'}
+  ],
+  zones:[
+    {id:'KV-01',name:'Khối A · Tầng 4',type:'Thi công trên cao',workers:28,risk:'Cao',status:'Đang thi công',note:'Ưu tiên kiểm tra mép sàn'},
+    {id:'KV-02',name:'Khối A · Tầng 2',type:'Lắp đặt hệ thống điện',workers:16,risk:'Trung bình',status:'Đang thi công',note:'Kiểm tra dây dẫn tạm'},
+    {id:'KV-03',name:'Bãi vật liệu',type:'Vận chuyển và nâng hạ',workers:12,risk:'Cao',status:'Đang thi công',note:'Phân luồng người và thiết bị'},
+    {id:'KV-04',name:'Kho vật tư',type:'Lưu trữ vật liệu',workers:7,risk:'Thấp',status:'Đang thi công',note:'Giữ lối đi thông thoáng'}
+  ],
+  checklists:[
+    {id:'CL-01',title:'An toàn làm việc trên cao',category:'Làm việc trên cao',items:8,status:'Đang sử dụng',updated:'2026-10-15'},
+    {id:'CL-02',title:'Kiểm tra thiết bị nâng',category:'Thiết bị',items:12,status:'Đang sử dụng',updated:'2026-10-10'},
+    {id:'CL-03',title:'An toàn điện tạm',category:'Điện',items:10,status:'Bản nháp',updated:'2026-10-08'}
+  ],
+  users:[
+    {id:'U-001',name:'Trần An',email:'tran.an@sitesafe.demo',role:'Cán bộ an toàn',status:'Đang hoạt động'},
+    {id:'U-002',name:'Nguyễn Văn Nam',email:'nam.nguyen@sitesafe.demo',role:'Công nhân',status:'Đang hoạt động'},
+    {id:'U-003',name:'Lê Minh Quân',email:'quan.le@sitesafe.demo',role:'Quản lý công trường',status:'Đang hoạt động'},
+    {id:'U-004',name:'Phạm Thu Hà',email:'ha.pham@sitesafe.demo',role:'Quản trị hệ thống',status:'Đang hoạt động'}
+  ],
+  sites:[
+    {id:'RS-A',name:'Riverside – Khối A',address:'Đường Ven Sông, TP.HCM',manager:'Lê Hoàng',startDate:'2026-07-01',endDate:'2027-06-30',zones:6,status:'Đang hoạt động'},
+    {id:'RS-B',name:'Riverside – Khối B',address:'Đường Ven Sông, TP.HCM',manager:'Phạm Dũng',startDate:'2026-09-01',endDate:'2027-08-31',zones:3,status:'Tạm dừng'},
+    {id:'RS-OLD',name:'Kho phụ trợ',address:'Khu vực cũ',manager:'Phạm Dũng',startDate:'2025-01-01',endDate:'2026-01-01',zones:0,status:'Lưu trữ'}
+  ],
+  notifications:[{id:'TB-01',title:'Nguy cơ mức cao mới',desc:'RS-024 · Lan can tầng 4 chưa hoàn thiện',time:'10 phút trước',read:false},{id:'TB-02',title:'Sắp đến hạn khắc phục',desc:'KP-051 · Bọc bảo vệ dây điện',time:'1 giờ trước',read:false}]
+};
+let db = loadDB(); let currentRole=document.body.dataset.initialRole||'safety'; let currentPage=document.body.dataset.initialPage||new URLSearchParams(location.search).get('page')||'dashboard'; let searchTerm=''; let activeFilter='Tất cả'; let aiResult=null; let aiKind='classify'; let aiTimer=null; let modalConfig=null;
+function loadDB(){try{const d=JSON.parse(localStorage.getItem(STORE_KEY));return d&&d.risks?d:structuredClone(seed)}catch{return structuredClone(seed)}}
+db.sites ||= structuredClone(seed.sites);
+function saveDB(){localStorage.setItem(STORE_KEY,JSON.stringify(db))}
+function esc(v=''){return String(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function toast(msg){const t=$('#toast');t.textContent=msg;t.classList.add('show');clearTimeout(toast.timer);toast.timer=setTimeout(()=>t.classList.remove('show'),3000)}
+const roleConfig={safety:{label:'Cán bộ an toàn',name:'Trần An',avatar:'TA',pages:[['dashboard','▦','Tổng quan an toàn'],['risks','⚠','Nguy cơ / sự cố'],['inspections','☷','Kiểm tra hiện trường'],['actions','✓','Hành động khắc phục'],['zones','⌖','Khu vực công trường'],['reports','▥','Báo cáo an toàn'],['checklists','☑','Mẫu checklist'],['ai','✦','Trợ lý AI']]},worker:{label:'Nhân sự hiện trường',name:'Nguyễn Minh',avatar:'NM',pages:[['worker-checklist','☑','Checklist an toàn'],['worker-report','⚠','Báo nguy cơ'],['worker-history','◷','Nguy cơ của tôi'],['ai','✦','AI tạo checklist']]},manager:{label:'Quản lý công trường',name:'Lê Minh Quân',avatar:'LQ',pages:[['manager-home','▦','Tổng quan công trường'],['zones','⌖','Bản đồ rủi ro'],['actions','✓','Theo dõi khắc phục'],['reports','▥','Báo cáo an toàn'],['inspections','☷','Kế hoạch kiểm tra']]},admin:{label:'Quản trị hệ thống',name:'Phạm Thu Hà',avatar:'PH',pages:[['admin-home','▦','Tổng quan hệ thống'],['users','♙','Người dùng'],['checklists','☑','Mẫu checklist'],['zones','⌖','Khu vực'],['sites','▤','Công trường'],['help','ⓘ','Cấu hình & hướng dẫn']]}}
+roleConfig.admin.pages=[['admin-home','▦','Tổng quan hệ thống'],['checklists','☑','Mẫu checklist'],['zones','⌖','Khu vực'],['users','♙','Người dùng'],['sites','▤','Công trường']];
+function renderNav(){const c=roleConfig[currentRole];const profilePages=[['dashboard','▦','Tổng quan an toàn'],['risks','⚠','Chi tiết nguy cơ'],['inspections','☷','Lịch kiểm tra'],['ai','✦','AI phân loại nguy cơ']];const pages=currentPage==='profile'&&currentRole==='safety'?profilePages:c.pages;$('#nav').innerHTML=pages.map(([id,ico,label])=>`<button class="nav-item ${currentPage===id?'active':''}" data-page="${id}"><span>${ico}</span>${label}</button>`).join('');const roleLabel=$('.role-label');if(roleLabel)roleLabel.textContent=c.label.toLocaleUpperCase('vi');$('#userName').textContent=currentRole==='safety'?profileData.name:c.name;$('#userRole').textContent=c.label;$('#avatar').textContent=c.avatar;$('#roleSelect').value=currentRole;const roleSwitcher=$('#roleSelect').closest('.form-field');if(roleSwitcher)roleSwitcher.hidden=currentPage==='profile'||currentRole==='worker'}
+function heading(title,desc,actions=''){return `<div class="page-heading"><div><div class="eyebrow">SITESAFE / ${esc(roleConfig[currentRole].label)}</div><h1>${title}</h1><p>${desc}</p></div><div class="heading-actions">${actions}</div></div>`}
+function btn(label,action,kind='primary',extra=''){return `<button class="btn ${kind==='primary'?'btn-primary':kind==='danger'?'btn-danger':'btn-light'} ${extra}" data-action="${action}">${label}</button>`}
+function stat(label,value,note,icon){return `<article class="stat-card"><div class="stat-top"><span>${label}</span><span class="stat-icon">${icon}</span></div><div class="stat-value">${value}</div><div class="stat-note">${note}</div></article>`}
+function badge(status){let cls='gray';if(/Cao|Mới ghi nhận|Chưa thực hiện|Quá hạn|Lỗi|Từ chối/i.test(status))cls='red';else if(/Trung bình|Đang xử lý|Đang thực hiện|Đang lên lịch|Bản nháp/i.test(status))cls='orange';else if(/Hoàn thành|Đã khắc phục|Đang hoạt động|Đã duyệt|Đang sử dụng/i.test(status))cls='green';else if(/Đang thi công|Đã ghi nhận/i.test(status))cls='blue';return `<span class="badge ${cls}">${esc(status)}</span>`}
+function riskTable(items){if(!items.length)return empty('Chưa có nguy cơ phù hợp','Thử đổi bộ lọc hoặc tạo báo cáo nguy cơ mới.');return `<div class="table-wrap"><table><thead><tr><th>Mã / Nguy cơ</th><th>Khu vực</th><th>Mức độ</th><th>Trạng thái</th><th>Người phụ trách</th><th>Thao tác</th></tr></thead><tbody>${items.map(x=>`<tr><td><div class="cell-title">${esc(x.title)}</div><div class="subcell">${esc(x.id)} · ${esc(x.date)}</div></td><td>${esc(x.zone)}</td><td>${badge(x.level)}</td><td>${badge(x.status)}</td><td>${esc(x.owner)}</td><td><div class="actions-cell"><button class="text-btn" data-action="view-risk" data-id="${x.id}">Chi tiết</button><button class="text-btn" data-action="edit-risk" data-id="${x.id}">Sửa</button></div></td></tr>`).join('')}</tbody></table></div>`}
+function empty(title,desc,action=''){return `<div class="empty-state"><div class="empty-icon">⌕</div><strong>${title}</strong><span>${desc}</span>${action?`<div style="margin-top:14px">${action}</div>`:''}</div>`}
+function dashboard(){
+ const open=db.risks.filter(x=>x.status!=='Đã khắc phục').length;
+ const high=db.risks.filter(x=>x.level==='Cao'&&x.status!=='Đã khắc phục').length;
+ const overdue=db.actions.filter(x=>x.status!=='Hoàn thành'&&x.due<'2026-10-20').length || 3;
+ const pending=Math.max(5,db.risks.filter(x=>x.status==='Mới ghi nhận').length+3);
+ const chart=[8,6,9,5,11,7,10];
+ return `<div class="figma-dashboard">
+  <div class="crumb">Cán bộ an toàn / Tổng quan an toàn</div>
+  <div class="figma-page-title"><div><h1>Tổng quan an toàn</h1><p>Đầu ca 03/10 · cập nhật 08:55 · tập trung những việc cần bạn xem xét.</p></div><button class="btn btn-primary" data-page="risks">Xem hàng chờ duyệt</button></div>
+  <div class="data-caption">Dữ liệu minh họa · 03/10/2026 · Không phải số liệu thực tế</div>
+  <div class="dashboard-filters">
+   <label>Tìm kiếm<input id="dashboardSearch" type="search" placeholder="⌕  Mã, nội dung hoặc người phụ trách"></label>
+   <label>Công trường<select id="dashboardSite"><option>Riverside – Khối A</option><option>Toàn bộ công trường</option></select></label>
+   <label>Bộ lọc<select id="dashboardFilter"><option value="all">Hôm nay · tất cả khu vực</option><option value="high">Ưu tiên cao</option><option value="overdue">Quá hạn</option><option value="pending">Chờ duyệt</option></select></label>
+  </div>
+  <div class="figma-stats">
+   <article class="figma-stat"><span>Nguy cơ đang mở</span><strong>${Math.max(24,open)}</strong><small>6 khu vực đang theo dõi</small></article>
+   <article class="figma-stat"><span>Ưu tiên cao</span><strong>${Math.max(7,high)}</strong><small>Cần kiểm tra trong ca</small></article>
+   <article class="figma-stat"><span>Hành động quá hạn</span><strong>${overdue}</strong><small>Nhắc người phụ trách</small></article>
+   <article class="figma-stat"><span>Chờ duyệt</span><strong>${pending}</strong><small>Chưa xác nhận nguy cơ</small></article>
+  </div>
+  <div class="figma-alert"><strong>⚠ &nbsp;${overdue} hành động đã quá hạn</strong><p>Z-A2 có 2 việc, Z-A1 có 1 việc. Xem hạn và người phụ trách trước khi giao thêm việc.</p><button class="text-btn" data-page="actions">Xem hành động khắc phục →</button></div>
+  <div class="figma-dashboard-columns">
+   <section class="figma-card trend-card"><div class="figma-card-head"><div><h2>Xu hướng nguy cơ mới</h2><p>27/09–03/10/2026 · nguồn: báo cáo hiện trường</p></div><span class="figma-pill">Nguy cơ ghi nhận mới</span></div>
+    <div class="figma-chart">${chart.map((n,i)=>`<div class="figma-bar-col"><b>${n}</b><div class="figma-bar" style="height:${n*10}px"></div><small>${['27/9','28/9','29/9','30/9','1/10','2/10','3/10'][i]}</small></div>`).join('')}</div>
+    <div class="figma-legend"><span><i></i>Nguy cơ ghi nhận mới</span><span><i class="pale"></i>Đã xử lý</span></div>
+   </section>
+   <section class="figma-card queue-card"><div class="figma-card-head"><div><h2>Việc cần xem xét</h2><p>Ưu tiên theo mức độ và thời hạn</p></div><button class="text-btn" data-page="risks">Xem tất cả →</button></div>
+    <div class="figma-queue-item"><span class="queue-icon danger">!</span><div><strong>Lan can tầng 4 chưa hoàn thiện</strong><p>RS-024 · Khối A · Tầng 4</p></div><span class="badge red">Cao</span></div>
+    <div class="figma-queue-item"><span class="queue-icon warning">⌁</span><div><strong>Dây điện đi qua lối đi</strong><p>RS-023 · Khối A · Tầng 2</p></div><span class="badge orange">Trung bình</span></div>
+    <div class="figma-queue-item"><span class="queue-icon danger">!</span><div><strong>Thiếu biển cảnh báo khu vực nâng hạ</strong><p>RS-021 · Bãi vật liệu</p></div><span class="badge red">Cao</span></div>
+   </section>
+  </div>
+  <section class="figma-card figma-recent"><div class="figma-card-head"><div><h2>Nguy cơ cần theo dõi</h2><p>Các nguy cơ đang mở trong công trường</p></div><button class="btn btn-light btn-sm" data-page="risks">Mở danh sách</button></div><div id="dashboardRiskRows">${riskTable(db.risks.filter(x=>x.status!=='Đã khắc phục').slice(0,4))}</div></section>
+  <div class="figma-footnote">SiteSafe · Bản mô phỏng phục vụ học tập. Luôn xác minh tại hiện trường trước khi đưa ra quyết định an toàn.</div>
+ </div>`
+}
+function toolbar(placeholder,filters=[],actionLabel='',action=''){return `<div class="toolbar"><input class="field-control search-control" id="searchInput" placeholder="${placeholder}" value="${esc(searchTerm)}" aria-label="Tìm kiếm">${filters.length?`<select class="field-control" id="statusFilter" aria-label="Lọc trạng thái">${['Tất cả',...filters].map(f=>`<option ${activeFilter===f?'selected':''}>${f}</option>`).join('')}</select>`:''}${actionLabel?btn(actionLabel,action):''}</div>`}
+function risksPage(){let list=db.risks.filter(x=>(`${x.id} ${x.title} ${x.zone} ${x.owner}`.toLowerCase().includes(searchTerm.toLowerCase()))&&(activeFilter==='Tất cả'||x.status===activeFilter||x.level===activeFilter));return `${heading('Nguy cơ / sự cố','Ghi nhận, phân loại, phân công và theo dõi vòng đời xử lý nguy cơ.',btn('+ Ghi nhận nguy cơ','new-risk'))}<section class="panel">${toolbar('Tìm theo mã, tên nguy cơ, khu vực…',['Mới ghi nhận','Đang xử lý','Đã khắc phục','Cao','Trung bình','Thấp'],'Xuất CSV','export-risks')}<div id="tableRegion">${riskTable(list)}</div><div class="footer-note">Vòng đời: Mới ghi nhận → Đang xử lý → Đã khắc phục / Lưu trữ. Xóa dữ liệu nguy cơ được mô phỏng bằng lưu trữ.</div></section>`}
+function inspectionsPage(){let list=db.inspections.filter(x=>(`${x.id} ${x.title} ${x.zone} ${x.assignee}`.toLowerCase().includes(searchTerm.toLowerCase()))&&(activeFilter==='Tất cả'||x.status===activeFilter));const next=list.find(x=>x.status==='Đang thực hiện')||list[0];return `<div class="field-reference-page">${heading('Lịch kiểm tra','Lập lịch, theo dõi kết quả và ghi lý do khi đổi lịch hoặc checklist.',btn('+ Lên lịch kiểm tra','new-inspection'))}<div class="data-caption">Dữ liệu minh họa · Riverside – Khối A · Mọi thay đổi được lưu cục bộ.</div><div class="dashboard-filters"><label>Tìm kiếm<input id="searchInput" type="search" class="field-control" placeholder="Mã, khu vực hoặc người kiểm tra…" value="${esc(searchTerm)}"></label><label>Công trường<select class="field-control"><option>Riverside – Khối A</option></select></label><label>Trạng thái<select id="statusFilter" class="field-control">${['Tất cả','Đã lên lịch','Đang thực hiện','Hoàn thành'].map(x=>`<option ${activeFilter===x?'selected':''}>${x}</option>`).join('')}</select></label></div><section class="figma-card"><div class="figma-card-head"><h2>Các cuộc kiểm tra</h2><button class="text-btn" data-action="export-inspections">Xuất CSV</button></div><div class="table-wrap"><table><thead><tr><th>Mã / Khu vực</th><th>Người kiểm tra</th><th>Thời gian</th><th>Trạng thái</th><th>Thao tác</th></tr></thead><tbody>${list.map(x=>`<tr><td><div class="cell-title">${esc(x.id)} · ${esc(x.zone)}</div><div class="subcell">${esc(x.title)}</div></td><td>${esc(x.assignee)}</td><td>${esc(x.date)} · ${esc(x.time)}</td><td>${badge(x.status)}</td><td><div class="actions-cell"><button class="text-btn" data-action="edit-inspection" data-id="${x.id}">Sửa</button><button class="text-btn" data-action="advance-inspection" data-id="${x.id}">Cập nhật</button></div></td></tr>`).join('')||`<tr><td colspan="5">${empty('Không có lịch kiểm tra','Hãy tạo lịch mới hoặc đổi bộ lọc.')}</td></tr>`}</tbody></table></div></section><div class="two-col"><section class="figma-card"><h2>${next?`${esc(next.id)} · Kết quả kiểm tra`: 'Kết quả kiểm tra'}</h2><p>${next?`${esc(next.zone)} · ${esc(next.assignee)} · ${esc(next.date)} ${esc(next.time)}`:'Chọn lịch kiểm tra để xem kết quả.'}</p>${next?`<div class="notice">Ghi chú: ${esc(next.note)}. Kết quả chỉ được xác nhận sau khi kiểm tra tại hiện trường.</div><button class="btn btn-primary btn-sm" data-action="advance-inspection" data-id="${next.id}">Cập nhật trạng thái</button>`:''}</section><section class="figma-card"><h2>Lịch tuần</h2><div class="inspection-week-list">${list.map(x=>`<p><strong>${esc(x.date)} · ${esc(x.time)}</strong> · ${esc(x.id)} · ${esc(x.zone)} · ${esc(x.assignee)}</p>`).join('')||'<p>Không có lịch trong bộ lọc hiện tại.</p>'}</div><small>Đổi lịch cần ghi lý do; lịch bị hủy vẫn được lưu trong lịch sử.</small></section></div><p class="reference-foot">safety-inspections.html · Quyền thao tác theo vai trò được gán.</p></div>`}
+let activeWorkflowActionId='';
+let workflowEvidence=[];
+let workflowCreatingNew=false;
+function workflowStatus(action){
+  if(action.status==='Hoàn thành'||action.status==='Đã xác minh đóng')return 'Đã xác minh đóng';
+  if(action.status==='Chờ xác minh')return 'Chờ xác minh';
+  if(action.status==='Chưa thực hiện')return 'Chờ bắt đầu';
+  if(action.due&&action.due<new Date().toISOString().slice(0,10))return 'Quá hạn';
+  return 'Đang khắc phục';
+}
+function actionWorkflowForm(action){
+  const selected=action||{};
+  return `<section class="workflow-card workflow-form-card" id="actionFormCard">
+    <h2>${selected.id?`${esc(selected.id)} · Chỉnh sửa / giao hành động`:'Mẫu ngắn tạo / giao hành động'}</h2>
+    <form id="actionWorkflowForm" data-action-id="${esc(selected.id||'')}">
+      <div class="workflow-form-grid">
+        <label class="workflow-field workflow-full">Nguy cơ liên kết *<select name="risk" required>${db.risks.map(r=>`<option value="${esc(r.id)}" ${selected.risk===r.id?'selected':''}>${esc(r.id)} · ${esc(r.zone)}</option>`).join('')}</select></label>
+        <label class="workflow-field workflow-full">Nội dung *<input name="title" required minlength="3" value="${esc(selected.title||'')}" placeholder="Mô tả biện pháp khắc phục"></label>
+        <label class="workflow-field">Người phụ trách *<input name="owner" required value="${esc(selected.owner||'')}" placeholder="Họ và tên"></label>
+        <label class="workflow-field">Hạn *<input name="due" type="date" required value="${esc(selected.due||'')}"></label>
+        <label class="workflow-field">Ưu tiên *<select name="priority" required>${['Cao','Trung bình','Thấp'].map(p=>`<option ${selected.priority===p?'selected':''}>${p}</option>`).join('')}</select></label>
+        <label class="workflow-field">Tiến độ<input name="progress" type="number" min="0" max="100" value="${Number(selected.progress)||0}"></label>
+        <label class="workflow-field workflow-full">Lý do giao lại (nếu có)<input name="note" value="${esc(selected.note||'')}" placeholder="Ghi rõ lý do và yêu cầu tiếp theo"></label>
+      </div>
+      <div class="workflow-form-actions"><button class="btn btn-primary btn-sm" type="submit">Lưu và giao</button><button class="btn btn-light btn-sm" type="button" data-workflow-cancel>Hủy</button></div>
+    </form>
+  </section>`;
+}
+function actionsPage(){
+  const today=new Date().toISOString().slice(0,10);
+  const query=searchTerm.toLowerCase();
+  const list=db.actions.filter(x=>(`${x.id} ${x.title} ${x.owner} ${x.risk}`.toLowerCase().includes(query))&&(activeFilter==='Tất cả'||workflowStatus(x)===activeFilter||x.priority===activeFilter));
+  const selected=workflowCreatingNew?null:(list.find(x=>x.id===activeWorkflowActionId)||list[0]||null);
+  if(selected)activeWorkflowActionId=selected.id;
+  const active=list.filter(x=>['Đang khắc phục','Quá hạn'].includes(workflowStatus(x)));
+  const verification=list.filter(x=>workflowStatus(x)==='Chờ xác minh');
+  const overdue=list.filter(x=>x.due&&x.due<today&&!['Hoàn thành','Đã xác minh đóng'].includes(x.status));
+  const statusOptions=['Tất cả','Đang khắc phục','Chờ xác minh','Quá hạn','Đã xác minh đóng','Cao','Trung bình','Thấp'];
+  const imageBefore='https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=1000&q=80';
+  const imageAfter='https://images.unsplash.com/photo-1541888946425-d81bb19240f5?auto=format&fit=crop&w=1000&q=80';
+  return `<div class="action-workflow">
+    <div class="crumb">Quản lý công trường / Hành động khắc phục</div>
+    <div class="workflow-title"><div><h1>Hành động khắc phục</h1><p>Giao người, chốt hạn, theo dõi minh chứng. Nộp hoàn thành chưa phải đã đóng.</p></div><button class="btn btn-primary btn-sm" type="button" data-workflow-new>+ Tạo hành động</button></div>
+    <div class="data-caption">Dữ liệu minh họa · Riverside – Khối A · Không phải số liệu thực tế</div>
+    <div class="dashboard-filters workflow-filters">
+      <label>Tìm kiếm<input id="searchInput" type="search" placeholder="Mã, nội dung hoặc người phụ trách" value="${esc(searchTerm)}"></label>
+      <label>Công trường<select><option>Riverside – Khối A</option><option>Riverside – Khối B</option></select></label>
+      <label>Bộ lọc<select id="statusFilter">${statusOptions.map(x=>`<option ${activeFilter===x?'selected':''}>${x}</option>`).join('')}</select></label>
+    </div>
+    ${overdue.length?`<div class="workflow-alert"><strong>${overdue.length} hành động quá hạn cần được ưu tiên</strong><span>${overdue.map(x=>`${esc(x.id)} · ${esc(x.title)}`).join('; ')}. Cần cập nhật lý do và hạn hoàn thành.</span></div>`:''}
+    <nav class="workflow-tabs" aria-label="Chế độ xem hành động"><a href="#workflow-list">Danh sách</a><a href="#workflow-status">Bảng trạng thái</a></nav>
+    <section class="workflow-card" id="workflow-list">
+      <h2>Danh sách hành động</h2>
+      <div class="workflow-table-wrap"><table class="workflow-table"><thead><tr><th>Mã / nội dung</th><th>Phụ trách</th><th>Hạn</th><th>Tiến độ / trạng thái</th></tr></thead><tbody>
+      ${list.map(x=>{const status=workflowStatus(x);const progress=Math.max(0,Math.min(100,Number(x.progress)||0));return `<tr class="${selected?.id===x.id?'is-selected':''}"><td><button class="workflow-row-link" type="button" data-workflow-action-id="${esc(x.id)}">${esc(x.id)} · ${esc(x.title)} / ${esc(x.risk)}</button></td><td>${esc(x.owner)}</td><td>${esc(x.due||'Chưa đặt hạn')}</td><td><div class="workflow-progress"><span style="width:${progress}%"></span></div><small>${progress}% · ${esc(status)}</small></td></tr>`}).join('')||'<tr><td colspan="4">Không tìm thấy hành động phù hợp.</td></tr>'}
+      </tbody></table></div>
+    </section>
+    <section class="workflow-card" id="workflow-status">
+      <h2>Bảng trạng thái · cách xem thay thế</h2>
+      <div class="workflow-status-grid">
+        <article><strong>Đang khắc phục · ${active.length}</strong><p>${active.slice(0,3).map(x=>`${esc(x.id)} · ${esc(x.title)} · ${esc(x.owner)} · ${workflowStatus(x)==='Quá hạn'?'Quá hạn':esc(x.due)}`).join('<br>')||'Không có hành động đang xử lý.'}</p></article>
+        <article><strong>Chờ xác minh · ${verification.length}</strong><p>${verification.slice(0,3).map(x=>`${esc(x.id)} · ${esc(x.title)} · ${esc(x.owner)}`).join('<br>')||'Chưa có minh chứng chờ xác minh.'}</p></article>
+      </div>
+      <small>Bảng hiển thị ${list.length} hành động theo bộ lọc. Trên điện thoại, vuốt ngang bảng để xem đủ cột.</small>
+    </section>
+    ${selected?`<section class="workflow-card" id="workflow-evidence">
+      <h2>${esc(selected.id)} · Trước / sau khắc phục</h2><p class="workflow-caption">Mẫu bước nộp hoàn thành ${selected.due?`· hạn ${esc(selected.due)}`:''} · Không tự động chuyển sang đã đóng.</p>
+      <div class="workflow-photos">
+        <figure><img src="${imageBefore}" alt="Minh họa hiện trạng trước khi khắc phục" loading="lazy"><figcaption><strong>Trước khắc phục</strong><span>${esc(selected.risk)} · Ảnh minh họa</span></figcaption></figure>
+        <figure><img src="${imageAfter}" alt="Minh họa hiện trạng sau khi khắc phục" loading="lazy"><figcaption><strong>Sau khắc phục</strong><span>${esc(selected.owner)} · Ảnh minh họa</span></figcaption></figure>
+      </div>
+      <label class="workflow-upload" for="workflowEvidence"><span aria-hidden="true">⇧</span><strong>Thêm ảnh hoặc kéo thả vào đây</strong><small>JPG, PNG, PDF · tối đa 10 MB mỗi tệp, tối đa 5 tệp.</small><span class="workflow-file-button">Chọn tệp</span><input id="workflowEvidence" class="visually-hidden" type="file" accept="image/jpeg,image/png,application/pdf" multiple><span id="workflowEvidenceList" class="workflow-upload-list">${[...new Set([...(selected.evidenceNames||[]),...workflowEvidence.map(f=>f.name)])].map(esc).join(' · ')}</span></label>
+      <form id="actionCompletionForm" data-action-id="${esc(selected.id)}">
+        <label class="workflow-field">Ghi chú hoàn thành *<input name="completionNote" required value="${esc(selected.completionNote||'')}" placeholder="Mô tả kết quả và điểm cần kiểm tra"></label>
+        <div class="workflow-form-actions"><button class="btn btn-primary btn-sm" type="submit" name="mode" value="verify">Nộp để xác minh</button><button class="btn btn-light btn-sm" type="submit" name="mode" value="save">Lưu nháp</button></div>
+      </form>
+      <div class="workflow-verification"><strong>${workflowStatus(selected)==='Chờ xác minh'?'Chờ người duyệt xác minh':'Luồng xác minh'}</strong><span>Ảnh sau khắc phục và ghi chú không tự động đóng nguy cơ. Cán bộ an toàn cần kiểm tra hiện trường, xác nhận rồi mới đóng.</span>${workflowStatus(selected)==='Chờ xác minh'?`<button class="btn btn-light btn-sm" type="button" data-workflow-verify="${esc(selected.id)}">Xác minh tại hiện trường & đóng</button>`:''}</div>
+    </section>`:''}
+    ${actionWorkflowForm(selected)}
+    <p class="reference-foot">manager-corrective-actions.html · Mọi thay đổi được lưu trên thiết bị này và cần xác minh tại hiện trường.</p>
+  </div>`;
+}
+function zonesPage(){if(currentRole==='admin')return adminZonesPage();return `${heading(currentRole==='manager'?'Bản đồ rủi ro':'Khu vực công trường','Theo dõi loại công việc, số người làm việc và mức độ rủi ro theo khu vực.', '')}<div class="zone-grid">${db.zones.filter(x=>(`${x.id} ${x.name} ${x.type}`.toLowerCase().includes(searchTerm.toLowerCase()))&&(activeFilter==='Tất cả'||x.risk===activeFilter)).map(x=>`<article class="zone-card"><div class="panel-head"><span class="badge blue">${esc(x.id)}</span>${badge(x.risk)}</div><h3>${esc(x.name)}</h3><p>${esc(x.type)}</p><div class="progress"><span style="width:${x.risk==='Cao'?88:x.risk==='Trung bình'?58:28}%"></span></div><div class="stat-top"><span>${x.workers} người đang làm</span>${badge(x.status)}</div><p>${esc(x.note)}</p><button class="btn btn-light btn-sm" data-action="view-zone" data-id="${x.id}">Xem chi tiết</button></article>`).join('')}</div><section class="content-card" style="margin-top:18px"><h2>Gợi ý ưu tiên từ dữ liệu hiện có</h2><p>Khu vực có mức rủi ro cao nên được kiểm tra trước. Đề xuất này là quy tắc minh họa dựa trên trường “Mức độ”, không thay thế đánh giá của cán bộ an toàn.</p>${btn('Phân tích điểm nóng bằng AI','ai-hotspot','light')}</section>`}
+function reportsPage(){const high=db.risks.filter(x=>x.level==='Cao'&&x.status!=='Đã khắc phục').length,done=db.risks.filter(x=>x.status==='Đã khắc phục').length,open=db.actions.filter(x=>x.status!=='Hoàn thành').length;return `${heading('Báo cáo an toàn','Tổng hợp số liệu mô phỏng, nhận diện điểm cần chú ý và xuất CSV.',btn('Xuất báo cáo CSV','export-all'))}<div class="stats-grid">${stat('Tổng nguy cơ',db.risks.length,'Toàn bộ bản ghi hiện có','⚠')}${stat('Nguy cơ mức cao',high,'Chưa khắc phục','!')}${stat('Đã khắc phục',done,'Nguy cơ đã đóng','✓')}${stat('Việc còn mở',open,'Hành động chưa hoàn thành','☷')}</div><div class="two-col"><section class="content-card"><h2>Tình trạng nguy cơ</h2><p>Tỷ lệ trạng thái trong dữ liệu hiện tại</p><div class="report-bars">${[['Mới ghi nhận',db.risks.filter(x=>x.status==='Mới ghi nhận').length,'#d93645'],['Đang xử lý',db.risks.filter(x=>x.status==='Đang xử lý').length,'#b96a00'],['Đã khắc phục',done,'#18865b']].map(([n,v])=>`<div class="report-row"><span>${n}</span><div class="progress"><span style="width:${db.risks.length?v/db.risks.length*100:0}%;background:${v===done?'#18865b':v?'#1769e0':'#dfe6f0'}"></span></div><strong>${v}</strong></div>`).join('')}</div></section><section class="content-card"><h2>Gợi ý cải thiện</h2><p>Đưa ra quyết định cuối cùng dựa trên kiểm tra thực địa và quy trình của đơn vị.</p><div class="notice">${high?`Có ${high} nguy cơ mức cao chưa khắc phục. Nên kiểm tra biện pháp cô lập khu vực và thời hạn xử lý.`:'Không có nguy cơ mức cao chưa khắc phục trong dữ liệu hiện tại.'}</div>${btn('Tạo báo cáo tóm tắt bằng AI','ai-report')}</section></div><div class="footer-note">Các con số chỉ phản ánh dữ liệu demo trong trình duyệt. Không dùng làm báo cáo an toàn thực tế.</div>`}
+function checklistsPage(){if(currentRole==='admin')return adminChecklistsPage();return `${heading('Mẫu checklist','Quản lý mẫu kiểm tra, trạng thái sử dụng và danh sách hạng mục.',btn('+ Tạo mẫu checklist','new-checklist'))}<section class="panel">${toolbar('Tìm tên mẫu hoặc nhóm…',['Đang sử dụng','Bản nháp'],'Xuất CSV','export-checklists')}<div class="table-wrap"><table><thead><tr><th>Mã / Tên mẫu</th><th>Nhóm</th><th>Số hạng mục</th><th>Cập nhật</th><th>Trạng thái</th><th>Thao tác</th></tr></thead><tbody>${db.checklists.filter(x=>(`${x.id} ${x.title} ${x.category}`.toLowerCase().includes(searchTerm.toLowerCase()))&&(activeFilter==='Tất cả'||x.status===activeFilter)).map(x=>`<tr><td><div class="cell-title">${esc(x.title)}</div><div class="subcell">${esc(x.id)}</div></td><td>${esc(x.category)}</td><td>${x.items}</td><td>${esc(x.updated)}</td><td>${badge(x.status)}</td><td><div class="actions-cell"><button class="text-btn" data-action="edit-checklist" data-id="${x.id}">Sửa</button><button class="text-btn" data-action="toggle-checklist" data-id="${x.id}">${x.status==='Đang sử dụng'?'Lưu trữ':'Kích hoạt'}</button></div></td></tr>`).join('')||`<tr><td colspan="6">${empty('Chưa có mẫu checklist','Tạo mẫu để bắt đầu.')}</td></tr>`}</tbody></table></div></section>`}
+function usersPage(){if(currentRole==='admin')return adminUsersPage();return `${heading('Quản lý người dùng','Quản lý hồ sơ demo, vai trò và trạng thái truy cập trong nguyên mẫu.',btn('+ Thêm người dùng','new-user'))}<section class="panel">${toolbar('Tìm tên hoặc email…',['Đang hoạt động','Đã khóa'],'Xuất CSV','export-users')}<div class="table-wrap"><table><thead><tr><th>Người dùng</th><th>Email</th><th>Vai trò</th><th>Trạng thái</th><th>Thao tác</th></tr></thead><tbody>${db.users.filter(x=>(`${x.name} ${x.email} ${x.role}`.toLowerCase().includes(searchTerm.toLowerCase()))&&(activeFilter==='Tất cả'||x.status===activeFilter)).map(x=>`<tr><td><div class="cell-title">${esc(x.name)}</div><div class="subcell">${esc(x.id)}</div></td><td>${esc(x.email)}</td><td>${esc(x.role)}</td><td>${badge(x.status)}</td><td><div class="actions-cell"><button class="text-btn" data-action="edit-user" data-id="${x.id}">Sửa</button><button class="text-btn" data-action="toggle-user" data-id="${x.id}">${x.status==='Đang hoạt động'?'Khóa':'Mở khóa'}</button></div></td></tr>`).join('')||`<tr><td colspan="5">${empty('Không tìm thấy người dùng','Đổi từ khóa tìm kiếm.')}</td></tr>`}</tbody></table></div></section>`}
+function adminSiteModal(id=''){
+  const old=id?db.sites.find(x=>x.id===id):null;
+  modalForm(`${old?'Cập nhật':'Tạo mới'} công trường`,[
+    {name:'name',label:'Tên công trường',required:true,value:old?.name||''},
+    {name:'address',label:'Địa chỉ',required:true,value:old?.address||''},
+    {name:'manager',label:'Quản lý',required:true,value:old?.manager||''},
+    {name:'startDate',label:'Ngày bắt đầu',type:'date',required:true,value:old?.startDate||'2026-10-01'},
+    {name:'endDate',label:'Ngày kết thúc dự kiến',type:'date',required:true,value:old?.endDate||'2027-10-01'},
+    {name:'zones',label:'Số khu vực',type:'number',required:true,value:old?.zones??0},
+    {name:'status',label:'Trạng thái',type:'select',options:['Đang hoạt động','Tạm dừng','Lưu trữ'],value:old?.status||'Đang hoạt động'}
+  ]);
+  $('#entityForm').id='siteEntityForm';
+  $('#siteEntityForm').dataset.siteId=id;
+}
+document.addEventListener('click',e=>{
+  const button=e.target.closest('[data-action]');
+  if(!button)return;
+  const {action,id}=button.dataset;
+  if(!['new-site','edit-site','toggle-site','archive-site','activate-site','view-site-zones','archive-zone','activate-zone'].includes(action))return;
+  e.preventDefault();e.stopImmediatePropagation();
+  if(action==='new-site'||action==='edit-site'){adminSiteModal(action==='edit-site'?id:'');return}
+  if(action==='view-site-zones'){
+    const site=db.sites.find(x=>x.id===id);
+    modalForm(`Khu vực · ${site?.name||id}`,[{name:'zones',label:'Khu vực liên kết',type:'textarea',value:db.zones.map(x=>`${x.id} · ${x.name}`).join('\n')}]);
+    $('#modalBody textarea').readOnly=true;
+    return;
+  }
+  if(action==='toggle-site'||action==='archive-site'||action==='activate-site'){
+    const site=db.sites.find(x=>x.id===id);
+    if(!site){toast('Không tìm thấy công trường.');return}
+    site.status=action==='archive-site'?'Lưu trữ':action==='activate-site'?'Đang hoạt động':site.status==='Đang hoạt động'?'Tạm dừng':'Đang hoạt động';
+    saveDB();renderPage();toast('Đã cập nhật trạng thái công trường.');return;
+  }
+  const zone=db.zones.find(x=>x.id===id);
+  if(!zone){toast('Không tìm thấy khu vực.');return}
+  zone.status=action==='archive-zone'?'Lưu trữ':'Đang thi công';
+  saveDB();renderPage();toast('Đã cập nhật trạng thái khu vực.');
+});
+document.addEventListener('submit',e=>{
+  const form=e.target;
+  if(form.id==='siteEntityForm'){
+    e.preventDefault();e.stopImmediatePropagation();
+    const values=Object.fromEntries(new FormData(form).entries());
+    const id=form.dataset.siteId;
+    let site=id?db.sites.find(x=>x.id===id):null;
+    if(site)Object.assign(site,values);
+    else{
+      const number=Math.max(0,...db.sites.map(x=>Number((x.id.match(/\d+/)||['0'])[0])))+1;
+      site={id:`RS-${String(number).padStart(3,'0')}`,...values};
+      db.sites.unshift(site);
+    }
+    site.zones=Number(site.zones);
+    saveDB();closeModal();renderPage();toast(id?'Đã cập nhật công trường.':'Đã tạo công trường.');return;
+  }
+  if(!['adminInviteForm','adminRoleForm','adminSuspendForm','adminZoneForm','adminSiteForm'].includes(form.id))return;
+  e.preventDefault();e.stopImmediatePropagation();
+  if(form.id==='adminInviteForm'){
+    const values=Object.fromEntries(new FormData(form).entries());
+    const number=Math.max(0,...db.users.map(x=>Number((x.id.match(/\d+/)||['0'])[0])))+1;
+    const email=values.email.trim();
+    db.users.unshift({id:`U-${String(number).padStart(3,'0')}`,name:email.split('@')[0].replace(/[._-]/g,' '),email,role:values.role,status:'Đang hoạt động',site:values.site});
+    saveDB();renderPage();toast('Đã gửi lời mời thành viên.');return;
+  }
+  if(form.id==='adminRoleForm'||form.id==='adminSuspendForm'){
+    const user=db.users.find(x=>x.id===form.dataset.userId);
+    if(!user){toast('Không tìm thấy thành viên.');return}
+    if(form.id==='adminRoleForm'){
+      const values=Object.fromEntries(new FormData(form).entries());
+      user.role=values.role;user.site=values.site;
+    }
+    else{
+      const admins=db.users.filter(x=>x.role==='Quản trị hệ thống'&&x.status==='Đang hoạt động');
+      if(user.role==='Quản trị hệ thống'&&admins.length<=1){toast('Không thể tạm ngưng quản trị viên cuối cùng.');return}
+      user.status='Đã khóa';
+    }
+    saveDB();renderPage();toast(form.id==='adminRoleForm'?'Đã cập nhật quyền thành viên.':'Đã tạm ngưng tài khoản.');return;
+  }
+  const values=Object.fromEntries(new FormData(form).entries());
+  if(form.id==='adminZoneForm'){
+    const zone=db.zones.find(x=>x.id===form.dataset.zoneId);
+    if(!zone){toast('Không tìm thấy khu vực.');return}
+    Object.assign(zone,values);saveDB();renderPage();toast('Đã lưu khu vực.');return;
+  }
+  const site=db.sites[0];
+  if(!site){toast('Không tìm thấy công trường để cập nhật.');return}
+  Object.assign(site,values);saveDB();renderPage();toast('Đã lưu công trường.');
+});
+document.addEventListener('input',e=>{
+  if(currentPage!=='sites'||e.target.id!=='searchInput')return;
+  searchTerm=e.target.value;const pos=e.target.selectionStart;$('#pageContent').innerHTML=adminSitesPage();const next=$('#searchInput');next.focus();next.setSelectionRange(pos,pos);
+});
+document.addEventListener('change',e=>{
+  if(currentPage!=='sites'||e.target.id!=='statusFilter')return;
+  activeFilter=e.target.value;$('#pageContent').innerHTML=adminSitesPage();$('#statusFilter').value=activeFilter;
+});
+function adminUsersPage(){
+  const users=db.users.filter(x=>(`${x.name} ${x.email} ${x.role}`.toLowerCase().includes(searchTerm.toLowerCase()))&&(activeFilter==='Tất cả'||x.status===activeFilter));
+  const sites=db.sites.filter(x=>x.status!=='Lưu trữ');
+  return `<div class="admin-reference">
+    <div class="crumb">Quản trị viên / Người dùng</div>
+    <div class="figma-page-title"><div><h1>Người dùng</h1><p>Mời thành viên, gán công trường và quản lý quyền truy cập.</p></div>${btn('+ Mời thành viên','new-user')}</div>
+    <div class="data-caption">Dữ liệu minh họa · 03/10/2026 · Không phải số liệu thực tế</div>
+    <div class="dashboard-filters admin-filters">
+      <label>Tìm kiếm<input id="searchInput" type="search" placeholder="Mã, nội dung hoặc người phụ trách" value="${esc(searchTerm)}"></label>
+      <label>Công trường<select aria-label="Công trường">${sites.map(x=>`<option>${esc(x.name)}</option>`).join('')}</select></label>
+      <label>Bộ lọc<select id="statusFilter">${['Tất cả','Đang hoạt động','Đã khóa'].map(x=>`<option ${activeFilter===x?'selected':''}>${x}</option>`).join('')}</select></label>
+    </div>
+    <section class="figma-card admin-table-card"><h2>Thành viên công trường</h2><div class="table-wrap"><table><thead><tr><th>Thành viên</th><th>Vai trò</th><th>Công trường</th><th>Trạng thái / hoạt động</th></tr></thead><tbody>
+    ${users.map((x,i)=>`<tr><td><button class="admin-link" data-action="edit-user" data-id="${esc(x.id)}">${esc(x.name)} · ${esc((x.email.split('@')[0]||'').replace('.',' '))}</button></td><td>${esc(x.role)}</td><td>${esc(x.site||sites[i%Math.max(1,sites.length)]?.id||'RS-A')}</td><td>${esc(x.status)} · ${['08:45','09:20','09:30','08:30'][i%4]}</td></tr>`).join('')||'<tr><td colspan="4">Không tìm thấy thành viên phù hợp.</td></tr>'}
+    </tbody></table></div></section>
+    <div class="admin-two-col">
+      <form class="figma-card admin-form-card" id="adminInviteForm"><h2>Mẫu hộp thoại · Mời thành viên</h2>
+        <div class="form-field"><label for="inviteEmail">Email *</label><input id="inviteEmail" name="email" type="email" value="binh.vu@riverside.example" required></div>
+        <div class="form-field"><label for="inviteRole">Vai trò được gán *</label><select id="inviteRole" name="role"><option>Cán bộ an toàn</option><option>Công nhân</option><option>Quản lý công trường</option><option>Quản trị hệ thống</option></select></div>
+        <div class="form-field"><label for="inviteSite">Công trường được phép *</label><select id="inviteSite" name="site">${sites.map(x=>`<option value="${esc(x.id)}">${esc(x.name)}</option>`).join('')}</select></div>
+        <small>Chỉ hiện quyền mà quản trị viên hiện tại được cấp phép gán.</small><div class="admin-form-actions"><button class="btn btn-primary btn-sm" type="submit">Gửi lời mời</button><button class="btn btn-light btn-sm" type="reset">Hủy</button></div>
+      </form>
+      <form class="figma-card admin-form-card" id="adminRoleForm" data-user-id="${esc(users[0]?.id||'')}"><h2>Xác nhận thay đổi quyền</h2>
+        <p>${users[0]?`${esc(users[0].name)} → ${esc(users[0].role)} · Công trường → RS-A Người phê duyệt → Đỗ Hạnh`:'Chọn thành viên để thay đổi quyền.'}</p>
+        <div class="form-field"><label for="roleTarget">Vai trò mới *</label><select id="roleTarget" name="role"><option>Cán bộ an toàn</option><option>Công nhân</option><option>Quản lý công trường</option><option>Quản trị hệ thống</option></select></div>
+        <div class="form-field"><label for="siteTarget">Công trường được gán *</label><select id="siteTarget" name="site">${sites.map(x=>`<option value="${esc(x.id)}">${esc(x.name)}</option>`).join('')}</select></div>
+        <div class="form-field"><label for="roleReason">Lý do *</label><input id="roleReason" name="reason" value="Gia nhập tổ cấp pha theo lời mời RS-A." required></div>
+        <div class="admin-form-actions"><button class="btn btn-primary btn-sm" type="submit">Xác nhận cấp quyền</button><button class="btn btn-light btn-sm" type="button" data-action="edit-user" data-id="${esc(users[0]?.id||'')}">Giữ nguyên</button></div>
+      </form>
+    </div>
+    <form class="figma-card admin-form-card" id="adminSuspendForm" data-user-id="${esc(users[0]?.id||'')}"><h2>Tạm ngưng tài khoản, không xóa tác giả</h2>
+      <div class="form-field"><label for="suspendReason">Lý do tạm ngưng *</label><input id="suspendReason" name="reason" value="Thành viên đã kết thúc phân công tại công trường." required></div>
+      <p>Thành viên không đăng nhập được sau khi tạm ngưng. Báo cáo, ảnh và lịch sử do người này tạo vẫn giữ nguyên.</p>
+      <div class="admin-form-actions"><button class="btn btn-primary btn-sm" type="submit">Xác nhận tạm ngưng</button><button class="btn btn-light btn-sm" type="reset">Hủy</button></div>
+    </form>
+    <div class="admin-warning">Không thể tạm ngưng quản trị viên cuối cùng.<br>Đỗ Hạnh là quản trị viên hoạt động cuối cùng trong phạm vi này. Bổ sung quản trị viên hợp lệ trước khi thay đổi.</div>
+    <p class="reference-foot">admin-user-management.html · Quyền thao tác theo vai trò được gán. Mọi thay đổi ghi lịch sử và minh chứng.</p>
+  </div>`;
+}
+function adminChecklistsPage(){
+  const list=db.checklists.filter(x=>(`${x.id} ${x.title} ${x.category}`.toLowerCase().includes(searchTerm.toLowerCase()))&&(activeFilter==='Tất cả'||x.status===activeFilter));
+  const active=list[0]||db.checklists[0];
+  return `<div class="admin-reference">
+    <div class="crumb">Quản trị viên / Mẫu checklist</div>
+    <div class="figma-page-title"><div><h1>Mẫu checklist</h1><p>Quản lý nhóm kiểm tra và phiên bản bất biến; mẫu đã phát hành không bị ghi đè.</p></div>${btn('+ Tạo mẫu','new-checklist')}</div>
+    <div class="data-caption">Dữ liệu minh họa · 03/10/2026 · Không phải số liệu thực tế</div>
+    <div class="dashboard-filters admin-filters">
+      <label>Tìm kiếm<input id="searchInput" placeholder="Mã, nội dung hoặc người phụ trách" value="${esc(searchTerm)}"></label>
+      <label>Công trường<select><option>Riverside – Khối A</option><option>Riverside – Khối B</option></select></label>
+      <label>Bộ lọc<select id="statusFilter">${['Tất cả','Đang sử dụng','Bản nháp','Lưu trữ'].map(x=>`<option ${activeFilter===x?'selected':''}>${x}</option>`).join('')}</select></label>
+    </div>
+    <section class="figma-card admin-tint-green"><h2>Thư viện mẫu</h2><div class="table-wrap"><table><thead><tr><th>Mẫu / loại công việc</th><th>Phiên bản</th><th>Trạng thái</th><th>Cập nhật bởi</th></tr></thead><tbody>
+    ${list.map((x,i)=>`<tr><td><button class="admin-link" data-action="edit-checklist" data-id="${esc(x.id)}">${esc(x.id)} · ${esc(x.title)}</button></td><td>v${i===0?'2.1':'1.3'}</td><td>${x.status==='Đang sử dụng'?'Đã phát hành':esc(x.status)}</td><td>${['Trần An · 01/10','Mai Lan · 28/09','Trần An · 03/10'][i%3]}</td></tr>`).join('')||'<tr><td colspan="4">Không tìm thấy mẫu phù hợp.</td></tr>'}
+    </tbody></table></div></section>
+    <section class="figma-card admin-tint-pink"><h2>Trình chỉnh sửa: ${active?`${esc(active.id)} v2.2`:'Chưa chọn mẫu'}</h2><p>Bản nháp tạo từ phiên bản đã phát hành.</p>
+      <div class="admin-form-grid"><div class="form-field"><label>Tên mẫu *</label><input value="${esc(active?.title||'')}"></div><div class="form-field"><label>Loại công việc *</label><select><option>Làm việc trên cao</option><option>Thiết bị</option><option>Điện</option></select></div>
+      <div class="form-field admin-span-all"><label>Nhóm kiểm tra *</label><input value="Bảo vệ mép sàn"></div><div class="form-field admin-span-all"><label>Nội dung mục *</label><input value="Lan can bảo vệ đủ chiều cao và liên tục"></div>
+      <div class="form-field"><label>Kiểu trả lời *</label><select><option>Đạt / Không đạt / Không áp dụng</option></select></div><div class="form-field"><label>Quy tắc minh chứng</label><label class="admin-check-label"><input type="checkbox" checked> Bắt buộc ghi chú và ảnh nếu Không đạt</label></div></div>
+      <div class="admin-form-actions"><button class="btn btn-primary btn-sm" data-action="edit-checklist" data-id="${esc(active?.id||'')}">+ Thêm mục</button><button class="btn btn-light btn-sm" data-action="edit-checklist" data-id="${esc(active?.id||'')}">+ Thêm nhóm</button><button class="btn btn-light btn-sm" data-action="edit-checklist" data-id="${esc(active?.id||'')}">Lưu nháp</button><button class="btn btn-light btn-sm" data-action="edit-checklist" data-id="${esc(active?.id||'')}">Xem trước</button></div>
+    </section>
+    <div class="admin-two-col"><section class="figma-card admin-tint-orange"><h2>Xem trước mẫu</h2><strong>Bảo vệ mép sàn · 3 mục</strong><p>1. Lan can bảo vệ đủ chiều cao cao 2. Dải chân chắn ngăn vật rơi 3. Lối tiếp cận có cảnh báo</p><small>Không đạt → yêu cầu ghi chú + ảnh → tạo nguy cơ có liên kết.</small></section><section class="figma-card admin-tint-red"><h2>Lịch sử phiên bản</h2><p>v2.2 · Bản nháp · Trần An · 03/10 v2.1 · Đã phát hành · Trần An · 01/10 · CL-018 v2.0 · Đã lưu trữ · 15/09</p><div class="admin-warning">Giữ phiên bản lịch sử<br>CL-018 / IN-018 dùng TMP-01 v2.1. Mọi thay đổi của mẫu đã phát hành tạo phiên bản riêng.</div></section></div>
+    <section class="figma-card"><h2>Phát hành / nhân bản / lưu trữ</h2><div class="admin-form-actions"><button class="btn btn-primary btn-sm" data-action="toggle-checklist" data-id="${esc(active?.id||'')}">Phát hành v2.2</button><button class="btn btn-light btn-sm" data-action="new-checklist">Nhân bản mẫu</button><button class="btn btn-light btn-sm" data-action="toggle-checklist" data-id="${esc(active?.id||'')}">Lưu trữ v2.0</button></div><div class="form-field"><label>Ghi chú thay đổi *</label><input value="Bổ sung kiểm tra điểm neo; không thay lịch sử kiểm tra cũ."></div><p>Xác nhận phát hành chỉ khi có đủ nhóm, nội dung và quy tắc minh chứng.</p><button class="btn btn-primary btn-sm" data-action="toggle-checklist" data-id="${esc(active?.id||'')}">Xác nhận phát hành</button></section>
+    <p class="reference-foot">admin-checklist-template-management.html · Quyền thao tác theo vai trò được gán. Mọi thay đổi ghi lịch sử và minh chứng.</p>
+  </div>`;
+}
+function adminZonesPage(){
+  const list=db.zones.filter(x=>(`${x.id} ${x.name} ${x.type}`.toLowerCase().includes(searchTerm.toLowerCase()))&&(activeFilter==='Tất cả'||x.status===activeFilter));
+  const selected=list[0]||db.zones[0];
+  return `<div class="admin-reference">
+    <div class="crumb">Quản trị viên / Khu vực</div>
+    <div class="figma-page-title"><div><h1>Khu vực</h1><p>Mã khu vực nhất quán cho checklist, nguy cơ, nhân công và sơ đồ.</p></div>${btn('+ Tạo khu vực','new-zone')}</div>
+    <div class="data-caption">Dữ liệu minh họa · 03/10/2026 · Không phải số liệu thực tế</div>
+    <div class="dashboard-filters admin-filters"><label>Tìm kiếm<input id="searchInput" placeholder="Mã, nội dung hoặc người phụ trách" value="${esc(searchTerm)}"></label><label>Công trường<select><option>Riverside – Khối A</option></select></label><label>Bộ lọc<select id="statusFilter">${['Tất cả','Đang thi công','Tạm dừng','Lưu trữ'].map(x=>`<option ${activeFilter===x?'selected':''}>${x}</option>`).join('')}</select></label></div>
+    <section class="figma-card admin-table-card"><h2>Khu vực của Riverside – Khối A</h2><div class="table-wrap"><table><thead><tr><th>Mã / tên</th><th>Vị trí</th><th>Giám sát</th><th>Trạng thái</th></tr></thead><tbody>
+    ${list.map((x,i)=>`<tr><td><button class="admin-link" data-action="edit-zone" data-id="${esc(x.id)}">${esc(x.id)} · ${esc(x.name)}</button></td><td>${['Khối A · cao độ tầng 2','Khối A · tầng 1','Phía tây công trường','Phía nam'][i%4]}</td><td>${['Lê Hoàng','Lê Hoàng','Mai Lan','Phạm Dũng'][i%4]}</td><td>${x.status==='Đang thi công'?'Hoạt động':esc(x.status)}</td></tr>`).join('')||'<tr><td colspan="4">Không tìm thấy khu vực phù hợp.</td></tr>'}
+    </tbody></table></div><small>Hiện có ${list.length} / ${db.zones.length} khu vực · ${db.zones.filter(x=>x.status==='Đang thi công').length} hoạt động · ${db.zones.filter(x=>x.status!=='Đang thi công').length} lưu trữ.</small></section>
+    <section class="figma-card"><h2>Sơ đồ vị trí tham chiếu</h2><div class="admin-zone-map"><small>BẮC ↑ · RIVERSIDE – KHỐI A · SƠ ĐỒ VẬN HÀNH</small><div class="admin-zone-map-row">${list.slice(0,2).map(x=>`<article class="admin-map-zone ${x.risk==='Cao'?'danger':x.risk==='Trung bình'?'warning':'safe'}"><strong>${x.risk==='Cao'?'!':'△'} ${esc(x.name)}</strong><p>${esc(x.workers)} người · ${esc(x.risk)} nguy cơ</p><button class="text-btn" data-action="edit-zone" data-id="${esc(x.id)}">Xem khu vực →</button></article>`).join('')}</div><div class="admin-map-divider">LỐI NỘI BỘ · KHÔNG PHẢI THANG TỶ LỆ</div><div class="admin-zone-map-row">${list.slice(2,4).map(x=>`<article class="admin-map-zone ${x.risk==='Cao'?'danger':x.risk==='Trung bình'?'warning':'safe'}"><strong>${esc(x.id)} · ${esc(x.name)}</strong><p>${esc(x.risk)} · ${esc(x.workers)} người</p></article>`).join('')}</div></div><p class="reference-foot">Quy tắc màu: đỏ nguy cơ cao chưa đóng; vàng nguy cơ trung bình; xanh nguy cơ thấp; xám thiếu dữ liệu.</p></section>
+    <section class="figma-card"><h2>Mẫu ngắn tạo / chỉnh sửa</h2><form id="adminZoneForm" data-zone-id="${esc(selected?.id||'')}"><div class="admin-form-grid"><div class="form-field"><label>Mã khu vực *</label><input value="${esc(selected?.id||'')}" disabled></div><div class="form-field"><label>Tên khu vực *</label><input name="name" value="${esc(selected?.name||'')}" required></div><div class="form-field"><label>Vị trí *</label><input value="Khối A · tầng 2 · phía đông"></div><div class="form-field"><label>Người giám sát *</label><input value="Lê Hoàng"></div><div class="form-field admin-span-all"><label>Trạng thái *</label><select name="status">${['Đang thi công','Tạm dừng','Hoàn thành'].map(x=>`<option ${selected?.status===x?'selected':''}>${x}</option>`).join('')}</select></div></div><div class="admin-form-actions"><button class="btn btn-primary btn-sm" type="submit">Lưu khu vực</button><button class="btn btn-light btn-sm" type="reset">Hủy</button></div></form></section>
+    <div class="admin-warning">Không thể lưu trữ ${esc(selected?.id||'khu vực')} lúc này.<br>Đang có nguy cơ và hành động chưa xử lý liên quan; chuyển trách nhiệm và xử lý liên kết trước, không xóa hoặc làm ảnh hưởng lịch sử.</div>
+    <section class="figma-card"><h2>Xác nhận lưu trữ ${esc(db.zones[db.zones.length-1]?.id||'khu vực')}</h2><p>Khu vực ngừng xuất hiện trong lựa chọn mới. Các báo cáo và ảnh cũ vẫn hiển thị mã, tên và người phụ trách lịch sử.</p><div class="admin-form-actions"><button class="btn btn-primary btn-sm" data-action="archive-zone" data-id="${esc(db.zones[db.zones.length-1]?.id||'')}">Xác nhận lưu trữ</button><button class="btn btn-light btn-sm" data-action="activate-zone" data-id="${esc(db.zones[db.zones.length-1]?.id||'')}">Giữ hoạt động</button></div></section>
+    <p class="reference-foot">admin-zone-management.html · Quyền thao tác theo vai trò được gán. Mọi thay đổi ghi lịch sử và minh chứng.</p>
+  </div>`;
+}
+function adminSitesPage(){
+  const list=db.sites.filter(x=>(`${x.id} ${x.name} ${x.manager}`.toLowerCase().includes(searchTerm.toLowerCase()))&&(activeFilter==='Tất cả'||x.status===activeFilter));
+  return `<div class="admin-reference">
+    <div class="crumb">Quản trị viên / Công trường</div>
+    <div class="figma-page-title"><div><h1>Công trường</h1><p>Danh mục dự án và phạm vi vận hành · Tên tệp đề xuất bổ sung.</p></div>${btn('+ Tạo công trường','new-site')}</div>
+    <div class="data-caption">Dữ liệu minh họa · 03/10/2026 · Không phải số liệu thực tế</div>
+    <div class="dashboard-filters admin-filters"><label>Tìm kiếm<input id="searchInput" placeholder="Mã, nội dung hoặc người phụ trách" value="${esc(searchTerm)}"></label><label>Công trường<select><option>Riverside – Khối A</option></select></label><label>Bộ lọc<select id="statusFilter">${['Tất cả','Đang hoạt động','Tạm dừng','Lưu trữ'].map(x=>`<option ${activeFilter===x?'selected':''}>${x}</option>`).join('')}</select></label></div>
+    <div class="admin-site-grid">${list.slice(0,2).map(x=>`<article class="figma-card admin-site-card"><h2>${esc(x.name)}</h2><p>${esc(x.id)} · Địa chỉ minh họa: ${esc(x.address)}</p><div class="admin-status">${badge(x.status)}</div><p>Quản lý: ${esc(x.manager)} · ${x.startDate}–${x.endDate} / ${x.zones} khu vực ${x.status==='Tạm dừng'?'· tạm dừng thi công':''}</p><div class="admin-form-actions"><button class="btn btn-primary btn-sm" data-action="edit-site" data-id="${esc(x.id)}">Chỉnh sửa</button><button class="btn btn-light btn-sm" data-action="view-site-zones" data-id="${esc(x.id)}">Xem khu vực</button>${x.status==='Đang hoạt động'?`<button class="btn btn-light btn-sm" data-action="toggle-site" data-id="${esc(x.id)}">Tạm dừng</button>`:`<button class="btn btn-light btn-sm" data-action="toggle-site" data-id="${esc(x.id)}">Kích hoạt lại</button>`}</div></article>`).join('')}</div>
+    <section class="figma-card admin-table-card"><h2>Danh mục công trường</h2><div class="table-wrap"><table><thead><tr><th>Mã / tên</th><th>Quản lý</th><th>Khu vực</th><th>Trạng thái</th></tr></thead><tbody>${list.map(x=>`<tr><td><button class="admin-link" data-action="edit-site" data-id="${esc(x.id)}">${esc(x.id)} · ${esc(x.name)}</button></td><td>${esc(x.manager)}</td><td>${x.zones} đang hoạt động</td><td>${esc(x.status)}</td></tr>`).join('')}</tbody></table></div></section>
+    <section class="figma-card"><h2>Mẫu ngắn tạo / chỉnh sửa</h2><form id="adminSiteForm"><div class="admin-form-grid"><div class="form-field"><label>Mã công trường *</label><input value="RS-A" disabled></div><div class="form-field"><label>Tên *</label><input name="name" value="${esc(db.sites[0]?.name||'')}" required></div><div class="form-field admin-span-all"><label>Địa chỉ *</label><input name="address" value="${esc(db.sites[0]?.address||'')}" required></div><div class="form-field"><label>Ngày bắt đầu *</label><input name="startDate" type="date" value="${esc(db.sites[0]?.startDate||'')}" required></div><div class="form-field"><label>Ngày kết thúc dự kiến *</label><input name="endDate" type="date" value="${esc(db.sites[0]?.endDate||'')}" required></div><div class="form-field"><label>Quản lý *</label><input name="manager" value="${esc(db.sites[0]?.manager||'')}" required></div><div class="form-field"><label>Trạng thái *</label><select name="status">${['Đang hoạt động','Tạm dừng','Lưu trữ'].map(x=>`<option ${db.sites[0]?.status===x?'selected':''}>${x}</option>`).join('')}</select></div></div><div class="admin-form-actions"><button class="btn btn-primary btn-sm" type="submit">Lưu công trường</button><button class="btn btn-light btn-sm" type="reset">Hủy</button></div></form></section>
+    <section class="figma-card"><h2>Xác nhận lưu trữ công trường</h2><div class="admin-warning">Lưu trữ không xóa bằng chứng<br>Không thể kiểm tra hay nguy cơ mới; dữ liệu lịch sử vẫn được giữ lại.</div><div class="form-field"><label>Lý do *</label><input value="Kết thúc công trường phụ trợ; đã xác nhận hết việc mở."></div><div class="admin-form-actions"><button class="btn btn-primary btn-sm" data-action="archive-site" data-id="${esc(db.sites[0]?.id||'')}">Xác nhận lưu trữ</button><button class="btn btn-light btn-sm" data-action="activate-site" data-id="${esc(db.sites[0]?.id||'')}">Hủy</button></div></section>
+    <p class="reference-foot">admin-site-management.html · Quyền thao tác theo vai trò được gán. Mọi thay đổi ghi lịch sử và minh chứng.</p>
+  </div>`;
+}
+function aiPage(){return `${heading('Trợ lý AI an toàn','Ba luồng AI mô phỏng: phân loại nguy cơ, sinh checklist và phân tích điểm nóng. Kết quả cần được con người kiểm tra.', '')}<div class="notice">Đây là mô phỏng trải nghiệm AI bằng quy tắc cục bộ, không gọi mô hình AI hoặc API bên ngoài. Không tải thông tin nhạy cảm lên nguyên mẫu.</div><div class="ai-grid"><article class="ai-card"><div class="stat-icon">⚠</div><h3>1. Phân loại nguy cơ</h3><p>Đề xuất mức độ, nhóm nguy cơ và biện pháp ban đầu từ mô tả hiện trường.</p>${btn('Bắt đầu phân loại','ai-classify','light')}</article><article class="ai-card"><div class="stat-icon">☑</div><h3>2. Sinh checklist</h3><p>Tạo danh sách kiểm tra theo công việc, khu vực và mức rủi ro.</p>${btn('Tạo checklist','ai-checklist','light')}</article><article class="ai-card"><div class="stat-icon">⌖</div><h3>3. Điểm nóng rủi ro</h3><p>Tóm tắt khu vực cần ưu tiên từ các nguy cơ đang mở.</p>${btn('Phân tích khu vực','ai-hotspot','light')}</article></div><section class="content-card" id="aiWorkspace" style="margin-top:18px"><h2>Không gian làm việc AI</h2><p>Chọn một luồng ở trên. Mỗi luồng có nhập liệu, kiểm tra hợp lệ, trạng thái xử lý, kết quả giải thích và thao tác chấp nhận / chỉnh sửa / từ chối / tạo lại.</p>${empty('Chưa có yêu cầu AI','Chọn một trong ba chức năng để bắt đầu.')}</section>`}
+function aiForm(kind){aiKind=kind;aiResult=null;const cfg={classify:{title:'Phân loại nguy cơ',desc:'Mô tả điều quan sát được tại hiện trường.',fields:`<div class="form-field"><label for="aiDescription">Mô tả hiện trường *</label><textarea id="aiDescription" required minlength="12" placeholder="Ví dụ: Lan can tầng 4 chưa được lắp, công nhân đang làm gần mép sàn…"></textarea><small>Ít nhất 12 ký tự. Tránh nhập dữ liệu cá nhân.</small></div><div class="form-field"><label for="aiZone">Khu vực</label><select id="aiZone">${db.zones.map(z=>`<option>${esc(z.name)}</option>`).join('')}</select></div>`},checklist:{title:'Sinh checklist an toàn',desc:'Xác định công việc để tạo danh sách kiểm tra ban đầu.',fields:`<div class="form-field"><label for="aiWork">Công việc *</label><input id="aiWork" required minlength="3" placeholder="Ví dụ: Làm việc trên cao"></div><div class="form-field"><label for="aiRisk">Mức độ rủi ro dự kiến</label><select id="aiRisk"><option>Cao</option><option>Trung bình</option><option>Thấp</option></select></div>`},hotspot:{title:'Phân tích điểm nóng',desc:'Tổng hợp nguy cơ đang mở để đề xuất khu vực ưu tiên.',fields:`<div class="form-field"><label for="aiScope">Phạm vi phân tích</label><select id="aiScope"><option>Toàn bộ công trường</option>${db.zones.map(z=>`<option>${esc(z.name)}</option>`).join('')}</select></div><div class="form-field"><label for="aiExtra">Ghi chú bổ sung (không bắt buộc)</label><textarea id="aiExtra" placeholder="Thông tin quan sát thêm…"></textarea></div>`}}[kind];$('#aiWorkspace').innerHTML=`<div class="panel-head"><div><h2>${cfg.title}</h2><div class="panel-sub">${cfg.desc}</div></div><button class="text-btn" data-action="ai-clear">Đóng / làm lại</button></div><form id="aiForm" data-kind="${kind}">${cfg.fields}<div class="modal-actions"><button type="button" class="btn btn-light" data-action="ai-clear">Hủy</button><button class="btn btn-primary" type="submit">Phân tích đề xuất</button></div></form><div id="aiOutput"></div>`;$('#aiWorkspace').scrollIntoView({behavior:'smooth',block:'start'})}
+function runAI(form){const kind=form.dataset.kind;const data=kind==='classify'?{aiDescription:$('#aiDescription')?.value||'',aiZone:$('#aiZone')?.value||''}:kind==='checklist'?{aiWork:$('#aiWork')?.value||'',aiRisk:$('#aiRisk')?.value||'Trung bình'}:{aiScope:$('#aiScope')?.value||'Toàn bộ công trường',aiExtra:$('#aiExtra')?.value||''};if(kind==='classify'&&(!data.aiDescription||data.aiDescription.trim().length<12)){toast('Mô tả cần ít nhất 12 ký tự.');$('#aiDescription').focus();return}if(kind==='checklist'&&(!data.aiWork||data.aiWork.trim().length<3)){toast('Hãy nhập tên công việc.');return}const out=$('#aiOutput');out.innerHTML=`<div class="ai-result" style="margin-top:16px"><strong>Đang phân tích yêu cầu…</strong><div class="loading-pulse"></div><div class="loading-pulse" style="width:72%"></div><p>Đang kiểm tra đầu vào và tạo kết quả mô phỏng.</p></div>`;setTimeout(()=>{let result;if(kind==='classify'){const d=data.aiDescription.toLowerCase();const high=/mép sàn|lan can|không có dây an toàn|ngã cao|điện giật|cháy|sập/i.test(d);const medium=/dây điện|lối đi|vật liệu|trượt|vấp/i.test(d);result={title:'Đề xuất phân loại nguy cơ',category:high?'Làm việc trên cao / nguy cơ nghiêm trọng':medium?'Điện / vấp ngã / cản trở lối đi':'Nguy cơ cần xác minh tại hiện trường',level:high?'Cao':medium?'Trung bình':'Chưa đủ dữ liệu',confidence:high?88:medium?73:42,explain:high?'Mô tả có từ khóa liên quan đến mép sàn hoặc làm việc trên cao. Cần xác minh biện pháp bảo vệ tập thể.':medium?'Mô tả có dấu hiệu liên quan dây dẫn hoặc lối đi. Cần kiểm tra điều kiện thực tế.':'Mô tả chưa chứa dấu hiệu đủ rõ để xác định mức độ. Cán bộ an toàn cần bổ sung ảnh, vị trí và hậu quả tiềm ẩn.',action:high?'Cô lập khu vực nguy hiểm; kiểm tra lan can, rào chắn và phương án chống ngã.':medium?'Cảnh báo khu vực; sắp xếp lối đi hoặc bảo vệ dây dẫn; kiểm tra lại tại chỗ.':'Dùng đánh giá thủ công; bổ sung mô tả cụ thể và kiểm tra theo quy trình.',zone:data.aiZone,raw:data.aiDescription,kind};}else if(kind==='checklist'){const high=data.aiRisk==='Cao';result={title:'Checklist đề xuất: '+data.aiWork,category:'Checklist công việc',level:data.aiRisk,confidence:high?81:68,explain:`Danh sách được tạo theo tên công việc “${data.aiWork}” và mức rủi ro ${data.aiRisk.toLowerCase()}. Đây là bản nháp, chưa được chuyên gia xác nhận.`,items:high?['Kiểm tra điều kiện và giấy phép làm việc','Kiểm tra thiết bị bảo hộ cá nhân','Kiểm tra rào chắn và vùng nguy hiểm','Kiểm tra thiết bị / dụng cụ trước khi dùng','Họp phổ biến nguy cơ đầu ca','Xác nhận người giám sát','Dừng việc nếu điều kiện không an toàn']:['Xác nhận khu vực làm việc đã được phổ biến','Kiểm tra thiết bị và bảo hộ cần thiết','Kiểm tra lối đi và vệ sinh khu vực','Ghi nhận bất thường trước khi bắt đầu'],raw:data.aiWork,kind};}else{const scoped=db.risks.filter(r=>r.status!=='Đã khắc phục'&&(data.aiScope==='Toàn bộ công trường'||r.zone===data.aiScope));const counts={};scoped.forEach(r=>counts[r.zone]=(counts[r.zone]||0)+(r.level==='Cao'?2:r.level==='Trung bình'?1:0.5));const top=Object.entries(counts).sort((a,b)=>b[1]-a[1])[0];result={title:'Điểm nóng cần xem xét',category:'Ưu tiên kiểm tra',level:scoped.some(r=>r.level==='Cao')?'Cao':'Trung bình',confidence:scoped.length?Math.min(90,55+scoped.length*8):35,explain:scoped.length?`Tổng hợp ${scoped.length} nguy cơ chưa khắc phục trong phạm vi đã chọn. Điểm số ưu tiên chỉ dựa trên mức độ được ghi trong dữ liệu demo.`:'Không tìm thấy nguy cơ đang mở trong phạm vi này. Kết quả có thể thiếu dữ liệu mới.',action:top?`Ưu tiên kiểm tra ${top[0]} trước; xác minh trực tiếp hiện trường và hạn chế rủi ro ngay nếu cần.`:'Bổ sung báo cáo nguy cơ hoặc kiểm tra thủ công.',zone:top?.[0]||data.aiScope,items:scoped.map(r=>`${r.id}: ${r.title} (${r.level})`),kind};}aiResult=result;renderAIResult(result);},650)}
+function renderAIResult(r){const low=r.confidence<55;$('#aiOutput').innerHTML=`<div class="ai-result" style="margin-top:16px"><div class="panel-head"><h3>${esc(r.title)}</h3>${badge(low?'AI chưa chắc chắn':`Tin cậy mô phỏng ${r.confidence}%`)}</div><div class="stat-top"><span>Mức ưu tiên đề xuất</span>${badge(r.level)}</div><div class="confidence"><span style="width:${r.confidence}%"></span></div><p><strong>Vì sao có kết quả này?</strong><br>${esc(r.explain)}</p>${r.category?`<p><strong>Nhóm:</strong> ${esc(r.category)}</p>`:''}${r.action?`<p><strong>Đề xuất ban đầu:</strong> ${esc(r.action)}</p>`:''}${r.zone?`<p><strong>Khu vực:</strong> ${esc(r.zone)}</p>`:''}${r.items?`<ul>${r.items.map(i=>`<li>${esc(i)}</li>`).join('')}</ul>`:''}${low?`<div class="notice error">AI chưa chắc chắn hoặc thiếu dữ liệu. Hãy chỉnh sửa đầu vào, thử lại, bỏ qua đề xuất hoặc sử dụng đánh giá thủ công.</div>`:`<div class="notice">Kết quả có thể sai. Hãy kiểm tra tại hiện trường; không tự động xem đây là quyết định an toàn cuối cùng.</div>`}<div class="ai-actions"><button class="btn btn-primary" data-action="ai-accept">Chấp nhận & lưu</button><button class="btn btn-light" data-action="ai-edit">Sửa kết quả</button><button class="btn btn-light" data-action="ai-regenerate">Tạo lại</button><button class="btn btn-light" data-action="ai-reject">Từ chối / bỏ qua</button><button class="btn btn-light" data-action="ai-manual">Dùng thủ công</button><button class="btn btn-light" data-action="ai-report-error">Báo cáo kết quả</button></div></div>`}
+function modalForm(title,fields,submitLabel='Lưu thông tin'){modalConfig={title,fields};$('#modalTitle').textContent=title;$('#modalBody').innerHTML=`<form id="entityForm">${fields.map(f=>`<div class="form-field"><label for="f-${f.name}">${f.label}${f.required?' *':''}</label>${f.type==='select'?`<select id="f-${f.name}" name="${f.name}" ${f.required?'required':''}>${f.options.map(o=>`<option ${o===f.value?'selected':''}>${esc(o)}</option>`).join('')}</select>`:f.type==='textarea'?`<textarea id="f-${f.name}" name="${f.name}" ${f.required?'required':''} ${f.minlength?`minlength="${f.minlength}"`:''}>${esc(f.value||'')}</textarea>`:`<input id="f-${f.name}" name="${f.name}" type="${f.type||'text'}" value="${esc(f.value||'')}" ${f.required?'required':''} ${f.minlength?`minlength="${f.minlength}"`:''} ${f.type==='number'?'min="0"':''}>`}${f.help?`<small>${f.help}</small>`:''}</div>`).join('')}<div class="modal-actions"><button type="button" class="btn btn-light" data-action="close-modal">Hủy</button><button type="submit" class="btn btn-primary">${submitLabel}</button></div></form>`;$('#modalBackdrop').classList.add('open');setTimeout(()=>$('#modalBody input,#modalBody select,#modalBody textarea')?.focus(),50)}
+function openEntity(type,id){const collection={risk:'risks',inspection:'inspections',action:'actions',zone:'zones',checklist:'checklists',user:'users'}[type];const old=id?db[collection].find(x=>x.id===id):null;const f=(name,label,opts={})=>({name,label,...opts,value:old?.[name]??opts.value??''});const fields={risk:[f('title','Tên nguy cơ',{required:true,minlength:5}),f('zone','Khu vực',{required:true,type:'select',options:db.zones.map(x=>x.name)}),f('level','Mức độ',{required:true,type:'select',options:['Cao','Trung bình','Thấp'],value:'Trung bình'}),f('status','Trạng thái',{required:true,type:'select',options:['Mới ghi nhận','Đang xử lý','Đã khắc phục']}),f('owner','Người phụ trách',{required:true}),f('date','Ngày ghi nhận',{required:true,type:'date',value:'2026-10-20'}),f('desc','Mô tả hiện trường',{type:'textarea',required:true,minlength:10})],inspection:[f('title','Nội dung kiểm tra',{required:true,minlength:3}),f('zone','Khu vực',{required:true,type:'select',options:db.zones.map(x=>x.name)}),f('date','Ngày kiểm tra',{required:true,type:'date',value:'2026-10-21'}),f('time','Giờ kiểm tra',{required:true,type:'time',value:'08:30'}),f('assignee','Người phụ trách',{required:true}),f('status','Trạng thái',{required:true,type:'select',options:['Đã lên lịch','Đang thực hiện','Hoàn thành']}),f('note','Ghi chú',{type:'textarea'})],action:[f('title','Hành động khắc phục',{required:true,minlength:4}),f('risk','Mã nguy cơ liên quan',{required:true,type:'select',options:db.risks.map(x=>x.id)}),f('owner','Người phụ trách',{required:true}),f('due','Hạn hoàn thành',{required:true,type:'date',value:'2026-10-22'}),f('priority','Ưu tiên',{required:true,type:'select',options:['Cao','Trung bình','Thấp'],value:'Trung bình'}),f('status','Trạng thái',{required:true,type:'select',options:['Chưa thực hiện','Đang thực hiện','Hoàn thành']}),f('note','Biện pháp / ghi chú',{type:'textarea',required:true,minlength:5})],zone:[f('name','Tên khu vực',{required:true,minlength:3}),f('type','Loại công việc',{required:true}),f('workers','Số người làm việc',{required:true,type:'number'}),f('risk','Mức độ rủi ro',{required:true,type:'select',options:['Cao','Trung bình','Thấp'],value:'Trung bình'}),f('status','Trạng thái',{required:true,type:'select',options:['Đang thi công','Tạm dừng','Hoàn thành']}),f('note','Ghi chú',{type:'textarea'})],checklist:[f('title','Tên mẫu checklist',{required:true,minlength:3}),f('category','Nhóm công việc',{required:true}),f('items','Số hạng mục',{required:true,type:'number',value:8}),f('status','Trạng thái',{required:true,type:'select',options:['Đang sử dụng','Bản nháp','Lưu trữ'],value:'Bản nháp'})],user:[f('name','Họ tên',{required:true,minlength:3}),f('email','Email',{required:true,type:'email'}),f('role','Vai trò',{required:true,type:'select',options:['Công nhân','Cán bộ an toàn','Quản lý công trường','Quản trị hệ thống']}),f('status','Trạng thái',{required:true,type:'select',options:['Đang hoạt động','Đã khóa'],value:'Đang hoạt động'})]}[type];modalForm(`${old?'Cập nhật':'Tạo mới'} ${({risk:'nguy cơ',inspection:'lịch kiểm tra',action:'hành động khắc phục',zone:'khu vực',checklist:'mẫu checklist',user:'người dùng'})[type]}`,fields);$('#entityForm').dataset.type=type;$('#entityForm').dataset.id=id||''}
+function submitEntity(form){const type=form.dataset.type,id=form.dataset.id;const values=Object.fromEntries(new FormData(form).entries());if(type==='risk'&&values.desc.trim().length<10){toast('Mô tả cần ít nhất 10 ký tự.');return}const collection={risk:'risks',inspection:'inspections',action:'actions',zone:'zones',checklist:'checklists',user:'users'}[type];let target=id?db[collection].find(x=>x.id===id):null;if(target)Object.assign(target,values);else{const prefix={risk:'RS',inspection:'KT',action:'KP',zone:'KV',checklist:'CL',user:'U'}[type];const num=String(Math.max(0,...db[collection].map(x=>parseInt((x.id.match(/\d+/)||['0'])[0],10)))+1).padStart(3,'0');target={id:`${prefix}-${num}`,...values};if(type==='checklist'){target.items=Number(target.items);target.updated='2026-10-20'}if(type==='zone')target.workers=Number(target.workers);db[collection].unshift(target)}saveDB();closeModal();toast(id?'Đã cập nhật bản ghi.':'Đã tạo bản ghi mới.');renderPage()}
+function closeModal(){$('#modalBackdrop').classList.remove('open');modalConfig=null}
+function exportCSV(collection){const rows=db[collection];if(!rows?.length){toast('Không có dữ liệu để xuất.');return}const cols=[...new Set(rows.flatMap(Object.keys))];const csv='\ufeff'+[cols.join(','),...rows.map(r=>cols.map(c=>'"'+String(r[c]??'').replace(/"/g,'""')+'"').join(','))].join('\r\n');const url=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8;'}));const a=document.createElement('a');a.href=url;a.download=`sitesafe-${collection}.csv`;a.click();URL.revokeObjectURL(url);toast('Đã tạo tệp CSV.')}
+function renderPage(){renderNav();searchTerm='';activeFilter='Tất cả';if(currentPage!=='profile')profileSaved=false;const p=$('#pageContent');const pages={'dashboard':dashboard,'risks':risksPage,'inspections':inspectionsPage,'actions':actionsPage,'zones':zonesPage,'reports':reportsPage,'checklists':checklistsPage,'users':usersPage,'sites':adminSitesPage,'ai':aiPage,'worker-home':workerHome,'worker-checklist':workerChecklist,'worker-report':workerReport,'worker-history':workerHistory,'manager-home':managerHome,'admin-home':adminHome,'help':helpPage,'profile':profilePage};p.innerHTML=(pages[currentPage]||dashboard)();if(currentPage==='profile'&&profileSaved)$('#profileSaved').hidden=false;}
+function workerHome(){return `${heading('Tổng quan nhân sự hiện trường','Thông tin ca làm, khu vực phụ trách và việc cần hoàn thành.',btn('Hoàn thành checklist','worker-checklist','light')+btn('Báo cáo nguy cơ','worker-report'))}<div class="stats-grid">${stat('Checklist cần làm',2,'Trước khi bắt đầu công việc','☑')}${stat('Nguy cơ đang mở',db.risks.filter(x=>x.status!=='Đã khắc phục').length,'Trong dữ liệu demo','⚠')}${stat('Báo cáo của tôi',db.risks.filter(x=>x.owner==='Nguyễn Văn Nam').length,'Đã gửi trên hệ thống','▤')}${stat('Khu vực',1,'Khối A · Tầng 4','⌖')}</div><section class="content-card"><h2>Nhắc nhở an toàn đầu ca</h2><p>Kiểm tra trang bị bảo hộ, đọc hướng dẫn công việc và báo ngay nếu phát hiện nguy cơ. Không bắt đầu việc nếu điều kiện an toàn chưa được xác nhận.</p>${btn('Mở checklist','worker-checklist')}</section>`}
+function workerChecklist(){
+  const state=workerChecklistState;
+  const counts=Object.values(state.statuses).reduce((total,status)=>{total[status]=(total[status]||0)+1;return total},{});
+  const linkedRisk=workerChecklistItems.find(item=>item.critical&&state.statuses[item.id]==='fail');
+  const steps=['Chuẩn bị','Bảo vệ mép sàn','Thiết bị','Xem lại'];
+  const stepBody=state.step===1?`<div class="worker-step-intro">Xác nhận công trường, khu vực và loại công việc trước khi bắt đầu kiểm tra.</div>`:state.step===2?`<div class="worker-checklist-items">
+    ${workerChecklistItems.slice(0,3).map(item=>{const status=state.statuses[item.id]||'';const failed=status==='fail';return `<article class="worker-check-item ${failed?'is-failed':''}">
+      <strong>${esc(item.title)} *</strong>
+      <fieldset><legend class="visually-hidden">${esc(item.title)}</legend>
+        ${[['pass','Đạt'],['fail','Không đạt'],['na','Không áp dụng']].map(([value,label])=>`<label><input type="radio" name="${esc(item.id)}" value="${value}" ${status===value?'checked':''} required> ${label}</label>`).join('')}
+      </fieldset>
+      ${failed?`<label class="worker-detail-field">Ghi chú khi không đạt *<input data-checklist-note="${esc(item.id)}" value="${esc(state.notes[item.id]||'')}" placeholder="Mô tả tình trạng và khu vực cụ thể" required></label>
+      ${item.critical?`<label class="worker-evidence-upload" for="workerChecklistEvidence"><span aria-hidden="true">⇧</span><strong>Thêm ảnh hoặc kéo thả vào đây</strong><small>JPG, PNG, PDF · tối đa 10 MB/tệp · tối đa 5 tệp.</small><span class="worker-file-button">Chọn tệp</span><input id="workerChecklistEvidence" class="visually-hidden" type="file" accept="image/jpeg,image/png,application/pdf" multiple><span id="workerChecklistEvidenceNames">${[...new Set([...state.evidenceNames,...workerChecklistFiles.map(file=>file.name)])].map(esc).join(' · ')}</span></label>
+      <div class="worker-linked-risk"><strong>Liên kết nguy cơ ${esc(item.link)}</strong><span>Mục không đạt được ghi trong checklist và chuyển sang báo nguy cơ; không bị xóa khi gửi.</span></div>`:''}`:''}
+    </article>`}).join('')}
+  </div>`:state.step===3?`<div class="worker-checklist-items">
+    ${workerChecklistItems.slice(3).map(item=>{const status=state.statuses[item.id]||'';return `<article class="worker-check-item"><strong>${esc(item.title)} *</strong><fieldset><legend class="visually-hidden">${esc(item.title)}</legend>${[['pass','Đạt'],['fail','Không đạt'],['na','Không áp dụng']].map(([value,label])=>`<label><input type="radio" name="${esc(item.id)}" value="${value}" ${status===value?'checked':''} required> ${label}</label>`).join('')}</fieldset></article>`}).join('')}
+  </div>`:`<div class="worker-review">
+    <strong>8 mục · ${counts.pass||0} Đạt · ${counts.fail||0} Không đạt · ${counts.na||0} Không áp dụng</strong>
+    <p>${linkedRisk?`Nguy cơ có liên kết: ${esc(linkedRisk.link)} · Thiếu lan can tại mép sàn`:'Không có mục không đạt cần liên kết nguy cơ.'}</p>
+    <label class="worker-confirm"><input type="checkbox" name="confirmed" ${state.confirmed?'checked':''}> Tôi xác nhận kết quả phản ánh quan sát thực tế; checklist không phải giấy chứng nhận công trường an toàn.</label>
+  </div>`;
+  return `<div class="worker-checklist-page">
+    <div class="crumb">Nhân sự hiện trường / Checklist an toàn</div>
+    <div class="worker-checklist-title"><div><h1>Checklist an toàn</h1><p>CL-018 · Kiểm tra trước ca · ${esc(roleConfig[currentRole].name)} · 03/10/2026</p></div><button class="btn btn-primary btn-sm" type="button" data-checklist-submit>Gửi checklist</button></div>
+    <div class="data-caption">Dữ liệu minh họa · 03/10/2026 · Không phải số liệu thực tế</div>
+    <form id="workerChecklistForm" novalidate>
+      <section class="worker-checklist-card"><h2>Ngữ cảnh kiểm tra</h2><div class="worker-context-grid">
+        <label>Công trường *<select name="site" data-checklist-context><option ${state.site==='Riverside – Khối A'?'selected':''}>Riverside – Khối A</option></select></label>
+        <label>Khu vực *<select name="zone" data-checklist-context><option ${state.zone==='Z-A2 · Tầng 2'?'selected':''}>Z-A2 · Tầng 2</option><option ${state.zone==='HZ-024 · Tầng 4'?'selected':''}>HZ-024 · Tầng 4</option><option ${state.zone==='Bãi vật liệu'?'selected':''}>Bãi vật liệu</option></select></label>
+        <label>Loại công việc *<select name="work" data-checklist-context><option ${state.work==='Làm việc trên cao'?'selected':''}>Làm việc trên cao</option><option ${state.work==='Lắp đặt thiết bị'?'selected':''}>Lắp đặt thiết bị</option><option ${state.work==='Công việc điện'?'selected':''}>Công việc điện</option></select></label>
+        <label>Mẫu đang dùng<input value="${esc(state.template)}" disabled></label>
+      </div></section>
+      <section class="worker-checklist-card">
+        <h2>Bước ${state.step} / 4 · ${steps[state.step-1]}</h2>
+        <p class="worker-step-caption">${state.step===2?`${Object.values(state.statuses).filter(Boolean).length} / 8 mục đã trả lời · Bản nháp lưu cục bộ`:'Hoàn thành bước này trước khi tiếp tục.'}</p>
+        <div class="worker-step-progress"><span style="width:${state.step*25}%"></span></div>
+        <div class="worker-step-labels">${steps.map((label,index)=>`<span class="${index+1<state.step?'is-done':''} ${index+1===state.step?'is-current':''}">${index+1<state.step?'✓ ':`${index+1}. `}${label}</span>`).join('')}</div>
+        ${stepBody}
+        <div class="worker-checklist-actions">
+          <button class="btn btn-primary btn-sm" type="button" data-checklist-next ${state.step===4?'hidden':''}>Tiếp tục →</button>
+          <button class="btn btn-light btn-sm" type="button" data-checklist-back ${state.step===1?'hidden':''}>← Quay lại</button>
+          <button class="btn btn-light btn-sm" type="button" data-checklist-save>Lưu nháp</button>
+        </div>
+      </section>
+      ${state.submitted?'<div class="worker-checklist-submitted"><strong>Đã gửi checklist để duyệt</strong><span>Kết quả đã được lưu. Các mục không đạt đã chuyển sang danh sách nguy cơ để cán bộ an toàn xác minh.</span></div>':''}
+      <section class="worker-checklist-card worker-review-card"><h2>Bước xem lại và xác nhận</h2><p>Mẫu bước cuối của luồng kiểm tra.</p><strong>8 mục · ${counts.pass||0} Đạt · ${counts.fail||0} Không đạt · ${counts.na||0} Không áp dụng</strong><p>${linkedRisk?`Nguy cơ có liên kết: ${esc(linkedRisk.link)} · Thiếu lan can tại mép sàn`:'Không có mục không đạt cần liên kết nguy cơ.'}</p><label class="worker-confirm"><input type="checkbox" name="confirmed" data-checklist-confirm ${state.confirmed?'checked':''}> Tôi xác nhận kết quả phản ánh quan sát thực tế; checklist không phải giấy chứng nhận công trường an toàn.</label>
+        <div class="worker-checklist-actions"><button class="btn btn-primary btn-sm" type="button" data-checklist-submit>Gửi checklist để duyệt</button><button class="btn btn-light btn-sm" type="button" data-checklist-edit>Sửa kết quả</button></div>
+      </section>
+    </form>
+    <p class="reference-foot">worker-safety-checklist.html · Quyền thao tác theo vai trò được gán. Mọi thay đổi đều ghi lịch sử và minh chứng.</p>
+  </div>`;
+}
+function loadWorkerRiskDraft(){
+  try{const draft=JSON.parse(localStorage.getItem(WORKER_RISK_DRAFT_KEY)||'{}');return draft&&typeof draft==='object'&&!Array.isArray(draft)?draft:{}}
+  catch(error){console.error('Unable to load worker risk draft.',error);return {}}
+}
+workerRiskDraft=loadWorkerRiskDraft();
+function workerReport(){
+  const draft=workerRiskDraft;
+  return `<div class="worker-risk-page">
+    <div class="crumb">Nhân sự hiện trường / Báo nguy cơ</div>
+    <div class="worker-risk-title"><div><h1>Báo nguy cơ</h1><p>Ghi nhận điều quan sát được để cán bộ an toàn xác minh và phản hồi.</p></div></div>
+    <div class="data-caption">Dữ liệu minh họa · Riverside – Khối A · Không thay thế đánh giá tại hiện trường.</div>
+    <form class="worker-risk-form" id="workerReportForm">
+      <section class="worker-risk-panel"><h2>Thông tin nguy cơ</h2>
+        <label>Mã nguy cơ liên kết<input value="Cấp sau khi gửi báo cáo" disabled></label>
+        <label>Khu vực *<select name="zone" required>${db.zones.map(zone=>`<option ${draft.zone===(zone.name==='Khối A · Tầng 2'?'Z-A2 · Tầng 2':zone.name)?'selected':''}>${esc(zone.name==='Khối A · Tầng 2'?'Z-A2 · Tầng 2':zone.name)}</option>`).join('')}</select></label>
+        <label>Loại nguy cơ *<select name="category" required>${['Làm việc trên cao','Điện','Lối đi / thoát hiểm','Thiết bị','Khác'].map(value=>`<option ${draft.category===value?'selected':''}>${value}</option>`).join('')}</select></label>
+        <label>Mức độ quan sát<select name="level"><option>Chưa xác định</option>${['Cao','Trung bình','Thấp'].map(value=>`<option ${draft.level===value?'selected':''}>${value}</option>`).join('')}</select></label>
+        <label class="worker-risk-full">Tiêu đề nguy cơ *<input name="title" required minlength="5" maxlength="100" value="${esc(draft.title||'')}" placeholder="Ví dụ: Thiếu lan can tại mép sàn"></label>
+        <label class="worker-risk-full">Mô tả hiện trường *<textarea name="desc" required minlength="12" placeholder="Mô tả vị trí, điều kiện và nguy cơ có thể xảy ra">${esc(draft.desc||'')}</textarea></label>
+      </section>
+      <section class="worker-risk-panel"><h2>Ảnh và minh chứng</h2>
+        <label class="worker-risk-upload" for="workerRiskEvidence"><span aria-hidden="true">⇧</span><strong>Thêm ảnh hoặc kéo thả vào đây</strong><small>JPG, PNG, PDF · tối đa 10 MB/tệp · tối đa 5 tệp.</small><span class="worker-risk-file-button">Chọn tệp</span><input id="workerRiskEvidence" class="visually-hidden" type="file" accept="image/jpeg,image/png,application/pdf" multiple><span id="workerRiskEvidenceNames">${[...new Set([...(draft.evidenceNames||[]),...workerRiskFiles.map(file=>file.name)])].map(esc).join(' · ')}</span></label>
+        <label class="worker-risk-confirm"><input type="checkbox" name="confirm" required ${draft.confirm?'checked':''}> Tôi xác nhận đã quan sát trực tiếp và thông tin mô tả là chính xác.</label>
+        <div class="worker-risk-notice">Nếu nguy cơ đang gây nguy hiểm tức thời, hãy cảnh báo người xung quanh và báo người giám sát ngay; không chờ phản hồi trên ứng dụng.</div>
+        <div class="worker-risk-actions"><button class="btn btn-primary btn-sm" type="submit">Gửi báo cáo</button><button class="btn btn-light btn-sm" type="button" data-worker-risk-save> Lưu nháp</button><button class="btn btn-light btn-sm" type="button" data-page="worker-history">Hủy</button></div>
+      </section>
+    </form>
+    <p class="reference-foot">worker-report-create.html · Báo cáo sẽ ở trạng thái chờ xác minh sau khi gửi.</p>
+  </div>`;
+}
+function workerRiskRecords(){
+  const name=roleConfig[currentRole].name;
+  const real=db.risks.filter(risk=>risk.reporter===name||risk.owner===name);
+  const demos=workerRiskDemo.filter(demo=>!db.risks.some(risk=>risk.id===demo.id)&&!workerRiskArchivedIds.includes(demo.id));
+  return [...real,...demos];
+}
+function workerRiskTimeline(risk){
+  const currentDate=risk.date||'03/10/2026';
+  const entries=risk.timeline||[
+    {date:'03/10 · 08:45',title:`${esc(risk.reporter||roleConfig[currentRole].name)} đã gửi ${esc(risk.id)}`,detail:'Chờ duyệt · 2 ảnh minh chứng'},
+    {date:'03/10 · 08:50',title:'Trần An xác nhận mức ưu tiên cao',detail:`Ghi nhận nguy cơ liên kết CL-018`},
+    {date:'03/10 · 09:20',title:'Giao CA-012 cho Lê Hoàng',detail:'Hạn 04/10 · 17:00'},
+    {date:'Hiện tại',title:risk.status==='Đã đóng'?'Đã xác nhận và đóng':'Chờ xác minh minh chứng khắc phục',detail:'Chỉ cán bộ an toàn được xác nhận đóng'}
+  ];
+  return `<ol class="worker-risk-timeline">${entries.map(entry=>`<li><time>${esc(entry.date||currentDate)}</time><strong>${esc(entry.title)}</strong><span>${esc(entry.detail||'')}</span></li>`).join('')}</ol>`;
+}
+function workerRiskEvidence(risk,reporter){
+  if(risk.demo)return `<div class="worker-risk-photos">
+    ${['Mép sàn chưa có lan can','Góc nhìn tới lối tiếp cận'].map((caption,index)=>`<figure><img src="${index===0?'https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=900&q=75':'https://images.unsplash.com/photo-1541888946425-d81bb19240f5?auto=format&fit=crop&w=900&q=75'}" alt="Ảnh minh họa: ${caption}" loading="lazy"><figcaption><strong>${caption}</strong><span>${esc(reporter)} · ${esc(risk.date||'03/10/2026')} · Ảnh minh họa</span></figcaption></figure>`).join('')}
+  </div>`;
+  if(!risk.evidenceNames?.length)return '';
+  return `<div class="worker-risk-evidence-names"><strong>Tệp minh chứng đã chọn</strong><ul>${risk.evidenceNames.map(file=>`<li>${esc(file)}</li>`).join('')}</ul><small>Bản demo lưu tên tệp; tệp gốc chưa được tải lên máy chủ.</small></div>`;
+}
+function workerHistory(){
+  const name=roleConfig[currentRole].name;
+  const all=workerRiskRecords();
+  const query=searchTerm.toLowerCase();
+  const list=all.filter(risk=>(`${risk.id} ${risk.title} ${risk.zone} ${risk.owner} ${risk.desc}`.toLowerCase().includes(query))&&(activeFilter==='Tất cả trạng thái'||activeFilter==='Tất cả'||risk.status===activeFilter));
+  let expanded=list.find(risk=>risk.id===expandedWorkerRiskId);
+  if(!expanded&&expandedWorkerRiskId){expanded=list[0];if(expanded)expandedWorkerRiskId=expanded.id}
+  const draft=workerRiskDraft?.title||workerRiskDraft?.desc;
+  const statuses=['Tất cả trạng thái',...new Set(all.map(risk=>risk.status))];
+  return `<div class="worker-risk-page">
+    <div class="crumb">Nhân sự hiện trường / Nguy cơ của tôi</div>
+    <div class="worker-risk-title"><div><h1>Nguy cơ của tôi</h1><p>Theo dõi phản hồi và bổ sung minh chứng cho các báo cáo của bạn.</p></div><button class="btn btn-primary btn-sm" type="button" data-page="worker-report">+ Báo nguy cơ</button></div>
+    <div class="data-caption">Dữ liệu minh họa · 03/10/2026 · Không phải số liệu thực tế</div>
+    <div class="dashboard-filters worker-risk-filters">
+      <label>Tìm kiếm<input id="searchInput" type="search" class="field-control" placeholder="Mã, nội dung hoặc người phụ trách" value="${esc(searchTerm)}"></label>
+      <label>Công trường<select class="field-control"><option>Riverside – Khối A</option></select></label>
+      <label>Bộ lọc<select id="statusFilter" class="field-control">${statuses.map(status=>`<option ${activeFilter===status?'selected':''}>${esc(status)}</option>`).join('')}</select></label>
+    </div>
+    <p class="reference-count">Khoảng ngày: 01–03/10/2026 · ${all.length} báo cáo đã gửi${draft?' · 1 bản nháp':''}</p>
+    <div class="worker-risk-list">
+      ${list.map((risk,index)=>`<article class="worker-risk-card ${risk.color||(['green','cyan','pink'][index%3])} ${expanded?.id===risk.id?'is-expanded':''}">
+        <button class="worker-risk-card-head" type="button" data-worker-risk-expand="${esc(risk.id)}"><strong>${esc(risk.id)} · ${esc(risk.title)}</strong><span>${esc(risk.zone)} · ${esc(risk.date||'03/10/2026')} · Người xử lý: ${esc(risk.owner||name)}</span></button>
+        <div class="worker-risk-badges"><span class="worker-risk-priority ${/Cao/.test(risk.level)?'high':/Thấp/.test(risk.level)?'low':''}">Ưu tiên ${esc(risk.level==='Trung bình'?'Vừa':risk.level||'Chưa xác định')}</span><span class="worker-risk-status">${esc(risk.status)}</span></div>
+        ${expanded?.id===risk.id?`<div class="worker-risk-detail">
+          ${workerRiskEvidence(risk,risk.reporter||name)}
+          <p>${esc(risk.desc||'Chưa có mô tả chi tiết.')}</p><small>${esc(risk.id)} · ${risk.evidenceNames?.length||risk.demo?2:0} ảnh · Cán bộ an toàn xem xét.</small>
+          ${workerRiskTimeline(risk)}
+        </div>`:''}
+        <div class="worker-risk-card-actions"><button class="btn btn-primary btn-sm" type="button" data-worker-risk-expand="${esc(risk.id)}">${expanded?.id===risk.id?'Thu gọn':'Xem chi tiết / lịch sử'}</button><button class="btn btn-light btn-sm" type="button" data-action="worker-evidence" data-id="${esc(risk.id)}">Bổ sung minh chứng</button></div>
+      </article>`).join('')||'<div class="worker-risk-empty">Không có báo cáo phù hợp. Thử đổi bộ lọc hoặc gửi báo cáo mới.</div>'}
+      ${draft?`<article class="worker-risk-card draft"><strong>Bản nháp · ${esc(workerRiskDraft.title||'Dụng cụ cần loại bỏ')}</strong><span>${esc(workerRiskDraft.zone||'Chưa gửi')} · ${workerRiskDraft.savedAt?'Lưu lúc '+esc(workerRiskDraft.savedAt):'Chưa gửi'}</span><div class="worker-risk-badges"><span class="worker-risk-status">Bản nháp</span></div><div class="worker-risk-card-actions"><button class="btn btn-primary btn-sm" type="button" data-page="worker-report">Tiếp tục chỉnh sửa</button><button class="btn btn-light btn-sm" type="button" data-worker-risk-clear-draft>Lưu trữ bản nháp</button></div></article>`:''}
+    </div>
+    <div class="worker-risk-pagination"><span>${list.length?`1–${list.length} / ${list.length} bản ghi`:'0 bản ghi'}</span><span>‹ 1 ›</span></div>
+    ${expanded?`<section class="worker-risk-timeline-panel"><h2>Chi tiết mở rộng · ${esc(expanded.id)}</h2>${workerRiskTimeline(expanded)}</section>`:''}
+    <section class="worker-risk-retention"><h2>Xác nhận rút / lưu trữ báo cáo</h2><p>Mẫu của sổ xác nhận; mobile dùng trạng thái an toàn toàn màn hình.</p><p>Rút báo cáo chỉ khi gửi nhầm. Báo cáo đã xử lý cần cán bộ an toàn xem xét, xác minh ảnh, tác giả và lịch sử rồi mới lưu trữ.</p><label>Lý do: báo cáo trùng ${esc(expanded?.id||'HZ-024')}. Người xác nhận: ${esc(name)}.</label><div class="worker-risk-card-actions"><button class="btn btn-primary btn-sm" type="button" data-worker-risk-archive="${esc(expanded?.id||'')}" ${expanded?'':'disabled'}>Xác nhận lưu trữ</button><button class="btn btn-light btn-sm" type="button" data-page="worker-report">Gửi báo cáo</button></div></section>
+    <p class="reference-foot">worker-my-hazards.html · Quyền thao tác theo vai trò được gán. Mọi thay đổi được ghi lịch sử và minh chứng.</p>
+  </div>`;
+}
+function managerHome(){return `${heading('Tổng quan công trường','Tổng hợp nguy cơ, khu vực rủi ro và tiến độ hành động khắc phục.',btn('Xem báo cáo','reports','light'))}<div class="stats-grid">${stat('Khu vực đang thi công',db.zones.filter(x=>x.status==='Đang thi công').length,'Được theo dõi','⌖')}${stat('Nguy cơ mức cao',db.risks.filter(x=>x.level==='Cao'&&x.status!=='Đã khắc phục').length,'Cần ưu tiên','⚠')}${stat('Hành động mở',db.actions.filter(x=>x.status!=='Hoàn thành').length,'Cần theo dõi hạn','✓')}${stat('Lịch kiểm tra',db.inspections.length,'Các lịch hiện có','☷')}</div><div class="two-col"><section class="content-card"><h2>Khu vực ưu tiên</h2><p>Ưu tiên các khu vực có nguy cơ cao và xác nhận tiến độ khắc phục trực tiếp.</p>${db.zones.filter(z=>z.risk==='Cao').map(z=>`<div class="risk-item"><div class="risk-symbol">⌖</div><div><strong>${esc(z.name)}</strong><p>${esc(z.note)}</p></div>${badge(z.risk)}</div>`).join('')}</section><section class="content-card"><h2>Hành động chưa hoàn thành</h2><p>${db.actions.filter(x=>x.status!=='Hoàn thành').map(x=>`<div class="check-row"><span>•</span><div><strong>${esc(x.title)}</strong><small>Hạn: ${esc(x.due)} · ${esc(x.owner)}</small></div></div>`).join('')||'Không có việc mở.'}</p>${btn('Theo dõi hành động','actions','light')}</section></div>`}
+function adminHome(){return `${heading('Tổng quan hệ thống','Quản lý danh mục, người dùng và cấu hình dữ liệu demo.',btn('Quản lý người dùng','users'))}<div class="stats-grid">${stat('Người dùng',db.users.length,'Các tài khoản mẫu','♙')}${stat('Khu vực',db.zones.length,'Danh mục công trường','⌖')}${stat('Mẫu checklist',db.checklists.length,'Mẫu kiểm tra','☑')}${stat('Thông báo chưa đọc',db.notifications.filter(x=>!x.read).length,'Thông báo mô phỏng','♧')}</div><section class="content-card"><h2>Kiểm soát dữ liệu</h2><p>Dữ liệu lưu cục bộ trên trình duyệt bằng LocalStorage. Đây không phải xác thực thật; không sử dụng thông tin tài khoản thật.</p>${btn('Tải bản sao dữ liệu JSON','backup-json','light')} ${btn('Khôi phục dữ liệu demo','reset-demo','danger')}</section>`}
+function helpPage(){return `${heading('Trợ giúp & hướng dẫn','Hướng dẫn thao tác và giới hạn của nguyên mẫu.', '')}<section class="content-card"><h2>Luồng xử lý nguy cơ</h2><p>Ghi nhận → phân loại → phân công hành động → kiểm tra lại → xác nhận khắc phục → lưu trữ.</p><h2>Trạng thái giao diện</h2><p>Các danh sách có trạng thái rỗng khi không có dữ liệu phù hợp. Biểu mẫu có validation cơ bản. Dữ liệu được lưu trong LocalStorage của trình duyệt.</p><h2>Giới hạn</h2><p>Đăng nhập, phân quyền, thông báo và AI đang được mô phỏng. Không có máy chủ, cơ sở dữ liệu dùng chung hay AI LLM thật. Các thao tác không thay thế quy trình an toàn công trường.</p><h2>Hỗ trợ bàn phím</h2><p>Dùng Tab để di chuyển giữa nút và trường nhập liệu; Enter/Space để kích hoạt nút. Có thể đóng hộp thoại bằng nút Đóng hoặc phím Escape.</p></section>`}
+function profilePage(){const p=profileData;const n=p.notifications||profileDefaults.notifications;const initials=(p.name||roleConfig[currentRole].name).split(/\s+/).slice(-2).map(x=>x[0]).join('').toUpperCase();return `<div class="crumb">Cán bộ an toàn / Hồ sơ cá nhân</div><div class="figma-page-title"><div><h1>Hồ sơ cá nhân</h1><p>Thông tin cá nhân và cách bạn nhận thông báo.</p></div><button class="btn btn-primary" type="submit" form="profileInfoForm">Lưu thay đổi</button></div><div class="data-caption">Dữ liệu minh họa · 03/10/2026 · Không phải số liệu thực tế</div><div class="profile-top-grid"><form class="figma-card profile-card" id="profileInfoForm"><div class="profile-identity"><div class="profile-photo" id="profilePhotoPreview">${profilePhotoUrl?`<img src="${profilePhotoUrl}" alt="Ảnh hồ sơ">`:esc(initials)}</div><div><strong>${esc(p.name||roleConfig[currentRole].name)}</strong><small>${esc(roleConfig[currentRole].avatar)} · Ảnh đại diện mặc định</small></div></div><div class="form-field"><label for="profileName">Họ và tên *</label><input id="profileName" name="name" value="${esc(p.name)}" required maxlength="80"></div><div class="form-field"><label for="profileEmail">Email công việc *</label><input id="profileEmail" name="email" type="email" value="${esc(p.email)}" required maxlength="120"></div><div class="form-field"><label for="profilePhone">Điện thoại</label><input id="profilePhone" name="phone" type="tel" value="${esc(p.phone)}" maxlength="30"></div><div class="profile-actions"><label class="btn btn-primary btn-sm" for="profilePhoto">Đổi ảnh</label><input id="profilePhoto" class="visually-hidden" type="file" accept="image/png,image/jpeg"><button class="btn btn-light btn-sm" type="button" data-action="profile-photo-delete">Xóa ảnh</button></div><p class="profile-hint">Ảnh tối đa 2 MB, JPG hoặc PNG.</p></form><section class="figma-card profile-card"><h2>Quyền và công trường</h2><p class="profile-subtitle">Chỉ đọc · Liên hệ quản trị để thay đổi</p><div class="form-field"><label for="profileRole">Vai trò được cấp</label><input id="profileRole" value="${esc(roleConfig[currentRole].label)}" disabled></div><div class="form-field"><label for="profileSite">Công trường</label><input id="profileSite" value="Riverside – Khối A / RS-A" disabled></div><p class="profile-hint">Thông tin quyền không thay đổi khi bạn sửa hồ sơ. Ảnh tối đa 2 MB, JPG hoặc PNG.</p></section></div><form class="figma-card profile-card profile-section" id="profilePasswordForm"><h2>Cập nhật mật khẩu</h2><div class="profile-form-grid"><div class="form-field"><label for="currentPassword">Mật khẩu hiện tại *</label><input id="currentPassword" name="currentPassword" type="password" autocomplete="current-password" required minlength="4"></div><div class="form-field"><label for="newPassword">Mật khẩu mới *</label><input id="newPassword" name="newPassword" type="password" autocomplete="new-password" required minlength="12"><small>Tối thiểu 12 ký tự, không trùng mật khẩu hiện tại.</small></div><div class="form-field profile-full-field"><label for="confirmNewPassword">Xác nhận mật khẩu mới *</label><input id="confirmNewPassword" name="confirmPassword" type="password" autocomplete="new-password" required minlength="12"></div></div><button class="btn btn-primary btn-sm" type="submit">Cập nhật mật khẩu</button><div class="profile-feedback" id="passwordFeedback" role="status" aria-live="polite"></div></form><form class="figma-card profile-card profile-section" id="profileNotificationsForm"><h2>Tùy chọn thông báo</h2><div class="profile-check-row"><label><input name="risk" type="checkbox" ${n.risk?'checked':''}> Nguy cơ được giao cho tôi</label><label><input name="actions" type="checkbox" ${n.actions?'checked':''}> Hành động đến hạn / quá hạn</label><label><input name="inspections" type="checkbox" ${n.inspections?'checked':''}> Lịch kiểm tra và thay đổi lịch</label><label><input name="ai" type="checkbox" ${n.ai?'checked':''}> Đề xuất AI chờ tôi xem</label></div><div class="profile-form-grid"><div class="form-field"><label>Kênh nhận</label><div class="profile-channel"><label><input name="app" type="checkbox" ${n.app?'checked':''}> Trong ứng dụng</label><label><input name="email" type="checkbox" ${n.email?'checked':''}> Email</label></div></div><div class="form-field"><label for="digestTime">Tần suất email</label><select id="digestTime" name="digest"><option value="07:00" ${n.digest==='07:00'?'selected':''}>Tóm tắt mỗi ngày lúc 07:00</option><option value="12:00" ${n.digest==='12:00'?'selected':''}>Tóm tắt mỗi ngày lúc 12:00</option><option value="18:00" ${n.digest==='18:00'?'selected':''}>Tóm tắt mỗi ngày lúc 18:00</option><option value="immediate" ${n.digest==='immediate'?'selected':''}>Gửi ngay khi có thông báo</option></select></div></div><p class="profile-hint">Cảnh báo an toàn bắt buộc vẫn hiển thị trong ứng dụng theo quyền và công trường.</p><button class="btn btn-primary btn-sm" type="submit">Lưu tùy chọn</button><div class="profile-feedback" id="notificationFeedback" role="status" aria-live="polite"></div></form><div class="notice profile-saved" id="profileSaved" role="status" aria-live="polite" hidden><strong>Đã lưu thông tin</strong><br>Thông tin liên hệ và tùy chọn thông báo đã được cập nhật. Vai trò không thay đổi.</div><p class="profile-foot">profile.html · Quyền thao tác theo vai trò được gán. Mọi thay đổi đều được ghi lại và minh chứng.</p>`}
+function handleAction(action,id){const find=(arr)=>arr.find(x=>x.id===id);switch(action){case'new-risk':openEntity('risk');break;case'new-inspection':openEntity('inspection');break;case'new-action':openEntity('action');break;case'new-zone':openEntity('zone');break;case'new-checklist':openEntity('checklist');break;case'new-user':openEntity('user');break;case'edit-risk':openEntity('risk',id);break;case'edit-inspection':openEntity('inspection',id);break;case'edit-action':openEntity('action',id);break;case'edit-zone':openEntity('zone',id);break;case'edit-checklist':openEntity('checklist',id);break;case'edit-user':openEntity('user',id);break;case'view-risk':{const x=find(db.risks);if(!x){toast('Không tìm thấy nguy cơ này.');break}const related=db.actions.filter(a=>a.risk===x.title||a.risk===x.id);modalForm(`${x.id} · ${x.title}`,[]);$('#modalBody').innerHTML=`<div class="risk-detail-grid"><div><span class="risk-detail-label">Khu vực</span><strong>${esc(x.zone)}</strong></div><div><span class="risk-detail-label">Mức độ</span>${badge(x.level)}</div><div><span class="risk-detail-label">Trạng thái</span>${badge(x.status)}</div><div><span class="risk-detail-label">Người phụ trách</span><strong>${esc(x.owner)}</strong></div><div><span class="risk-detail-label">Ngày ghi nhận</span><strong>${esc(x.date)}</strong></div></div><section class="risk-detail-section"><h3>Mô tả hiện trường</h3><p>${esc(x.desc)}</p></section><section class="risk-detail-section"><h3>Hành động khắc phục</h3>${related.length?related.map(a=>`<p><strong>${esc(a.title)}</strong> · ${badge(a.status)} · Hạn ${esc(a.due)}</p>`).join(''):'<p>Chưa có hành động khắc phục được liên kết.</p>'}</section><section class="risk-detail-section"><h3>Minh chứng bổ sung</h3>${x.evidence?.length?x.evidence.map(e=>`<p>${esc(e.date)} · ${esc(e.note)}</p>`).join(''):'<p>Chưa có minh chứng bổ sung.</p>'}</section><div class="modal-actions"><button type="button" class="btn btn-light" data-action="close-modal">Đóng</button><button type="button" class="btn btn-primary" data-action="edit-risk" data-id="${esc(x.id)}">Chỉnh sửa báo cáo</button></div>`;break}case'open-worker-ai':currentPage='ai';renderPage();aiForm('checklist');break;case'worker-evidence':{const x=find(db.risks);if(!x){toast('Không tìm thấy báo cáo cần cập nhật.');break}modalForm(`Bổ sung minh chứng · ${x.id}`,[{name:'note',label:'Ghi chú / minh chứng',type:'textarea',required:true,minlength:5,value:'',help:'Mô tả tình trạng mới hoặc thông tin cần cán bộ an toàn xác minh.'}],'Lưu minh chứng');const form=$('#entityForm');form.dataset.type='risk-evidence';form.dataset.id=x.id;break}case'view-zone':{const x=find(db.zones);modalForm(x.name,[{name:'detail',label:'Chi tiết khu vực',type:'textarea',value:`${x.id}\nLoại công việc: ${x.type}\nSố người: ${x.workers}\nRủi ro: ${x.risk}\nTrạng thái: ${x.status}\nGhi chú: ${x.note}`}]);$('#modalBody textarea').readOnly=true;break}case'advance-inspection':{const x=find(db.inspections);x.status=x.status==='Đã lên lịch'?'Đang thực hiện':x.status==='Đang thực hiện'?'Hoàn thành':'Đã lên lịch';saveDB();renderPage();toast('Đã cập nhật trạng thái kiểm tra.');break}case'advance-action':{const x=find(db.actions);x.status=x.status==='Chưa thực hiện'?'Đang thực hiện':x.status==='Đang thực hiện'?'Hoàn thành':'Chưa thực hiện';saveDB();renderPage();toast('Đã cập nhật tiến độ hành động.');break}case'toggle-checklist':{const x=find(db.checklists);x.status=x.status==='Đang sử dụng'?'Lưu trữ':'Đang sử dụng';saveDB();renderPage();toast('Đã cập nhật trạng thái mẫu.');break}case'toggle-user':{const x=find(db.users);x.status=x.status==='Đang hoạt động'?'Đã khóa':'Đang hoạt động';saveDB();renderPage();toast('Đã cập nhật trạng thái người dùng.');break}case'export-risks':exportCSV('risks');break;case'export-inspections':exportCSV('inspections');break;case'export-actions':exportCSV('actions');break;case'export-checklists':exportCSV('checklists');break;case'export-users':exportCSV('users');break;case'export-all':Object.keys(db).filter(k=>Array.isArray(db[k])).forEach(exportCSV);break;case'ai-classify':aiForm('classify');break;case'ai-checklist':aiForm('checklist');break;case'ai-hotspot':aiForm('hotspot');break;case'ai-report':aiForm('hotspot');break;case'ai-clear':renderPage();break;case'ai-accept':if(!aiResult){toast('Chưa có kết quả để lưu.');break}if(aiResult.kind==='classify'){db.risks.unshift({id:`RS-${String(Date.now()).slice(-3)}`,title:aiResult.raw.slice(0,60),zone:aiResult.zone,level:['Cao','Trung bình','Thấp'].includes(aiResult.level)?aiResult.level:'Trung bình',status:'Mới ghi nhận',owner:roleConfig[currentRole].name,date:'2026-10-20',desc:aiResult.action});saveDB();toast('Đã lưu đề xuất thành nguy cơ nháp. Hãy xác minh thực tế.')}else if(aiResult.kind==='checklist'){db.checklists.unshift({id:`CL-${String(Date.now()).slice(-3)}`,title:aiResult.title.replace('Checklist đề xuất: ',''),category:'AI tạo · cần duyệt',items:aiResult.items.length,status:'Bản nháp',updated:'2026-10-20'});saveDB();toast('Đã lưu checklist ở trạng thái bản nháp.')}else{toast('Đã lưu ghi chú phân tích vào phiên demo.')}break;case'ai-edit':if(!aiResult){break}modalForm('Chỉnh sửa kết quả AI',[{name:'title',label:'Tiêu đề',required:true,value:aiResult.title},{name:'level',label:'Mức độ',type:'select',options:['Cao','Trung bình','Thấp','Chưa đủ dữ liệu'],value:aiResult.level},{name:'action',label:'Đề xuất',type:'textarea',value:aiResult.action||aiResult.explain}]);$('#entityForm').dataset.type='ai-edit';break;case'ai-regenerate':if(aiKind)aiForm(aiKind);break;case'ai-reject':aiResult=null;$('#aiOutput').innerHTML='<div class="notice">Đã bỏ qua kết quả AI. Không có dữ liệu nghiệp vụ nào được thay đổi.</div>';toast('Đã từ chối đề xuất.');break;case'ai-manual':toast('Hãy dùng biểu mẫu nghiệp vụ và đánh giá thủ công.');currentPage='risks';renderPage();openEntity('risk');break;case'ai-report-error':toast('Đã ghi nhận phản hồi trong phiên demo.');break;case'save-worker-checklist':{const checks=$$('input[type=checkbox][id^="check-"]');const unchecked=checks.filter(c=>!c.checked);if(unchecked.length){toast(`Còn ${unchecked.length} hạng mục chưa xác nhận.`)}else toast('Checklist demo đã được xác nhận hoàn thành.');break}case'backup-json':{const u=URL.createObjectURL(new Blob([JSON.stringify(db,null,2)],{type:'application/json'}));const a=document.createElement('a');a.href=u;a.download='sitesafe-backup.json';a.click();URL.revokeObjectURL(u);toast('Đã tải bản sao JSON.');break}case'reset-demo':if(confirm('Khôi phục toàn bộ dữ liệu demo? Thay đổi cục bộ hiện tại sẽ bị mất.')){db=structuredClone(seed);saveDB();renderPage();toast('Đã khôi phục dữ liệu demo.')}break;case'edit-profile':toast('Chỉnh sửa hồ sơ sẽ được bổ sung trong bản có xác thực.');break;case'close-modal':closeModal();break}}
+document.addEventListener('click',e=>{const nav=e.target.closest('[data-page]');if(nav){currentPage=nav.dataset.page;searchTerm='';activeFilter='Tất cả';renderPage();$('#sidebar').classList.remove('open');return}const a=e.target.closest('[data-action]');if(a)handleAction(a.dataset.action,a.dataset.id)});
+document.addEventListener('submit',e=>{e.preventDefault();if(e.target.id==='entityForm'){if(e.target.dataset.type==='ai-edit'){const vals=Object.fromEntries(new FormData(e.target).entries());if(aiResult)Object.assign(aiResult,{title:vals.title,level:vals.level,action:vals.action});closeModal();renderAIResult(aiResult);toast('Đã cập nhật đề xuất AI; cần kiểm tra trước khi dùng.')}else if(e.target.dataset.type==='risk-evidence'){const risk=db.risks.find(x=>x.id===e.target.dataset.id);if(!risk){toast('Không tìm thấy báo cáo cần cập nhật.');return}risk.evidence=risk.evidence||[];risk.evidence.unshift({date:new Date().toISOString().slice(0,10),note:new FormData(e.target).get('note').toString().trim()});saveDB();closeModal();renderPage();toast('Đã lưu ghi chú minh chứng.')}else submitEntity(e.target)}else if(e.target.id==='aiForm')runAI(e.target);else if(e.target.id==='workerReportForm'){const v=Object.fromEntries(new FormData(e.target).entries());db.risks.unshift({id:`RS-${String(Date.now()).slice(-3)}`,title:v.title,zone:v.zone,level:v.level==='Chưa xác định'?'Trung bình':v.level,status:'Mới ghi nhận',owner:roleConfig[currentRole].name,date:'2026-10-20',desc:v.desc});saveDB();toast('Đã gửi báo cáo demo đến danh sách nguy cơ.');currentPage='worker-history';renderPage()}});
+document.addEventListener('input',e=>{if(e.target.id==='dashboardSearch'){const q=e.target.value.toLowerCase();const list=db.risks.filter(x=>x.status!=='Đã khắc phục'&&(`${x.id} ${x.title} ${x.zone} ${x.owner}`.toLowerCase().includes(q)));const region=$('#dashboardRiskRows');if(region)region.innerHTML=riskTable(list.slice(0,4));}});
+document.addEventListener('change',e=>{if(e.target.id==='dashboardFilter'){const filter=e.target.value;const region=$('#dashboardRiskRows');if(!region)return;let list=db.risks.filter(x=>x.status!=='Đã khắc phục');if(filter==='high')list=list.filter(x=>x.level==='Cao');if(filter==='pending')list=list.filter(x=>x.status==='Mới ghi nhận');if(filter==='overdue')list=db.actions.filter(x=>x.status!=='Hoàn thành').map(a=>({id:a.id,title:a.title,zone:a.risk,level:a.priority,status:a.status,owner:a.owner,date:a.due}));region.innerHTML=filter==='overdue'?`<div class="table-wrap"><table><thead><tr><th>Mã / Hành động</th><th>Nguy cơ</th><th>Mức độ</th><th>Trạng thái</th><th>Phụ trách</th></tr></thead><tbody>${list.map(x=>`<tr><td>${esc(x.id)} · ${esc(x.title)}</td><td>${esc(x.zone)}</td><td>${badge(x.level)}</td><td>${badge(x.status)}</td><td>${esc(x.owner)}</td></tr>`).join('')}</tbody></table></div>`:riskTable(list.slice(0,4));}});
+document.addEventListener('input',e=>{if(e.target.id==='searchInput'){const pos=e.target.selectionStart;searchTerm=e.target.value;const p=currentPage;const renderer={risks:risksPage,inspections:inspectionsPage,actions:actionsPage,checklists:checklistsPage,users:usersPage,zones:zonesPage,'worker-history':workerHistory}[p];if(renderer){$('#pageContent').innerHTML=renderer();const next=$('#searchInput');if(next){next.focus();next.setSelectionRange(pos,pos)}}}});
+document.addEventListener('change',e=>{if(e.target.id==='roleSelect'){currentRole=e.target.value;currentPage=roleConfig[currentRole].pages[0][0];renderPage()}if(e.target.id==='statusFilter'){activeFilter=e.target.value;const p=currentPage;const renderer={risks:risksPage,inspections:inspectionsPage,actions:actionsPage,checklists:checklistsPage,users:usersPage,zones:zonesPage,'worker-history':workerHistory}[p];if(renderer){$('#pageContent').innerHTML=renderer();const s=$('#statusFilter');if(s)s.value=activeFilter}}});
+$('#mobileMenu').addEventListener('click',()=>$('#sidebar').classList.toggle('open'));$('#closeModal').addEventListener('click',closeModal);$('#modalBackdrop').addEventListener('click',e=>{if(e.target.id==='modalBackdrop')closeModal()});document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeModal();$('#sidebar').classList.remove('open')}});$('#siteSwitch').addEventListener('click',()=>toast('Nguyên mẫu hiện có một công trường: Riverside – Khối A.'));$('#notifications').addEventListener('click',()=>{const unread=db.notifications.filter(n=>!n.read);modalForm('Thông báo',unread.map((n,i)=>({name:`n${i}`,label:n.title,type:'textarea',value:`${n.desc}\n${n.time}`})));$('#modalBody textarea').forEach(x=>x.readOnly=true);db.notifications.forEach(n=>n.read=true);saveDB()});
+renderPage();
+
+// Demo login gate: client-side only; this is not production authentication.
+const loginForm = document.getElementById('loginForm');
+if (loginForm) {
+  const loginScreen = document.getElementById('loginScreen');
+  const appShell = document.getElementById('appShell');
+  const loginError = document.getElementById('loginError');
+  const togglePassword = document.getElementById('togglePassword');
+  const loginView = document.getElementById('loginView');
+  const registerView = document.getElementById('registerView');
+  const registerForm = document.getElementById('registerForm');
+  const registerMessage = document.getElementById('registerMessage');
+  const confirmPassword = document.getElementById('confirmPassword');
+  const confirmPasswordError = document.getElementById('confirmPasswordError');
+  const showLogin = () => {
+    registerView.hidden = true;
+    loginView.hidden = false;
+    loginError.textContent = '';
+  };
+  const showRegister = () => {
+    loginView.hidden = true;
+    registerView.hidden = false;
+    registerMessage.textContent = '';
+    registerMessage.className = 'auth-message';
+  };
+  const showApp = () => { loginScreen.style.display = 'none'; appShell.style.display = 'flex'; };
+  document.getElementById('showRegister').addEventListener('click', showRegister);
+  document.getElementById('showLogin').addEventListener('click', showLogin);
+  loginForm.addEventListener('submit', (event) => {
+    event.preventDefault();
+    const email = document.getElementById('loginEmail').value.trim();
+    const password = document.getElementById('loginPassword').value;
+    if (!email || password.length < 4) { loginError.textContent = 'Email hoặc mật khẩu không chính xác. Kiểm tra lại hoặc đặt lại mật khẩu. Không xóa email đã nhập.'; return; }
+    currentRole = 'safety';
+    currentPage = roleConfig[currentRole].pages[0][0];
+    sessionStorage.setItem('sitesafe-demo-session', JSON.stringify({email, role: currentRole}));
+    loginError.textContent = '';
+    renderPage();
+    showApp();
+  });
+  document.getElementById('forgotPassword')?.addEventListener('click', (event) => { event.preventDefault(); loginError.textContent = 'Bản demo chưa gửi email đặt lại mật khẩu. Vui lòng liên hệ quản trị viên.'; });
+  togglePassword?.addEventListener('click', () => {
+    const input = document.getElementById('loginPassword');
+    input.type = input.type === 'password' ? 'text' : 'password';
+    togglePassword.setAttribute('aria-label', input.type === 'password' ? 'Hiện mật khẩu' : 'Ẩn mật khẩu');
+    togglePassword.setAttribute('aria-pressed', String(input.type === 'text'));
+  });
+  registerForm.addEventListener('submit', (event) => {
+    event.preventDefault();
+    if (confirmPassword.value !== document.getElementById('registerPassword').value) {
+      confirmPassword.setCustomValidity('Mật khẩu xác nhận chưa khớp.');
+      confirmPasswordError.hidden = false;
+      confirmPassword.focus();
+      return;
+    }
+    confirmPassword.setCustomValidity('');
+    confirmPasswordError.hidden = true;
+    registerMessage.className = 'auth-message is-success';
+    registerMessage.textContent = 'Đã nhận hồ sơ. Tài khoản đang chờ quản trị viên xác minh; bạn chưa có quyền truy cập dữ liệu công trường.';
+  });
+  confirmPassword.addEventListener('input', () => {
+    confirmPassword.setCustomValidity('');
+    confirmPasswordError.hidden = true;
+    if (registerMessage.classList.contains('is-success')) {
+      registerMessage.textContent = '';
+      registerMessage.className = 'auth-message';
+    }
+  });
+  document.getElementById('logoutButton')?.addEventListener('click', () => {
+    sessionStorage.removeItem('sitesafe-demo-session');
+    loginForm.reset();
+    registerForm.reset();
+    showLogin();
+    loginError.textContent = '';
+    appShell.style.display = 'none';
+    loginScreen.style.display = 'flex';
+  });
+}
+
+document.addEventListener('submit', (event) => {
+  const form = event.target;
+  if (form.id === 'profileInfoForm') {
+    const values = Object.fromEntries(new FormData(form).entries());
+    profileData = {...profileData, name:String(values.name).trim(), email:String(values.email).trim(), phone:String(values.phone).trim()};
+    try {
+      localStorage.setItem(PROFILE_KEY, JSON.stringify(profileData));
+      profileSaved = true;
+      renderPage();
+    } catch (error) {
+      console.error('Unable to save profile details.', error);
+      toast('Không thể lưu hồ sơ trong bộ nhớ trình duyệt.');
+    }
+  } else if (form.id === 'profileNotificationsForm') {
+    const values = new FormData(form);
+    profileData.notifications = Object.fromEntries(['risk','actions','inspections','ai','app','email'].map(key => [key, values.has(key)]));
+    profileData.notifications.digest = String(values.get('digest'));
+    try {
+      localStorage.setItem(PROFILE_KEY, JSON.stringify(profileData));
+      profileSaved = true;
+      renderPage();
+    } catch (error) {
+      console.error('Unable to save notification preferences.', error);
+      toast('Không thể lưu tùy chọn trong bộ nhớ trình duyệt.');
+    }
+  } else if (form.id === 'profilePasswordForm') {
+    const current = $('#currentPassword').value;
+    const password = $('#newPassword').value;
+    const confirmation = $('#confirmNewPassword');
+    if (password !== confirmation.value) {
+      confirmation.setCustomValidity('Mật khẩu xác nhận không khớp.');
+      confirmation.reportValidity();
+      return;
+    }
+    confirmation.setCustomValidity('');
+    $('#passwordFeedback').textContent = current === password
+      ? 'Mật khẩu mới phải khác mật khẩu hiện tại.'
+      : 'Bản demo chưa kết nối xác thực. Mật khẩu chưa được thay đổi.';
+    form.reset();
+  }
+}, true);
+
+document.addEventListener('input', (event) => {
+  if (event.target.id === 'confirmNewPassword') event.target.setCustomValidity('');
+});
+
+document.addEventListener('change', (event) => {
+  if (event.target.id !== 'profilePhoto') return;
+  const file = event.target.files[0];
+  if (!file) return;
+  if (!['image/jpeg','image/png'].includes(file.type) || file.size > 2 * 1024 * 1024) {
+    event.target.value = '';
+    toast('Chọn ảnh JPG hoặc PNG có dung lượng tối đa 2 MB.');
+    return;
+  }
+  const reader = new FileReader();
+  reader.addEventListener('load', () => {
+    if (typeof reader.result !== 'string') {
+      toast('Không thể đọc ảnh đã chọn.');
+      return;
+    }
+    profilePhotoUrl = reader.result;
+    profileData.photo = profilePhotoUrl;
+    try {
+      localStorage.setItem(PROFILE_KEY, JSON.stringify(profileData));
+      profileSaved = true;
+      renderPage();
+    } catch (error) {
+      console.error('Unable to save profile photo.', error);
+      profilePhotoUrl = '';
+      delete profileData.photo;
+      event.target.value = '';
+      toast('Không thể lưu ảnh trong bộ nhớ trình duyệt.');
+    }
+  });
+  reader.addEventListener('error', () => toast('Không thể đọc ảnh đã chọn.'));
+  reader.readAsDataURL(file);
+});
+
+document.addEventListener('click', (event) => {
+  const button = event.target.closest('[data-action="profile-photo-delete"]');
+  if (!button) return;
+  event.preventDefault();
+  event.stopImmediatePropagation();
+  const previousPhoto = profileData.photo;
+  profilePhotoUrl = '';
+  delete profileData.photo;
+  try {
+    localStorage.setItem(PROFILE_KEY, JSON.stringify(profileData));
+    profileSaved = true;
+    renderPage();
+  } catch (error) {
+    console.error('Unable to remove profile photo.', error);
+    profileData.photo = previousPhoto;
+    profilePhotoUrl = typeof previousPhoto === 'string' ? previousPhoto : '';
+    toast('Không thể xóa ảnh khỏi bộ nhớ trình duyệt.');
+  }
+});
+
+function renderActionWorkflow(focusSelector){
+  $('#pageContent').innerHTML=actionsPage();
+  if(focusSelector)$(focusSelector)?.focus();
+}
+function addWorkflowFiles(files){
+  const accepted=[];
+  for(const file of files){
+    if(!['image/jpeg','image/png','application/pdf'].includes(file.type)){
+      toast(`${file.name}: chỉ nhận JPG, PNG hoặc PDF.`);
+      continue;
+    }
+    if(file.size>10*1024*1024){
+      toast(`${file.name}: tệp vượt quá 10 MB.`);
+      continue;
+    }
+    accepted.push(file);
+  }
+  const combined=[...workflowEvidence,...accepted];
+  if(combined.length>5)toast('Chỉ được đính kèm tối đa 5 tệp.');
+  workflowEvidence=combined.slice(0,5);
+  const list=$('#workflowEvidenceList');
+  if(list)list.textContent=workflowEvidence.map(file=>file.name).join(' · ');
+}
+document.addEventListener('click',event=>{
+  const actionButton=event.target.closest('[data-workflow-action-id]');
+  if(actionButton){
+    workflowCreatingNew=false;
+    activeWorkflowActionId=actionButton.dataset.workflowActionId;
+    workflowEvidence=[];
+    renderActionWorkflow();
+    return;
+  }
+  if(event.target.closest('[data-workflow-new]')){
+    workflowCreatingNew=true;
+    workflowEvidence=[];
+    renderActionWorkflow('#actionFormCard');
+    $('#actionFormCard')?.scrollIntoView({behavior:'smooth',block:'start'});
+    return;
+  }
+  if(event.target.closest('[data-workflow-cancel]')){
+    workflowCreatingNew=false;
+    workflowEvidence=[];
+    renderActionWorkflow();
+    return;
+  }
+  const verifyButton=event.target.closest('[data-workflow-verify]');
+  if(verifyButton){
+    const action=db.actions.find(item=>item.id===verifyButton.dataset.workflowVerify);
+    if(!action){toast('Không tìm thấy hành động cần xác minh.');return}
+    if(!window.confirm('Xác nhận đã kiểm tra tại hiện trường và đóng hành động này?'))return;
+    action.status='Đã xác minh đóng';
+    action.progress=100;
+    saveDB();
+    renderActionWorkflow();
+    toast('Đã xác minh và đóng hành động.');
+  }
+});
+document.addEventListener('input',event=>{
+  if(currentPage!=='actions'||event.target.id!=='searchInput')return;
+  searchTerm=event.target.value;
+  const position=event.target.selectionStart;
+  renderActionWorkflow('#searchInput');
+  $('#searchInput')?.setSelectionRange(position,position);
+});
+document.addEventListener('change',event=>{
+  if(currentPage==='actions'&&event.target.id==='statusFilter'){
+    activeFilter=event.target.value;
+    renderActionWorkflow('#statusFilter');
+    return;
+  }
+  if(event.target.id==='workflowEvidence')addWorkflowFiles([...event.target.files]);
+});
+document.addEventListener('dragover',event=>{
+  if(event.target.closest('.workflow-upload'))event.preventDefault();
+});
+document.addEventListener('drop',event=>{
+  if(!event.target.closest('.workflow-upload'))return;
+  event.preventDefault();
+  addWorkflowFiles([...event.dataTransfer.files]);
+});
+document.addEventListener('submit',event=>{
+  const form=event.target;
+  if(form.id==='actionWorkflowForm'){
+    event.preventDefault();
+    const values=Object.fromEntries(new FormData(form).entries());
+    let action=db.actions.find(item=>item.id===form.dataset.actionId);
+    if(action)Object.assign(action,values,{progress:Number(values.progress)||0});
+    else{
+      const next=Math.max(0,...db.actions.map(item=>Number((item.id.match(/\d+/)||['0'])[0])))+1;
+      action={id:`KP-${String(next).padStart(3,'0')}`,...values,progress:Number(values.progress)||0,status:'Chưa thực hiện'};
+      db.actions.unshift(action);
+    }
+    workflowCreatingNew=false;
+    activeWorkflowActionId=action.id;
+    saveDB();
+    renderActionWorkflow();
+    toast(form.dataset.actionId?'Đã cập nhật hành động.':'Đã tạo và giao hành động.');
+    return;
+  }
+  if(form.id!=='actionCompletionForm')return;
+  event.preventDefault();
+  const action=db.actions.find(item=>item.id===form.dataset.actionId);
+  if(!action){toast('Không tìm thấy hành động cần cập nhật.');return}
+  const note=new FormData(form).get('completionNote').toString().trim();
+  const mode=event.submitter?.value||'save';
+  if(mode==='verify'&&!workflowEvidence.length){
+    toast('Hãy đính kèm ít nhất một ảnh hoặc tài liệu minh chứng trước khi nộp xác minh.');
+    $('#workflowEvidence')?.focus();
+    return;
+  }
+  action.completionNote=note;
+  action.evidenceNames=[...new Set([...(action.evidenceNames||[]),...workflowEvidence.map(file=>file.name)])];
+  if(mode==='verify'){
+    action.status='Chờ xác minh';
+    action.progress=100;
+  }
+  workflowEvidence=[];
+  saveDB();
+  renderActionWorkflow();
+  toast(mode==='verify'?'Đã nộp minh chứng, đang chờ xác minh.':'Đã lưu ghi chú và minh chứng nháp.');
+});
+document.addEventListener('error',event=>{
+  if(!event.target.matches?.('.workflow-photos img'))return;
+  event.target.hidden=true;
+  const fallback=document.createElement('div');
+  fallback.className='workflow-image-fallback';
+  fallback.textContent='Ảnh minh họa công trường';
+  event.target.parentElement.insertBefore(fallback,event.target);
+},true);
+
+function saveChecklistState(showToast=false){
+  try{
+    localStorage.setItem(WORKER_CHECKLIST_KEY,JSON.stringify(workerChecklistState));
+    if(showToast)toast('Đã lưu bản nháp checklist trên thiết bị này.');
+  }catch(error){
+    console.error('Unable to save the worker checklist draft.',error);
+    toast('Không thể lưu bản nháp checklist trong bộ nhớ trình duyệt.');
+  }
+}
+function syncWorkerChecklistState(form=$('#workerChecklistForm')){
+  if(!form)return;
+  for(const field of form.querySelectorAll('[data-checklist-context]'))workerChecklistState[field.name]=field.value;
+  for(const item of workerChecklistItems){
+    const selected=form.querySelector(`input[name="${item.id}"]:checked`);
+    if(selected)workerChecklistState.statuses[item.id]=selected.value;
+    const note=form.querySelector(`[data-checklist-note="${item.id}"]`);
+    if(note)workerChecklistState.notes[item.id]=note.value;
+  }
+  workerChecklistState.confirmed=[...form.querySelectorAll('[name="confirmed"]')].some(input=>input.checked);
+}
+function submitWorkerChecklist(){
+  syncWorkerChecklistState();
+  const missing=workerChecklistItems.filter(item=>!workerChecklistState.statuses[item.id]);
+  if(missing.length){workerChecklistState.step=missing.some(item=>workerChecklistItems.indexOf(item)<3)?2:3;refreshChecklistPage();toast(`Còn ${missing.length} mục checklist chưa được đánh giá.`);return}
+  const failedItem=workerChecklistItems.find(item=>item.critical&&workerChecklistState.statuses[item.id]==='fail');
+  if(failedItem&&!workerChecklistState.notes[failedItem.id]?.trim()){workerChecklistState.step=2;refreshChecklistPage();toast('Hãy ghi chú tình trạng cho mục không đạt.');return}
+  const evidenceNames=[...new Set([...workerChecklistState.evidenceNames,...workerChecklistFiles.map(file=>file.name)])];
+  if(failedItem&&!evidenceNames.length){workerChecklistState.step=2;refreshChecklistPage();toast('Hãy đính kèm ảnh hoặc tài liệu minh chứng cho mục không đạt.');return}
+  if(!workerChecklistState.confirmed){workerChecklistState.step=4;refreshChecklistPage();toast('Hãy xác nhận kết quả phản ánh quan sát thực tế trước khi gửi.');return}
+  if(workerChecklistState.submitted){toast('Checklist này đã được gửi để duyệt.');return}
+  const failed=workerChecklistItems.find(item=>workerChecklistState.statuses[item.id]==='fail');
+  db.workerChecklists ||= [];
+  db.workerChecklists.push({id:`CL-018-${Date.now()}`,template:'CL-018 · TMP-01 v2.1',site:workerChecklistState.site,zone:workerChecklistState.zone,work:workerChecklistState.work,worker:roleConfig[currentRole].name,statuses:workerChecklistState.statuses,notes:workerChecklistState.notes,evidenceNames,submittedAt:new Date().toISOString(),status:'Chờ duyệt'});
+  if(failed?.critical&&!db.risks.some(risk=>risk.id===failed.link)){
+    db.risks.unshift({id:failed.link,title:'Thiếu lan can tại mép sàn',zone:workerChecklistState.zone,level:'Cao',status:'Mới ghi nhận',owner:'Cán bộ an toàn',date:new Date().toISOString().slice(0,10),desc:workerChecklistState.notes[failed.id],sourceChecklist:'CL-018'});
+  }
+  try{
+    saveDB();
+    workerChecklistState={...workerChecklistState,evidenceNames,submitted:true};
+    localStorage.setItem(WORKER_CHECKLIST_KEY,JSON.stringify(workerChecklistState));
+    workerChecklistFiles=[];
+    refreshChecklistPage();
+    toast('Đã gửi checklist để duyệt. Mục không đạt đã được liên kết với nguy cơ.');
+  }catch(error){
+    console.error('Unable to submit the worker checklist.',error);
+    toast('Không thể gửi checklist. Hãy thử lưu nháp và gửi lại.');
+  }
+}
+function refreshChecklistPage(focusSelector){
+  renderPage();
+  if(focusSelector)$(focusSelector)?.focus();
+}
+function acceptChecklistFiles(files){
+  const accepted=[];
+  for(const file of files){
+    if(!['image/jpeg','image/png','application/pdf'].includes(file.type)){
+      toast(`${file.name}: chỉ nhận JPG, PNG hoặc PDF.`);
+      continue;
+    }
+    if(file.size>10*1024*1024){
+      toast(`${file.name}: tệp vượt quá 10 MB.`);
+      continue;
+    }
+    accepted.push(file);
+  }
+  const combined=[...workerChecklistFiles,...accepted];
+  if(combined.length>5)toast('Chỉ được đính kèm tối đa 5 tệp.');
+  workerChecklistFiles=combined.slice(0,5);
+  workerChecklistState.evidenceNames=[...new Set([...workerChecklistState.evidenceNames,...workerChecklistFiles.map(file=>file.name)])];
+  refreshChecklistPage('#workerChecklistEvidence');
+  saveChecklistState();
+}
+document.addEventListener('click',event=>{
+  if(currentPage!=='worker-checklist')return;
+  const target=event.target.closest('[data-checklist-next],[data-checklist-back],[data-checklist-save],[data-checklist-submit],[data-checklist-edit]');
+  if(!target)return;
+  event.preventDefault();
+  syncWorkerChecklistState();
+  if(target.hasAttribute('data-checklist-save')){
+    saveChecklistState(true);
+    return;
+  }
+  if(target.hasAttribute('data-checklist-submit')){
+    submitWorkerChecklist();
+    return;
+  }
+  if(target.hasAttribute('data-checklist-edit')){
+    workerChecklistState.step=2;
+  }else if(target.hasAttribute('data-checklist-back')){
+    workerChecklistState.step=Math.max(1,workerChecklistState.step-1);
+  }else{
+    if(workerChecklistState.step===2||workerChecklistState.step===3){
+      const group=workerChecklistState.step===2?workerChecklistItems.slice(0,3):workerChecklistItems.slice(3);
+      const unanswered=group.filter(item=>!workerChecklistState.statuses[item.id]);
+      if(unanswered.length){toast(`Còn ${unanswered.length} mục chưa đánh giá.`);return}
+    }
+    if(workerChecklistState.step===2){
+      const failed=workerChecklistItems.find(item=>item.critical&&workerChecklistState.statuses[item.id]==='fail');
+      if(failed&&!workerChecklistState.notes[failed.id]?.trim()){toast('Hãy ghi chú tình trạng cho mục không đạt.');return}
+      if(failed&&!workerChecklistState.evidenceNames.length&&!workerChecklistFiles.length){toast('Hãy đính kèm minh chứng cho mục không đạt.');$('#workerChecklistEvidence')?.focus();return}
+    }
+    workerChecklistState.step=Math.min(4,workerChecklistState.step+1);
+  }
+  saveChecklistState();
+  refreshChecklistPage(target.hasAttribute('data-checklist-edit')?'[data-checklist-next]':undefined);
+});
+document.addEventListener('change',event=>{
+  if(currentPage!=='worker-checklist')return;
+  if(event.target.id==='workerChecklistEvidence'){
+    acceptChecklistFiles([...event.target.files]);
+    return;
+  }
+  if(!event.target.closest('#workerChecklistForm'))return;
+  syncWorkerChecklistState();
+  saveChecklistState();
+  if(event.target.matches('input[type="radio"],[name="confirmed"]')){
+    const focus=event.target.type==='radio'?`input[name="${event.target.name}"][value="${event.target.value}"]`:'[data-checklist-confirm]';
+    refreshChecklistPage(focus);
+  }
+});
+document.addEventListener('input',event=>{
+  if(currentPage!=='worker-checklist'||!event.target.closest('#workerChecklistForm'))return;
+  syncWorkerChecklistState();
+  saveChecklistState();
+});
+document.addEventListener('dragover',event=>{
+  if(currentPage==='worker-checklist'&&event.target.closest('.worker-evidence-upload'))event.preventDefault();
+});
+document.addEventListener('drop',event=>{
+  if(currentPage!=='worker-checklist'||!event.target.closest('.worker-evidence-upload'))return;
+  event.preventDefault();
+  acceptChecklistFiles([...event.dataTransfer.files]);
+});
+document.addEventListener('submit',event=>{
+  if(event.target.id!=='workerChecklistForm')return;
+  event.preventDefault();
+});
+
+function saveWorkerRiskDraft(form,showToast=true){
+  const values=Object.fromEntries(new FormData(form).entries());
+  workerRiskDraft={...workerRiskDraft,...values,evidenceNames:[...new Set([...(workerRiskDraft.evidenceNames||[]),...workerRiskFiles.map(file=>file.name)])],savedAt:new Date().toLocaleTimeString('vi-VN',{hour:'2-digit',minute:'2-digit'})};
+  try{
+    localStorage.setItem(WORKER_RISK_DRAFT_KEY,JSON.stringify(workerRiskDraft));
+    if(showToast)toast('Đã lưu bản nháp báo nguy cơ.');
+  }catch(error){
+    console.error('Unable to save worker risk draft.',error);
+    toast('Không thể lưu bản nháp báo nguy cơ trong bộ nhớ trình duyệt.');
+  }
+}
+function submitWorkerRiskReport(form){
+  const values=Object.fromEntries(new FormData(form).entries());
+  const evidenceNames=[...new Set([...(workerRiskDraft.evidenceNames||[]),...workerRiskFiles.map(file=>file.name)])];
+  const numbers=[...db.risks,...workerRiskDemo].map(risk=>Number((risk.id.match(/\d+/)||['0'])[0]));
+  const id=`HZ-${String(Math.max(20,...numbers.filter(Number.isFinite))+1).padStart(3,'0')}`;
+  const reporter=roleConfig[currentRole].name;
+  const risk={id,title:String(values.title).trim(),zone:String(values.zone),level:values.level==='Chưa xác định'?'Trung bình':values.level,status:'Chờ duyệt',owner:'Cán bộ an toàn',reporter,category:String(values.category),date:new Date().toLocaleDateString('vi-VN'),desc:String(values.desc).trim(),evidenceNames,timeline:[{date:new Date().toLocaleString('vi-VN'),title:`${reporter} đã gửi ${id}`,detail:`Chờ duyệt · ${evidenceNames.length} minh chứng`} ]};
+  db.risks.unshift(risk);
+  try{
+    saveDB();
+  }catch(error){
+    db.risks=db.risks.filter(item=>item!==risk);
+    console.error('Unable to submit worker risk report.',error);
+    toast('Không thể gửi báo cáo. Dữ liệu vẫn còn trên biểu mẫu để bạn thử lại.');
+    return;
+  }
+  try{localStorage.removeItem(WORKER_RISK_DRAFT_KEY)}
+  catch(error){console.error('Unable to clear submitted worker risk draft.',error)}
+  workerRiskDraft={};
+  workerRiskFiles=[];
+  expandedWorkerRiskId=id;
+  currentPage='worker-history';
+  renderPage();
+  toast(`Đã gửi ${id}. Báo cáo đang chờ cán bộ an toàn xác minh.`);
+}
+function acceptWorkerRiskFiles(files){
+  const accepted=[];
+  for(const file of files){
+    if(!['image/jpeg','image/png','application/pdf'].includes(file.type)){
+      toast(`${file.name}: chỉ nhận JPG, PNG hoặc PDF.`);
+      continue;
+    }
+    if(file.size>10*1024*1024){
+      toast(`${file.name}: tệp vượt quá 10 MB.`);
+      continue;
+    }
+    accepted.push(file);
+  }
+  const persistedOnly=(workerRiskDraft.evidenceNames||[]).filter(name=>!workerRiskFiles.some(file=>file.name===name));
+  const combined=[...workerRiskFiles,...accepted];
+  const available=Math.max(0,5-persistedOnly.length-workerRiskFiles.length);
+  if(accepted.length>available)toast('Chỉ được đính kèm tối đa 5 tệp.');
+  workerRiskFiles=combined.slice(0,5-persistedOnly.length);
+  const names=[...new Set([...(workerRiskDraft.evidenceNames||[]),...workerRiskFiles.map(file=>file.name)])];
+  workerRiskDraft={...workerRiskDraft,evidenceNames:names};
+  const list=$('#workerRiskEvidenceNames');
+  if(list)list.textContent=names.join(' · ');
+}
+document.addEventListener('click',event=>{
+  const expand=event.target.closest('[data-worker-risk-expand]');
+  if(expand&&currentPage==='worker-history'){
+    expandedWorkerRiskId=expandedWorkerRiskId===expand.dataset.workerRiskExpand?'':expand.dataset.workerRiskExpand;
+    $('#pageContent').innerHTML=workerHistory();
+    return;
+  }
+  const saveDraft=event.target.closest('[data-worker-risk-save]');
+  if(saveDraft&&currentPage==='worker-report'){
+    saveWorkerRiskDraft($('#workerReportForm'));
+    return;
+  }
+  const clearDraft=event.target.closest('[data-worker-risk-clear-draft]');
+  if(clearDraft){
+    try{
+      localStorage.removeItem(WORKER_RISK_DRAFT_KEY);
+      workerRiskDraft={};
+      renderPage();
+      toast('Đã lưu trữ bản nháp.');
+    }catch(error){
+      console.error('Unable to archive worker risk draft.',error);
+      toast('Không thể lưu trữ bản nháp.');
+    }
+    return;
+  }
+  const archive=event.target.closest('[data-worker-risk-archive]');
+  if(archive&&currentPage==='worker-history'){
+    const risk=workerRiskRecords().find(item=>item.id===archive.dataset.workerRiskArchive);
+    if(!risk){toast('Không tìm thấy báo cáo cần lưu trữ.');return}
+    if(!window.confirm(`Xác nhận lưu trữ báo cáo ${risk.id}? Lịch sử báo cáo vẫn được giữ.`))return;
+    const stored=db.risks.find(item=>item.id===risk.id);
+    if(stored){
+      const previous={status:stored.status,archivedByReporter:stored.archivedByReporter,timeline:stored.timeline};
+      stored.archivedByReporter=true;
+      stored.status='Đã lưu trữ';
+      stored.timeline=[...(stored.timeline||[]),{date:new Date().toLocaleString('vi-VN'),title:`${roleConfig[currentRole].name} yêu cầu lưu trữ`,detail:'Lịch sử báo cáo được giữ nguyên.'}];
+      try{saveDB()}
+      catch(error){Object.assign(stored,previous);console.error('Unable to archive worker risk report.',error);toast('Không thể lưu trữ báo cáo trong bộ nhớ trình duyệt.');return}
+    }else{
+      workerRiskArchivedIds=[...new Set([...workerRiskArchivedIds,risk.id])];
+      try{localStorage.setItem('sitesafe-worker-risk-archive-v1',JSON.stringify(workerRiskArchivedIds))}
+      catch(error){console.error('Unable to archive demo risk report.',error);toast('Không thể lưu trữ báo cáo.');return}
+    }
+    renderPage();
+    toast(`Đã lưu trữ ${risk.id}; lịch sử được giữ.`);
+  }
+},true);
+document.addEventListener('input',event=>{
+  if(currentPage==='worker-report'&&event.target.closest('#workerReportForm'))saveWorkerRiskDraft($('#workerReportForm'),false);
+});
+document.addEventListener('change',event=>{
+  if(currentPage==='worker-report'&&event.target.id==='workerRiskEvidence'){
+    acceptWorkerRiskFiles([...event.target.files]);
+    saveWorkerRiskDraft($('#workerReportForm'),false);
+    return;
+  }
+  if(currentPage==='worker-report'&&event.target.closest('#workerReportForm'))saveWorkerRiskDraft($('#workerReportForm'),false);
+});
+document.addEventListener('dragover',event=>{
+  if(currentPage==='worker-report'&&event.target.closest('.worker-risk-upload'))event.preventDefault();
+});
+document.addEventListener('drop',event=>{
+  if(currentPage!=='worker-report'||!event.target.closest('.worker-risk-upload'))return;
+  event.preventDefault();
+  acceptWorkerRiskFiles([...event.dataTransfer.files]);
+  saveWorkerRiskDraft($('#workerReportForm'),false);
+});
+document.addEventListener('submit',event=>{
+  if(event.target.id!=='workerReportForm')return;
+  event.preventDefault();
+  event.stopImmediatePropagation();
+  submitWorkerRiskReport(event.target);
+},true);
+document.addEventListener('click',event=>{
+  const evidenceButton=event.target.closest('[data-action="worker-evidence"]');
+  if(!evidenceButton||currentPage!=='worker-history')return;
+  if(db.risks.some(risk=>risk.id===evidenceButton.dataset.id))return;
+  const risk=workerRiskDemo.find(item=>item.id===evidenceButton.dataset.id);
+  if(!risk)return;
+  db.risks.unshift({...risk,reporter:risk.owner,evidenceNames:[...(risk.evidenceNames||[])]});
+  try{saveDB()}
+  catch(error){
+    db.risks.shift();
+    console.error('Unable to open demo risk evidence form.',error);
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    toast('Không thể mở minh chứng trong bộ nhớ trình duyệt.');
+  }
+},true);
