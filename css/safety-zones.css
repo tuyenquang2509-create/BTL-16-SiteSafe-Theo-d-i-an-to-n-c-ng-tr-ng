@@ -1,6 +1,0 @@
-/* CSS rieng cho safety-zones. Cac quy tac goc duoc giu trong style.css de dam bao tuong thich. */
-/* SiteSafe · kiểu dáng riêng: zones */
-
-
-/* Figma: page-specific finishing for safety-zones */
-body[data-initial-role="safety"] .page-content > :first-child{scroll-margin-top:85px}

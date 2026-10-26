@@ -1,9 +1,0 @@
-/* CSS rieng cho safety-reports. Cac quy tac goc duoc giu trong style.css de dam bao tuong thich. */
-/* SiteSafe · kiểu dáng riêng: reports */
-.report-bars{display:grid;gap:14px}
-.report-row{display:grid;grid-template-columns:130px 1fr 35px;gap:12px;align-items:center;font-size:12px}
-.report-row .progress{margin:0}
-@media (max-width:780px){.report-row{grid-template-columns:90px 1fr 25px}}
-
-/* Figma: page-specific finishing for safety-reports */
-body[data-initial-role="safety"] .page-content > :first-child{scroll-margin-top:85px}

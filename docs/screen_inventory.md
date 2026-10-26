@@ -27,5 +27,3 @@
 |SS-23|Khách / Tất cả|Trang vào hệ thống|Truy cập và chọn luồng sử dụng|Mở trang đầu, truy cập giao diện demo|Read/navigation|`index.html`|SV3|`docs/project-docs`|
 |SS-24|Tất cả vai trò|Trang không tìm thấy (404)|Thông báo đường dẫn không hợp lệ|Hiển thị lỗi và hỗ trợ quay về trang phù hợp|Read/navigation|`404.html`|SV3|`docs/project-docs`|
 
-
-

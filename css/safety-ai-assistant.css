@@ -1,8 +1,0 @@
-/* CSS rieng cho safety-ai-assistant. Cac quy tac goc duoc giu trong style.css de dam bao tuong thich. */
-/* SiteSafe · kiểu dáng riêng: ai */
-.ai-result{border:1px solid #d8e6ff;background:#f7faff;border-radius:12px;padding:18px}
-.ai-result h3{margin:0 0 9px;font-size:15px}
-.ai-result p{font-size:12px;line-height:1.6;color:#4f5f78}
-
-/* Figma: page-specific finishing for safety-ai-assistant */
-body[data-initial-role="safety"] .page-content > :first-child{scroll-margin-top:85px}

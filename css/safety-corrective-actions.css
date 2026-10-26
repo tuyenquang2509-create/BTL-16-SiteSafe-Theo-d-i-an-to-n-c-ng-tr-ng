@@ -1,6 +1,0 @@
-/* CSS rieng cho safety-corrective-actions. Cac quy tac goc duoc giu trong style.css de dam bao tuong thich. */
-/* SiteSafe · kiểu dáng riêng: actions */
-
-
-/* Figma: page-specific finishing for safety-corrective-actions */
-body[data-initial-role="safety"] .page-content > :first-child{scroll-margin-top:85px}

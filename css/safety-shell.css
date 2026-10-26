@@ -1,0 +1,6 @@
+.safety-role .role-label{color:#c8e5f2}
+.safety-role-switch{padding:0 7px}
+.safety-role-switch label{color:#c8e5f2}
+.safety-role #nav{display:flex;flex-direction:column;gap:6px}
+.safety-role #nav .nav-item{width:100%}
+.safety-shell-note{color:#64748b;font-size:13px;line-height:1.6}
