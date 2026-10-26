@@ -4,6 +4,7 @@
   'use strict';
   const KEY='sitesafe_figma_demo_v1';
   const DRAFT_KEY='sitesafe_worker_drafts_v2';
+  const projectRootURL=new URL('../',document.currentScript.src);
   const load=()=>{try{return JSON.parse(localStorage.getItem(KEY)||'{}')}catch{return {}}};
   const store=(name,payload)=>{const data=load();(data[name]??=[]).push({at:new Date().toISOString(),page:location.pathname.split('/').pop(),payload});localStorage.setItem(KEY,JSON.stringify(data));};
   const notify=(message)=>{
@@ -106,7 +107,7 @@
         const avatar=document.querySelector('.avatar');if(avatar)avatar.textContent='TA';
         notify('Đã đặt lại ảnh đại diện minh họa.');break;
       }
-      case 'worker-report':location.href='../worker/worker-report-create.html';break;
+      case 'worker-report':location.href=new URL('worker/worker-report-create.html',projectRootURL).href;break;
       case 'new-site':if(document.body.dataset.initialPage==='admin-home')break;
       case 'new-reports':
         notify('Chức năng tạo mới chưa được triển khai trong giai đoạn này; không có dữ liệu nào bị thay đổi.');break;

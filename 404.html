@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 <!DOCTYPE html>
 
 <html lang="vi">
@@ -46,77 +45,4 @@
 <script src="js/script.js"></script>
 <script src="js/404.js"></script>
 <script src="js/figma-demo.js"></script></body>
-=======
-<!doctype html>
-<html lang="vi">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="description" content="Không tìm thấy trang SiteSafe">
-  <title>Không tìm thấy trang – SiteSafe</title>
-  <link rel="stylesheet" href="style.css">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-</head>
-<body class="not-found-page">
-  <header class="not-found-brand"><span class="brand-mark">✓</span><span>SiteSafe</span></header>
-  <main class="not-found-content">
-    <div class="not-found-illustration" aria-hidden="true">
-      <div class="not-found-sign">404</div>
-      <div class="not-found-post"></div>
-      <div class="not-found-barrier"></div>
-      <div class="not-found-ground"></div>
-    </div>
-    <h1>Đường dẫn này chưa có lối vào.</h1>
-    <p>Trang có thể đã được chuyển hoặc đường dẫn chưa đúng. Công việc và dữ liệu của bạn vẫn còn trong không gian làm việc.</p>
-    <div class="not-found-actions">
-      <a class="btn btn-primary" href="index.html">Về trang chủ</a>
-      <button class="btn btn-light" id="goBack" type="button">Quay lại trang trước</button>
-    </div>
-    <form class="not-found-search" id="pageSearch">
-      <label for="pageQuery">Tìm một trang</label>
-      <input id="pageQuery" list="pageSuggestions" placeholder="⌕  Ví dụ: checklist, nguy cơ, báo cáo" autocomplete="off">
-      <datalist id="pageSuggestions">
-        <option value="Checklist">
-        <option value="Nguy cơ">
-        <option value="Báo cáo">
-        <option value="Hồ sơ">
-        <option value="Tổng quan">
-      </datalist>
-      <div class="not-found-result" id="pageSearchResult" role="status" aria-live="polite"></div>
-    </form>
-    <p class="not-found-note">Đây là trang không tìm thấy, không phải thông báo từ chối quyền truy cập.</p>
-    <footer class="not-found-foot">404.html · SiteSafe – Theo dõi an toàn công trường</footer>
-  </main>
-  <script>
-    document.getElementById('goBack').addEventListener('click', () => {
-      if (history.length > 1) history.back();
-      else location.href = 'index.html';
-    });
-    document.getElementById('pageSearch').addEventListener('submit', (event) => {
-      event.preventDefault();
-    });
-    document.getElementById('pageQuery').addEventListener('input', (event) => {
-      const query = event.target.value.trim().toLocaleLowerCase('vi');
-      const pages = [
-        {terms:['checklist','kiểm tra'],label:'Checklist',url:'worker-checklist.html'},
-        {terms:['nguy cơ','rủi ro'],label:'Nguy cơ',url:'safety-risks.html'},
-        {terms:['báo cáo'],label:'Báo cáo',url:'safety-reports.html'},
-        {terms:['hồ sơ','profile'],label:'Hồ sơ cá nhân',url:'shared-profile.html'},
-        {terms:['tổng quan','dashboard'],label:'Tổng quan',url:'safety-dashboard.html'}
-      ];
-      const page = pages.find(item => item.terms.some(term => term.includes(query) || query.includes(term)));
-      const result = document.getElementById('pageSearchResult');
-      if (!query) {
-        result.textContent = '';
-      } else if (page) {
-        result.innerHTML = `Trang phù hợp: <a href="${page.url}">${page.label} →</a>`;
-      } else {
-        result.textContent = 'Chưa tìm thấy trang phù hợp. Thử “checklist”, “nguy cơ” hoặc “báo cáo”.';
-      }
-    });
-  </script>
-</body>
->>>>>>> 8930981326c2ec9997bff5441381cd083758f765
 </html>

@@ -17,11 +17,7 @@ Nếu nguy cơ được ghi nhận rời rạc, thiếu người phụ trách ho
 
 ## 4. Các vai trò và luồng người dùng
 1. **Công nhân:** xem khu vực của mình → làm checklist đầu ca → gửi báo cáo nguy cơ → theo dõi lịch sử báo cáo.
-<<<<<<< HEAD
 2. **Cán bộ an toàn:** xem tổng quan → xem chi tiết và duyệt nguy cơ → lập lịch kiểm tra → phân loại nguy cơ bằng AI. Phân công khắc phục và xác minh được thực hiện trong luồng chi tiết nguy cơ.
-=======
-2. **Cán bộ an toàn:** xem tổng quan → ghi nhận/phân loại nguy cơ → lập lịch kiểm tra → tạo hành động khắc phục → xác nhận trạng thái → xuất báo cáo.
->>>>>>> 8930981326c2ec9997bff5441381cd083758f765
 3. **Quản lý công trường:** xem tổng quan → theo dõi điểm nóng theo khu vực → kiểm tra hành động và hạn → xem/xuất báo cáo.
 4. **Quản trị hệ thống:** xem tổng quan → quản lý người dùng, khu vực và mẫu checklist.
 
@@ -33,7 +29,6 @@ Nếu nguy cơ được ghi nhận rời rạc, thiếu người phụ trách ho
 | Công nhân | Báo cáo nguy cơ | `worker-report` | Gửi mô tả nguy cơ | C / validation | Phân loại là luồng hỗ trợ riêng |
 | Công nhân | Lịch sử báo cáo | `worker-history` | Theo dõi báo cáo | R / rỗng | – |
 | Cán bộ an toàn | Tổng quan an toàn | `dashboard` | Theo dõi số liệu, nguy cơ ưu tiên | R / dữ liệu demo | – |
-<<<<<<< HEAD
 | Cán bộ an toàn | Chi tiết nguy cơ | `risks` | Xem, duyệt, giao khắc phục và xác minh | C/R/U; mới → xử lý → khắc phục | Phân loại nguy cơ |
 | Cán bộ an toàn | Lịch kiểm tra | `inspections` | Lập lịch, phân công, cập nhật | C/R/U; lên lịch → đang làm → hoàn thành | – |
 | Quản lý công trường | Hành động khắc phục | `actions` | Gán người, hạn, ưu tiên | C/R/U; chưa làm → đang làm → hoàn thành | – |
@@ -42,20 +37,10 @@ Nếu nguy cơ được ghi nhận rời rạc, thiếu người phụ trách ho
 | Quản trị | Mẫu checklist | `checklists` | Tạo, sửa, kích hoạt, lưu trữ | C/R/U; nháp → sử dụng → lưu trữ | Sinh checklist |
 | Quản trị | Người dùng | `users` | Tạo, sửa, khóa/mở khóa | C/R/U; hoạt động ↔ khóa | – |
 | Cán bộ an toàn | AI phân loại nguy cơ | `ai` | Gợi ý nhóm và mức ưu tiên để cán bộ xác nhận | Nhập → đề xuất → duyệt/sửa/bỏ qua | Phân loại nguy cơ |
-=======
-| Cán bộ an toàn | Nguy cơ / sự cố | `risks` | Tạo, xem, sửa, lọc, xuất CSV | C/R/U; mới → xử lý → khắc phục | Phân loại nguy cơ |
-| Cán bộ an toàn | Kiểm tra hiện trường | `inspections` | Lập lịch, phân công, cập nhật | C/R/U; lên lịch → đang làm → hoàn thành | – |
-| Cán bộ an toàn | Hành động khắc phục | `actions` | Gán người, hạn, ưu tiên | C/R/U; chưa làm → đang làm → hoàn thành | – |
-| Cán bộ an toàn / Quản lý | Khu vực / bản đồ rủi ro | `zones` | Theo dõi khu vực, mức độ rủi ro | R; admin có C/U | Phân tích điểm nóng |
-| Cán bộ an toàn / Quản lý | Báo cáo an toàn | `reports` | Tổng hợp và xuất CSV | R / trạng thái dữ liệu | Tóm tắt/điểm nóng |
-| Cán bộ an toàn / Quản trị | Mẫu checklist | `checklists` | Tạo, sửa, kích hoạt, lưu trữ | C/R/U; nháp → sử dụng → lưu trữ | Sinh checklist |
-| Quản trị | Người dùng | `users` | Tạo, sửa, khóa/mở khóa | C/R/U; hoạt động ↔ khóa | – |
-| Cán bộ an toàn | Trợ lý AI | `ai` | Ba luồng AI có giải thích | Nhập → xử lý → đề xuất → duyệt/sửa/bỏ qua | Phân loại / sinh nội dung / phân tích điểm nóng |
->>>>>>> 8930981326c2ec9997bff5441381cd083758f765
 | Tất cả | Trợ giúp | `help` | Hướng dẫn, giới hạn và trạng thái | R | – |
 | Tất cả | Hồ sơ cá nhân | `profile` | Thông tin người dùng demo | R | – |
 
-> Các mục trong bảng là màn hình SPA được điều hướng bằng JavaScript. Nếu giảng viên yêu cầu mỗi màn hình là một tệp HTML riêng, hãy tách từng view thành tệp theo quy tắc `role-function-action.html`.
+> `index.html` là điểm vào SPA; các trang HTML riêng được nhóm trong `admin/`, `manager/`, `safety/` và `worker/`. Trang dùng chung (`404.html`, `shared-help.html`, `shared-profile.html`) nằm ở thư mục gốc.
 
 ## 6. Trạng thái được mô phỏng
 - Dữ liệu có kết quả và danh sách rỗng khi bộ lọc không khớp.
