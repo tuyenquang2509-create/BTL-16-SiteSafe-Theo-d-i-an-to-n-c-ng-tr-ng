@@ -16,6 +16,9 @@
   <script>
     const requestedSafetyPage = new URLSearchParams(location.search).get('page');
     if (requestedSafetyPage) document.documentElement.dataset.safetyPage = requestedSafetyPage;
+    if (requestedSafetyPage === 'risks') document.title = 'Chi tiết nguy cơ – Cán bộ an toàn | SiteSafe';
+    if (requestedSafetyPage === 'inspections') document.title = 'Lịch kiểm tra – Cán bộ an toàn | SiteSafe';
+    if (requestedSafetyPage === 'ai') document.title = 'AI phân loại nguy cơ – Cán bộ an toàn | SiteSafe';
   </script>
 </head>
 <body data-initial-page="dashboard" data-initial-role="safety">
