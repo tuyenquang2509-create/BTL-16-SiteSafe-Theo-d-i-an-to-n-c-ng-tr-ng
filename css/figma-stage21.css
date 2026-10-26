@@ -1,0 +1,7 @@
+/* Giai đoạn 21: chọn khu vực trên bản đồ Figma */
+.fg-zone-grid .fg-zone { cursor:pointer; transition:transform .15s ease, box-shadow .15s ease; }
+.fg-zone-grid .fg-zone:hover { transform:translateY(-2px); }
+.fg-zone-grid .fg-zone.stage21-active { outline:3px solid #0f8b91; outline-offset:2px; box-shadow:0 4px 16px rgba(15,139,145,.16); }
+.fg-zone-grid .fg-zone[hidden] { display:none; }
+#stage21-zone-rank .stage21-rank-selected { background:rgba(15,139,145,.09); font-weight:600; }
+@media (max-width:680px) { .fg-zone-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } }

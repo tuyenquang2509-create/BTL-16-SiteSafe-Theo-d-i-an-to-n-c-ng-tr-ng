@@ -1,0 +1,29 @@
+/* SiteSafe - Phase 4: live demo records displayed separately from Figma mock data.
+   Read-only presentation of localStorage created by phases 2 and 3. */
+(()=>{'use strict';
+ const DATA='sitesafe_figma_demo_v1', FLOW='sitesafe_workflow_phase3_v1';
+ const read=(key,def)=>{try{const v=JSON.parse(localStorage.getItem(key)||'null');return v&&typeof v==='object'?v:def}catch{return def}};
+ const escapeHtml=v=>String(v??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+ const date=v=>{if(!v)return '—';const d=new Date(v);return isNaN(d.getTime())?String(v):d.toLocaleString('vi-VN')};
+ const current=()=>{const d=read(DATA,{}),f=read(FLOW,{});return {hazards:Array.isArray(d.hazards)?d.hazards:[],actions:Array.isArray(f.actions)?f.actions:[],decisions:f.decisions||{}}};
+ const label=r=>{const p=r.payload||{};return p.title||p.hazardTitle||p.field_2||Object.values(p).find(v=>typeof v==='string'&&v.toLowerCase().includes('lan can'))||'Nguy cơ hiện trường'};
+ const htmlStatus=s=>`<span class="live-status">${escapeHtml(s)}</span>`;
+ const idOf=r=>r.payload?.id||'HZ-DEMO';
+ const page=location.pathname.split('/').pop();
+ if(!['safety-dashboard.html','manager-dashboard.html','manager-reports.html','manager-risk-map.html'].includes(page))return;
+ const container=document.querySelector('.fg-screen,.figma-dashboard');if(!container)return;
+ const section=document.createElement('section');section.className='live-panel';section.id='livePhase4';
+ section.innerHTML=`<div class="live-header"><div><h2>Dữ liệu phát sinh từ quy trình demo</h2><p>Dữ liệu trong cùng trình duyệt · Tách biệt với số liệu mẫu của Figma phía trên</p></div><div class="live-actions"><button type="button" class="btn btn-light btn-sm" id="liveRefresh">Làm mới</button><button type="button" class="btn btn-light btn-sm" id="liveExport">Xuất CSV</button></div></div><div class="live-summary" id="liveSummary"></div><div class="live-controls"><label>Tìm kiếm <input id="liveSearch" type="search" placeholder="Mã, nội dung, người phụ trách"></label><label>Trạng thái <select id="liveStatus"><option value="all">Tất cả</option><option value="pending">Chờ duyệt</option><option value="confirmed">Đã xác nhận</option><option value="supplement">Cần bổ sung</option><option value="rejected">Từ chối</option><option value="closed">Đã đóng</option></select></label></div><div id="liveRows" aria-live="polite"></div>`;
+ container.appendChild(section);
+ const search=section.querySelector('#liveSearch'),status=section.querySelector('#liveStatus');
+ const statusMatch=(s,v)=>v==='all'||({pending:/chờ duyệt/i,confirmed:/đã xác nhận/i,supplement:/cần bổ sung/i,rejected:/từ chối/i,closed:/đã đóng/i}[v]||/^$/).test(s);
+ const filtered=()=>{const d=current(),q=search.value.trim().toLowerCase();return d.hazards.slice().reverse().filter(r=>{const id=idOf(r),dec=d.decisions[id],s=dec?.status||'Chờ duyệt';return statusMatch(s,status.value)&&[id,label(r),s,dec?.owner||'',dec?.reason||''].join(' ').toLowerCase().includes(q)}).map(r=>{const id=idOf(r),dec=d.decisions[id];return {id,title:label(r),at:r.at,status:dec?.status||'Chờ duyệt',owner:dec?.owner||'—',reason:dec?.reason||''}})};
+ const render=()=>{const d=current(),rows=filtered(),pending=d.hazards.filter(r=>!d.decisions[idOf(r)]).length,open=d.actions.filter(a=>a.status!=='Đã xác minh đóng').length;
+ section.querySelector('#liveSummary').innerHTML=`<div><strong>${d.hazards.length}</strong><span>Báo cáo đã gửi</span></div><div><strong>${pending}</strong><span>Chờ duyệt</span></div><div><strong>${open}</strong><span>Hành động chưa đóng</span></div><div><strong>${d.actions.filter(a=>a.status==='Chờ xác minh').length}</strong><span>Chờ xác minh</span></div>`;
+ section.querySelector('#liveRows').innerHTML=rows.length?`<div class="live-table-wrap"><table><thead><tr><th>Mã</th><th>Nội dung</th><th>Thời điểm</th><th>Trạng thái</th><th>Phụ trách</th></tr></thead><tbody>${rows.map(r=>`<tr><td>${escapeHtml(r.id)}</td><td>${escapeHtml(r.title)}</td><td>${escapeHtml(date(r.at))}</td><td>${htmlStatus(r.status)}</td><td>${escapeHtml(r.owner)}</td></tr>`).join('')}</tbody></table></div>`:'<p class="live-empty">Chưa có báo cáo phù hợp. Có thể tạo báo cáo tại trang Nhân sự hiện trường.</p>';
+ if(page==='manager-dashboard.html'||page==='manager-risk-map.html'){const list=d.actions.slice().reverse();section.querySelector('#liveRows').insertAdjacentHTML('beforeend',`<h3 class="live-subtitle">Hành động khắc phục phát sinh</h3>${list.length?`<div class="live-table-wrap"><table><thead><tr><th>Mã</th><th>Nguy cơ</th><th>Người phụ trách</th><th>Hạn</th><th>Trạng thái</th></tr></thead><tbody>${list.map(a=>`<tr><td>${escapeHtml(a.id)}</td><td>${escapeHtml(a.riskId)}</td><td>${escapeHtml(a.owner)}</td><td>${escapeHtml(a.due)}</td><td>${htmlStatus(a.status)}</td></tr>`).join('')}</tbody></table></div>`:'<p class="live-empty">Chưa có hành động phát sinh.</p>'}`)}
+ };
+ search.addEventListener('input',render);status.addEventListener('change',render);section.querySelector('#liveRefresh').addEventListener('click',render);
+ section.querySelector('#liveExport').addEventListener('click',()=>{const rows=filtered();const data=[['Mã','Nội dung','Thời điểm','Trạng thái','Phụ trách'],...rows.map(r=>[r.id,r.title,date(r.at),r.status,r.owner])];const csv='\uFEFF'+data.map(line=>line.map(v=>'"'+String(v??'').replace(/"/g,'""')+'"').join(',')).join('\r\n');const blob=new Blob([csv],{type:'text/csv;charset=utf-8;'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='sitesafe-bao-cao-demo.csv';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)});
+ window.addEventListener('storage',render);render();
+})();

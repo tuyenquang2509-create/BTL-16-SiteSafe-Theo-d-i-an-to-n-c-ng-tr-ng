@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="SiteSafe - không gian làm việc của cán bộ an toàn">
+  <title>Cán bộ an toàn | SiteSafe</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+  <link href="../css/style.css" rel="stylesheet">
+  <link href="../css/figma-polish.css" rel="stylesheet">
+  <link href="../css/stage33-ui.css" rel="stylesheet">
+  <link href="../css/workflow-phase3.css" rel="stylesheet">
+  <link href="../css/safety-shell.css" rel="stylesheet">
+  <script>
+    const requestedSafetyPage = new URLSearchParams(location.search).get('page');
+    if (requestedSafetyPage) document.documentElement.dataset.safetyPage = requestedSafetyPage;
+    if (requestedSafetyPage === 'risks') document.title = 'Chi tiết nguy cơ – Cán bộ an toàn | SiteSafe';
+    if (requestedSafetyPage === 'inspections') document.title = 'Lịch kiểm tra – Cán bộ an toàn | SiteSafe';
+    if (requestedSafetyPage === 'ai') document.title = 'AI phân loại nguy cơ – Cán bộ an toàn | SiteSafe';
+  </script>
+</head>
+<body data-initial-page="dashboard" data-initial-role="safety">
+  <div class="app-shell">
+    <aside aria-label="Điều hướng chính" class="sidebar" id="sidebar">
+      <div class="brand"><span aria-hidden="true" class="brand-mark">✓</span><span>SiteSafe</span></div>
+      <div class="role-label">CÁN BỘ AN TOÀN</div>
+      <nav aria-label="Các màn hình" id="nav"></nav>
+      <div class="sidebar-bottom">
+        <div class="site-mini"><strong>RIVERSIDE – KHỐI A</strong><span>RS-A · Đang thi công</span></div>
+        <button class="nav-item" data-page="help"><span>ⓘ</span>Trợ giúp &amp; hướng dẫn</button>
+        <button class="nav-item" data-page="profile"><span>♙</span>Hồ sơ cá nhân</button>
+      </div>
+    </aside>
+    <main class="workspace">
+      <header class="topbar">
+        <button aria-label="Mở menu" class="mobile-menu" id="mobileMenu">☰</button>
+        <button class="site-switch" id="siteSwitch">Riverside – Khối A <span>⌄</span></button>
+        <div class="topbar-right">
+          <button aria-label="Thông báo" class="icon-btn" id="notifications" title="Thông báo">♧<i></i></button>
+          <div class="user-chip"><div class="avatar" id="avatar">TA</div><div><strong id="userName">Trần An</strong><small id="userRole">Cán bộ an toàn</small></div></div>
+        </div>
+      </header>
+      <section aria-label="Nội dung Cán bộ an toàn" aria-live="polite" class="page-content" id="pageContent"></section>
+    </main>
+  </div>
+  <div aria-live="polite" class="toast" id="toast" role="status"></div>
+  <div class="modal-backdrop" id="modalBackdrop">
+    <section aria-labelledby="modalTitle" aria-modal="true" class="modal" role="dialog">
+      <div class="modal-head"><h2 id="modalTitle">Thêm mới</h2><button aria-label="Đóng" class="icon-btn" id="closeModal">✕</button></div>
+      <div class="modal-body" id="modalBody"></div>
+    </section>
+  </div>
+  <script src="../js/script.js"></script>
+  <script src="../js/figma-demo.js"></script>
+  <script src="../js/workflow-phase3.js"></script>
+  <script src="../js/safety-shell.js"></script>
+</body>
+</html>

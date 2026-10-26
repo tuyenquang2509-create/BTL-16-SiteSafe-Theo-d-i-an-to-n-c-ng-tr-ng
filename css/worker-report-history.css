@@ -1,0 +1,6 @@
+/* CSS rieng cho worker-report-history. Cac quy tac goc duoc giu trong style.css de dam bao tuong thich. */
+/* SiteSafe · kiểu dáng riêng: worker-history */
+
+
+/* Figma: page-specific finishing for worker-report-history */
+body[data-initial-role="worker"] .page-content > :first-child{scroll-margin-top:85px}
