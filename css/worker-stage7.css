@@ -1,0 +1,7 @@
+/* Giai đoạn 7: chỉ các trang công nhân, không đổi token/bố cục toàn hệ thống. */
+.worker-evidence-status{margin:8px 0 0;font-size:13px;color:#52677d;overflow-wrap:anywhere}
+.worker-evidence-status.invalid{color:#a62c38;font-weight:600}
+.worker-stage7-toolbar{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin:12px 0 20px}
+.worker-stage7-toolbar span{font-size:13px;color:#62788c}
+body[data-initial-page="worker-checklist"] .fg-note textarea:required{border-left:3px solid #db7d64}
+@media(max-width:680px){.worker-stage7-toolbar{align-items:flex-start;flex-direction:column}}

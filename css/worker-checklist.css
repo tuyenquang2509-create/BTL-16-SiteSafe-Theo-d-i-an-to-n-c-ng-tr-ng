@@ -1,0 +1,6 @@
+/* CSS rieng cho worker-checklist. Cac quy tac goc duoc giu trong style.css de dam bao tuong thich. */
+/* SiteSafe · kiểu dáng riêng: worker-checklist */
+
+
+/* Figma: page-specific finishing for worker-checklist */
+body[data-initial-role="worker"] .page-content > :first-child{scroll-margin-top:85px}

@@ -1,0 +1,4 @@
+Figma tham chiếu do nhóm cung cấp:
+https://www.figma.com/design/FU0CPChHb0LapRRTIAsuIS/BTL-16-%E2%80%93-SiteSafe-%E2%80%93-Theo-d%C3%B5i-an-to%C3%A0n-c%C3%B4ng-tr%C6%B0%E1%BB%9Dng?node-id=6-31177&t=SG9z7sGKYyI5KBpX-
+
+Lưu ý: cần so sánh trực tiếp trong Figma để xác nhận từng kích thước/layer; MCP Figma hiện đang giới hạn lượt truy cập.

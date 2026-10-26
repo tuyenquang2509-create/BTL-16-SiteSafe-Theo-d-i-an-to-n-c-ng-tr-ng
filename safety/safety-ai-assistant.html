@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="SiteSafe - hệ thống theo dõi an toàn công trường nhiều vai trò"
+    />
+    <title>Cán bộ an toàn – Trợ lý AI | SiteSafe</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link href="../css/style.css" rel="stylesheet" />
+    <link href="../css/safety-ai-assistant.css" rel="stylesheet" />
+    <link href="../css/figma-polish.css" rel="stylesheet" />
+    <link href="../css/figma-stage20.css" rel="stylesheet" />
+    <link href="../css/stage33-ui.css" rel="stylesheet" />
+  </head>
+  <body data-initial-page="ai" data-initial-role="safety">
+    <div class="app-shell">
+      <aside aria-label="Điều hướng chính" class="sidebar" id="sidebar">
+        <div class="brand">
+          <span class="brand-mark">✓</span><span>SiteSafe</span>
+        </div>
+        <div class="role-label">CÁN BỘ AN TOÀN</div>
+        <div class="form-field" style="padding: 0 7px">
+          <label for="roleSelect">Chuyển vai trò (demo)</label>
+          <select class="field-control" id="roleSelect">
+            <option value="safety">Cán bộ an toàn</option>
+            <option value="worker">Nhân sự hiện trường</option>
+            <option value="manager">Quản lý công trường</option>
+            <option value="admin">Quản trị hệ thống</option>
+          </select>
+        </div>
+        <nav aria-label="Các màn hình" id="nav"></nav>
+        <div class="sidebar-bottom">
+          <div class="site-mini">
+            <strong>RIVERSIDE – KHỐI A</strong>
+            <span>RS-A · Đang thi công</span>
+          </div>
+          <button class="nav-item" data-page="help"><span>ⓘ</span>Trợ giúp &amp; hướng dẫn</button>
+          <button class="nav-item" data-page="profile"><span>♙</span>Hồ sơ cá nhân</button>
+        </div>
+      </aside>
+      <main class="workspace">
+        <header class="topbar">
+          <button aria-label="Mở menu" class="mobile-menu" id="mobileMenu">☰</button>
+          <button class="site-switch" id="siteSwitch">
+            Riverside – Khối A <span>⌄</span>
+          </button>
+          <div class="topbar-right">
+            <button aria-label="Thông báo" class="icon-btn" id="notifications" title="Thông báo">
+              ♧<i></i>
+            </button>
+            <div class="user-chip">
+              <div class="avatar" id="avatar">TA</div>
+              <div>
+                <strong id="userName">Trần An</strong>
+                <small id="userRole">Cán bộ an toàn</small>
+              </div>
+            </div>
+          </div>
+        </header>
+        <section aria-live="polite" class="page-content" id="pageContent">
+          <div class="fg-screen" id="aiWorkspace">
+            <div class="fg-crumb">Cán bộ an toàn / AI phân loại nguy cơ</div>
+            <div class="fg-heading">
+              <div>
+                <h1>AI phân loại nguy cơ</h1>
+                <p>Gợi ý nhóm và độ ưu tiên; con người xác nhận quyết định.</p>
+              </div>
+              <button class="btn btn-primary" form="aiForm" type="submit">
+                Phân tích nguy cơ
+              </button>
+            </div>
+            <div class="fg-caption">
+              Dữ liệu minh họa · 03/10/2026 · Không phải số liệu thực tế
+            </div>
+            <form id="aiForm" data-kind="classify">
+              <section class="fg-panel">
+                <div class="fg-section-head">
+                  <div><h2>1. Chọn báo cáo hoặc nhập quan sát</h2></div>
+                </div>
+                <div class="fg-form-grid">
+                  <label class="fg-field fg-wide" for="aiSource">
+                    <span>Nguy cơ nguồn</span>
+                    <select id="aiSource">
+                      <option value="HZ-024">HZ-024 · Thiếu lan can tại mép sàn</option>
+                      <option value="new">Quan sát mới</option>
+                    </select>
+                  </label>
+                  <label class="fg-field fg-wide" for="aiDescription">
+                    <span>Mô tả quan sát *</span>
+                    <textarea
+                      id="aiDescription"
+                      minlength="12"
+                      required
+                      rows="3"
+                    >Mép sàn phía đông tầng 2 chưa lắp lan can. Tổ cốp pha tiếp cận bằng lối chưa giới hạn.</textarea>
+                  </label>
+                  <label class="fg-field" for="aiZone">
+                    <span>Khu vực *</span>
+                    <input id="aiZone" required value="RS-A / Z-A2" />
+                  </label>
+                  <label class="fg-field" for="aiPeople">
+                    <span>Người có thể bị ảnh hưởng</span>
+                    <input id="aiPeople" value="Tổ cốp pha · 6 người" />
+                  </label>
+                </div>
+                <div class="fg-actions">
+                  <button class="btn btn-primary" type="submit">Phân tích nguy cơ</button>
+                  <button class="btn btn-light" data-action="ai-manual" type="button">
+                    Nhập thủ công
+                  </button>
+                </div>
+                <div class="stage20-ai-notice">
+                  Gợi ý được phân tích tại trình duyệt bằng quy tắc từ khóa, không gửi dữ liệu đi nơi khác.
+                  Cán bộ an toàn cần đối chiếu hiện trường trước khi xác nhận.
+                </div>
+              </section>
+            </form>
+            <section aria-live="polite" class="fg-panel" id="aiOutput">
+              <div class="fg-section-head">
+                <div><h2>2. Kết quả gợi ý</h2></div>
+              </div>
+              <p>Nhập mô tả quan sát rồi chọn <strong>Phân tích nguy cơ</strong> để nhận gợi ý.</p>
+            </section>
+            <section class="fg-panel">
+              <div class="fg-section-head">
+                <div><h2>3. Vì sao có đề xuất này?</h2></div>
+              </div>
+              <div class="fg-note fg-blue">
+                Kết quả dựa trên dấu hiệu trong mô tả, không phải dữ liệu cảm biến hay ảnh hiện trường.
+              </div>
+              <div class="fg-note fg-yellow">
+                Giới hạn: không đo chiều cao, chất lượng thiết bị hay mức phơi nhiễm thực. AI không tự xác nhận
+                hoặc đóng nguy cơ.
+              </div>
+            </section>
+            <div class="fg-footer">
+              safety-ai-assistant.html · Quyền thao tác theo vai trò được gán. Mọi thay đổi giữ lịch sử và minh chứng.
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+    <div aria-live="polite" class="toast" id="toast" role="status"></div>
+    <div class="modal-backdrop" id="modalBackdrop">
+      <section aria-labelledby="modalTitle" aria-modal="true" class="modal" role="dialog">
+        <div class="modal-head">
+          <h2 id="modalTitle">Thêm mới</h2>
+          <button aria-label="Đóng" class="icon-btn" id="closeModal">✕</button>
+        </div>
+        <div class="modal-body" id="modalBody"></div>
+      </section>
+    </div>
+    <script src="../js/script.js"></script>
+    <script src="../js/safety-ai-assistant.js"></script>
+    <script src="../js/figma-demo.js"></script>
+    <script src="../js/figma-stage20.js"></script>
+  </body>
+</html>

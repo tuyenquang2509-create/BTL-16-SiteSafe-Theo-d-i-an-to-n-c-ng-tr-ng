@@ -1,0 +1,6 @@
+/* CSS rieng cho admin-checklist-templates. Cac quy tac goc duoc giu trong style.css de dam bao tuong thich. */
+/* SiteSafe · kiểu dáng riêng: checklists */
+
+
+/* Figma: page-specific finishing for admin-checklist-templates */
+body[data-initial-role="admin"] .page-content > :first-child{scroll-margin-top:85px}

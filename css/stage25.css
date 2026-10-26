@@ -1,0 +1,8 @@
+/* Stage 25: report detail dialog scoped to manager reports. */
+.stage25-report-dialog{border:0;border-radius:16px;max-width:min(540px,calc(100vw - 32px));width:100%;padding:0;box-shadow:0 20px 65px rgba(16,33,57,.25);color:#172d45}
+.stage25-report-dialog::backdrop{background:rgba(10,28,51,.55)}
+.stage25-report-content{padding:24px}.stage25-report-content h2{margin:0 0 18px;font-size:21px}
+.stage25-report-content dl{display:grid;grid-template-columns:minmax(120px,38%) 1fr;gap:12px 16px;margin:0 0 20px}
+.stage25-report-content dt{font-weight:600;color:#51627a}.stage25-report-content dd{margin:0;overflow-wrap:anywhere}
+.stage25-report-note{font-size:13px;color:#61748a;margin:0 0 18px}.stage25-report-content form{display:flex;justify-content:flex-end}
+@media(max-width:520px){.stage25-report-content{padding:18px}.stage25-report-content dl{grid-template-columns:1fr;gap:4px}.stage25-report-content dd{margin-bottom:10px}}

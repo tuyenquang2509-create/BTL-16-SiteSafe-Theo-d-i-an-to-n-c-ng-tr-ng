@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+
+<html lang="vi">
+<head>
+<meta charset="utf-8"/><meta content="width=device-width,initial-scale=1" name="viewport"/>
+<meta content="SiteSafe - hệ thống theo dõi an toàn công trường nhiều vai trò" name="description"/>
+<title>Cán bộ an toàn – Tổng quan | SiteSafe</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="../css/style.css" rel="stylesheet"/>
+<link href="../css/safety-dashboard.css" rel="stylesheet"/>
+<link href="../css/figma-polish.css" rel="stylesheet"/><link href="../css/figma-stage6.css" rel="stylesheet"/><link href="../css/figma-stage19.css" rel="stylesheet"/><link href="../css/stage33-ui.css" rel="stylesheet"/></head>
+<body data-initial-page="dashboard" data-initial-role="safety">
+<div class="app-shell">
+<aside aria-label="Điều hướng chính" class="sidebar" id="sidebar">
+<div class="brand"><span class="brand-mark">✓</span><span>SiteSafe</span></div>
+<div class="role-label">CÁN BỘ AN TOÀN</div>
+<div class="form-field" style="padding:0 7px"><label for="roleSelect">Chuyển vai trò (demo)</label><select class="field-control" id="roleSelect"><option value="safety">Cán bộ an toàn</option><option value="worker">Nhân sự hiện trường</option><option value="manager">Quản lý công trường</option><option value="admin">Quản trị hệ thống</option></select></div>
+<nav aria-label="Các màn hình" id="nav"></nav>
+<div class="sidebar-bottom"><div class="site-mini"><strong>RIVERSIDE – KHỐI A</strong><span>RS-A · Đang thi công</span></div><button class="nav-item" data-page="help"><span>ⓘ</span>Trợ giúp &amp; hướng dẫn</button><button class="nav-item" data-page="profile"><span>♙</span>Hồ sơ cá nhân</button></div>
+</aside>
+<main class="workspace">
+<header class="topbar"><button aria-label="Mở menu" class="mobile-menu" id="mobileMenu">☰</button><button class="site-switch" id="siteSwitch">Riverside – Khối A <span>⌄</span></button><div class="topbar-right"><button aria-label="Thông báo" class="icon-btn" id="notifications" title="Thông báo">♧<i></i></button><div class="user-chip"><div class="avatar" id="avatar">TA</div><div><strong id="userName">Trần An</strong><small id="userRole">Cán bộ an toàn</small></div></div></div></header>
+<section aria-live="polite" class="page-content" id="pageContent">
+<!-- Nội dung HTML của màn hình; JavaScript xử lý dữ liệu và thao tác -->
+<div class="figma-dashboard">
+<div class="crumb">Cán bộ an toàn / Tổng quan an toàn</div>
+<div class="figma-page-title"><div><h1>Tổng quan an toàn</h1><p>Đầu ca 03/10 · cập nhật 08:55 · tập trung những việc cần bạn xem xét.</p></div><button class="btn btn-primary" data-page="risks">Xem hàng chờ duyệt</button></div>
+<div class="data-caption">Dữ liệu minh họa · 03/10/2026 · Không phải số liệu thực tế</div>
+<div class="dashboard-filters">
+<label>Tìm kiếm<input id="dashboardSearch" placeholder="⌕  Mã, nội dung hoặc người phụ trách" type="search"/></label>
+<label>Công trường<select id="dashboardSite"><option>Riverside – Khối A</option><option>Toàn bộ công trường</option></select></label>
+<label>Bộ lọc<select id="dashboardFilter"><option value="all">Hôm nay · tất cả khu vực</option><option value="high">Ưu tiên cao</option><option value="overdue">Quá hạn</option><option value="pending">Chờ duyệt</option></select></label>
+</div>
+<div class="figma-stats">
+<article class="figma-stat"><span>Nguy cơ đang mở</span><strong>24</strong><small>6 khu vực đang theo dõi</small></article>
+<article class="figma-stat"><span>Ưu tiên cao</span><strong>7</strong><small>Cần kiểm tra trong ca</small></article>
+<article class="figma-stat"><span>Hành động quá hạn</span><strong>3</strong><small>Nhắc người phụ trách</small></article>
+<article class="figma-stat"><span>Chờ duyệt</span><strong>5</strong><small>Chưa xác nhận nguy cơ</small></article>
+</div>
+<div class="figma-alert"><strong>⚠  3 hành động đã quá hạn</strong><p>Z-A2 có 2 việc, Z-A1 có 1 việc. Xem hạn và người phụ trách trước khi giao thêm việc.</p><button class="text-btn" data-page="actions">Xem hành động khắc phục →</button></div>
+<div class="figma-dashboard-columns">
+<section class="figma-card trend-card"><div class="figma-card-head"><div><h2>Xu hướng nguy cơ mới</h2><p>27/09–03/10/2026 · nguồn: báo cáo hiện trường</p></div><span class="figma-pill">Nguy cơ ghi nhận mới</span></div>
+<div class="figma-chart"><div class="figma-bar-col"><b>8</b><div class="figma-bar" style="height:96px"></div><small>27/9</small></div><div class="figma-bar-col"><b>6</b><div class="figma-bar" style="height:72px"></div><small>28/9</small></div><div class="figma-bar-col"><b>5</b><div class="figma-bar" style="height:60px"></div><small>29/9</small></div><div class="figma-bar-col"><b>4</b><div class="figma-bar" style="height:48px"></div><small>30/9</small></div><div class="figma-bar-col"><b>7</b><div class="figma-bar" style="height:84px"></div><small>1/10</small></div><div class="figma-bar-col"><b>3</b><div class="figma-bar" style="height:36px"></div><small>2/10</small></div><div class="figma-bar-col"><b>2</b><div class="figma-bar" style="height:24px"></div><small>3/10</small></div></div>
+<div class="figma-legend"><span><i></i>Nguy cơ ghi nhận mới</span><span><i class="pale"></i>Đã xử lý</span></div>
+</section>
+<section class="figma-card queue-card"><div class="figma-card-head"><div><h2>Ưu tiên trong ca</h2><p>Các việc cần xử lý theo mức độ và thời hạn</p></div><button class="text-btn" data-page="risks">Xem tất cả →</button></div>
+<div class="figma-queue-item"><span class="queue-icon danger">1</span><div><strong>HZ-024 · Thiếu lan can tại mép sàn</strong><p>Z-A2 · Cao · 2 ảnh · Nguyễn Minh gửi 08:45</p><button class="text-btn" data-page="risks">Mở để duyệt →</button></div></div><div class="figma-queue-item"><span class="queue-icon warning">2</span><div><strong>CA-009 · Lối tiếp cận tầng 2</strong><p>Quá hạn 1 ngày · Lê Hoàng</p><button class="text-btn" data-page="actions">Xem hành động →</button></div></div></section>
+</div>
+<section class="figma-card figma-recent"><div class="figma-card-head"><div><h2>Nguy cơ chờ duyệt</h2><p>5 nguy cơ trong hàng chờ · hiển thị 3 gần nhất</p></div><button class="btn btn-light btn-sm" data-page="risks">Mở danh sách</button></div><div id="dashboardRiskRows"><div class="table-wrap"><table><thead><tr><th>Mã / Nguy cơ</th><th>Khu vực</th><th>Mức độ</th><th>Trạng thái</th><th>Người phụ trách</th><th>Thao tác</th></tr></thead><tbody><tr data-figma-sample="true"><td><strong>HZ-024 · Thiếu lan can tại mép sàn</strong></td><td>Z-A2</td><td>Cao</td><td>Chờ duyệt</td><td>Nguyễn Minh</td><td><button class="text-btn" data-page="risks">Duyệt →</button></td></tr><tr data-figma-sample="true"><td><strong>HZ-020 · Bụi cắt bê tông</strong></td><td>Z-B1</td><td>Cao</td><td>Chờ duyệt</td><td>Phạm Dũng</td><td><button class="text-btn" data-page="risks">Duyệt →</button></td></tr><tr data-figma-sample="true"><td><strong>HZ-019 · Thiếu kính bảo hộ</strong></td><td>Z-K1</td><td>Vừa</td><td>Chờ duyệt</td><td>Mai Lan</td><td><button class="text-btn" data-page="risks">Duyệt →</button></td></tr></tbody></table></div></div><p class="stage6-data-note">Các hàng HZ-024, HZ-020 và HZ-019 là dữ liệu minh họa từ thiết kế. Báo cáo mới sẽ xuất hiện ngay trong bảng này.</p></section>
+<section aria-labelledby="stage19ActivityTitle" class="figma-card stage19-activity"><div class="figma-card-head"><div><h2 id="stage19ActivityTitle">Minh chứng và hoạt động gần đây</h2></div></div><div class="table-wrap"><table><thead><tr><th>Thời điểm</th><th>Sự kiện</th><th>Liên kết</th></tr></thead><tbody><tr><td><strong>08:45 · 03/10</strong></td><td>Nguyễn Minh gửi 2 ảnh mép sàn</td><td>HZ-024 / CL-018</td></tr><tr><td><strong>08:30 · 03/10</strong></td><td>Lê Hoàng nộp ảnh xử lý lối đi</td><td>CA-011 · Chờ xác minh</td></tr><tr><td><strong>17:00 · 02/10</strong></td><td>Trần An xác minh hoàn tất cảnh báo</td><td>HZ-021 · Đã đóng</td></tr></tbody></table></div><p class="stage19-activity-note">Các chỉ số minh họa không cộng từ chỉ 3 bản ghi đang hiển thị; bộ dữ liệu gồm 24 nguy cơ mở.</p></section><div class="figma-footnote">SiteSafe · Bản mô phỏng phục vụ học tập. Luôn xác minh tại hiện trường trước khi đưa ra quyết định an toàn.</div>
+</div>
+</section>
+</main>
+</div>
+<div aria-live="polite" class="toast" id="toast" role="status"></div>
+<div class="modal-backdrop" id="modalBackdrop"><section aria-labelledby="modalTitle" aria-modal="true" class="modal" role="dialog"><div class="modal-head"><h2 id="modalTitle">Thêm mới</h2><button aria-label="Đóng" class="icon-btn" id="closeModal">✕</button></div><div class="modal-body" id="modalBody"></div></section></div>
+<script src="../js/script.js"></script>
+<script src="../js/safety-dashboard.js"></script>
+<script src="../js/figma-demo.js"></script><script src="../js/figma-stage6-dashboard.js"></script></body></html>

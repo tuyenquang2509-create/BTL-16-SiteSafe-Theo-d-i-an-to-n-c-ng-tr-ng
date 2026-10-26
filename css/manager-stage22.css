@@ -1,0 +1,13 @@
+/* Stage 22 — styles scoped to new manager demo controls */
+.m22-summary{margin:16px 0 22px;padding:16px 18px;background:#fff;border:1px solid #dbe8ed;border-radius:12px}
+.m22-summary-title{display:flex;flex-wrap:wrap;align-items:baseline;gap:10px;margin-bottom:13px;color:#19394b}
+.m22-summary-title span{font-size:12px;color:#6b7f8b}
+.m22-counts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.m22-count{background:#f3f8fa;border-radius:9px;padding:12px;display:flex;flex-direction:column;gap:4px}
+.m22-count strong{font-size:24px;color:#147e86}.m22-count span{font-size:12px;color:#506875}
+.m22-tools{display:flex;flex-wrap:wrap;align-items:end;gap:12px;margin:12px 0 16px}
+.m22-tools label{display:flex;flex-direction:column;gap:5px;font-size:12px;color:#456171}
+.m22-tools input,.m22-tools select{border:1px solid #c8d8df;border-radius:8px;background:white;padding:9px;font:inherit;min-width:170px;max-width:100%}
+.m22-result{font-size:12px;color:#607784;margin:0 0 8px}
+#workflowActions .workflow-item[hidden]{display:none!important}
+@media(max-width:680px){.m22-counts{grid-template-columns:repeat(2,minmax(0,1fr))}.m22-tools{display:grid;grid-template-columns:1fr}.m22-tools input,.m22-tools select{width:100%}}

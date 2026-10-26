@@ -1,0 +1,16 @@
+/* Giai đoạn 19: đối chiếu trang 9 PDF Figma – scoped visual adjustments. */
+body[data-initial-role="safety"][data-initial-page="dashboard"] .figma-dashboard{gap:17px}
+body[data-initial-role="safety"][data-initial-page="dashboard"] .figma-stat{min-height:112px}
+body[data-initial-role="safety"][data-initial-page="dashboard"] .figma-alert{padding:13px 16px}
+body[data-initial-role="safety"][data-initial-page="dashboard"] .figma-recent .table-wrap,
+body[data-initial-role="safety"][data-initial-page="dashboard"] .stage19-activity .table-wrap{border:0;border-radius:0}
+body[data-initial-role="safety"][data-initial-page="dashboard"] .figma-recent table,
+body[data-initial-role="safety"][data-initial-page="dashboard"] .stage19-activity table{min-width:620px}
+body[data-initial-role="safety"][data-initial-page="dashboard"] .figma-recent th,
+body[data-initial-role="safety"][data-initial-page="dashboard"] .stage19-activity th{background:#f0f5f7;color:#486273;font-size:11px;letter-spacing:0;text-transform:none}
+body[data-initial-role="safety"][data-initial-page="dashboard"] .figma-recent td:first-child strong,
+body[data-initial-role="safety"][data-initial-page="dashboard"] .stage19-activity td:first-child strong{color:#087f8c}
+body[data-initial-role="safety"][data-initial-page="dashboard"] .stage19-activity-note{margin:12px 0 0;color:#647b89;font-size:11px;line-height:1.6}
+body[data-initial-role="safety"][data-initial-page="dashboard"] .stage19-activity .figma-card-head{margin-bottom:12px}
+@media(max-width:1000px){body[data-initial-role="safety"][data-initial-page="dashboard"] .figma-dashboard-columns{grid-template-columns:1fr}}
+@media(max-width:600px){body[data-initial-role="safety"][data-initial-page="dashboard"] .figma-stats{grid-template-columns:1fr 1fr}body[data-initial-role="safety"][data-initial-page="dashboard"] .figma-stat{padding:12px;min-height:105px}body[data-initial-role="safety"][data-initial-page="dashboard"] .figma-stat strong{font-size:25px}body[data-initial-role="safety"][data-initial-page="dashboard"] .figma-card{padding:13px}}

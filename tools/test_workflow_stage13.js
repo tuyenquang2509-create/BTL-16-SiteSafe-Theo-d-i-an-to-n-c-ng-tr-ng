@@ -1,0 +1,43 @@
+/* Regression tests for SiteSafe's cross-role workflow, using a small DOM mock.
+   Run: node tools/test_workflow_stage13.js */
+const assert=require('node:assert/strict');
+const fs=require('node:fs');
+const vm=require('node:vm');
+const path=require('node:path');
+const listeners={};const store={};const elements={};let toast='';
+const mk=(value='')=>({value,textContent:'',innerHTML:'',classList:{add(){},remove(){}},scrollIntoView(){},insertAdjacentHTML(){},append(){},querySelector(){return null}});
+for(const [id,value] of Object.entries({wfHazardId:'HZ-TEST',wfDecision:'Đã xác nhận',wfReason:'Đã kiểm tra và xác nhận nguy cơ.',wfOwner:'Nguyễn An',wfDue:'2026-12-01',wfReviewStatus:''}))elements[id]=mk(value);
+elements.toast=mk();
+const screen=mk();screen.insertAdjacentHTML=()=>{};
+const document={body:{append(){}},querySelector:s=>s==='.fg-screen'?screen:(s==='#toast'?elements.toast:null),getElementById:id=>elements[id]||null,addEventListener:(name,fn)=>((listeners[name]??=[]).push(fn)),createElement:()=>mk()};
+const localStorage={getItem:k=>store[k]??null,setItem:(k,v)=>{store[k]=v}};
+const context={document,localStorage,location:{pathname:'/safety/safety-risks.html'},setTimeout(){},confirm:()=>true,console,Date,Math};
+vm.runInNewContext(fs.readFileSync(path.join(__dirname,'../js/workflow-phase3.js'),'utf8'),context);
+const fire=(type,target)=>{const e={target,preventDefault(){},stopImmediatePropagation(){}};for(const fn of listeners[type]||[])fn(e)};
+const form={id:'workflowReviewForm'};
+const get=()=>JSON.parse(store.sitesafe_workflow_phase3_v1);
+fire('submit',form);
+assert.equal(get().actions.length,1,'Approval creates one action');
+assert.equal(get().actions[0].status,'Đang khắc phục');
+fire('submit',form);
+assert.equal(get().actions.length,1,'Repeat approval must not create duplicate action');
+assert.equal(get().history.length,1,'Repeat approval must not add duplicate decision');
+elements.wfDecision.value='Từ chối';
+fire('submit',form);
+assert.equal(get().decisions['HZ-TEST'].status,'Đã xác nhận','Cannot reject while action remains open');
+assert.equal(get().history.length,1,'Invalid transition does not add history');
+elements.wfDecision.value='Đã xác nhận';
+const actionId=get().actions[0].id;
+const click=(operation)=>fire('click',{closest:()=>({dataset:{workflow:operation,id:actionId}})});
+// The evidence step prompts for a note; supply a note in the VM context.
+context.prompt=()=> 'Đã khắc phục và gửi minh chứng kiểm tra.';
+click('submit-evidence');
+assert.equal(get().actions[0].status,'Chờ xác minh','Submission must not close action');
+click('verify-action');
+assert.equal(get().actions[0].status,'Đã xác minh đóng');
+assert.equal(get().decisions['HZ-TEST'].status,'Đã đóng sau xác minh');
+const historyCount=get().history.length;
+fire('submit',form);
+assert.equal(get().history.length,historyCount,'Closed hazard cannot be approved again');
+assert.equal(get().actions.length,1,'Closed hazard cannot create a new action');
+console.log('PASS: approve → duplicate blocked → submit evidence → verify → reapprove blocked');
