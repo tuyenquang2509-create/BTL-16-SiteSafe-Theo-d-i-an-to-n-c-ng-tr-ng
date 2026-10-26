@@ -1,0 +1,108 @@
+/* SiteSafe - CSS riêng cho trang Báo cáo của Quản lý công trường. */
+
+/* Bố cục và thanh biểu đồ */
+.report-bars {
+    display: grid;
+    gap: 14px;
+}
+
+.report-row {
+    display: grid;
+    grid-template-columns: 130px 1fr 35px;
+    gap: 12px;
+    align-items: center;
+    font-size: 12px;
+}
+
+.report-row .progress {
+    margin: 0;
+}
+
+/* Biểu mẫu tạo báo cáo */
+.report-form {
+    margin: 16px 0;
+}
+
+.report-form[hidden],
+.fg-table tr[hidden] {
+    display: none !important;
+}
+
+.report-form .fg-actions {
+    margin-top: 16px;
+}
+
+.report-count,
+.report-hint {
+    margin: 12px 0 0;
+    color: #63758a;
+    font-size: 13px;
+}
+
+/* Hộp thoại xem chi tiết */
+.report-dialog {
+    border: 0;
+    border-radius: 16px;
+    max-width: min(540px, calc(100vw - 32px));
+    width: 100%;
+    padding: 0;
+    box-shadow: 0 20px 65px rgba(16, 33, 57, .25);
+    color: #172d45;
+}
+
+.report-dialog::backdrop {
+    background: rgba(10, 28, 51, .55);
+}
+
+.report-dialog-content {
+    padding: 24px;
+}
+
+.report-dialog-content h2 {
+    margin: 0 0 18px;
+    font-size: 21px;
+}
+
+.report-dialog-content dl {
+    display: grid;
+    grid-template-columns: minmax(120px, 38%) 1fr;
+    gap: 12px 16px;
+    margin: 0 0 20px;
+}
+
+.report-dialog-content dt {
+    font-weight: 600;
+    color: #51627a;
+}
+
+.report-dialog-content dd {
+    margin: 0;
+    overflow-wrap: anywhere;
+}
+
+.report-dialog-content form {
+    display: flex;
+    justify-content: flex-end;
+}
+
+/* Điều chỉnh trên màn hình nhỏ */
+@media (max-width: 780px) {
+    .report-row {
+        grid-template-columns: 90px 1fr 25px;
+    }
+}
+
+@media (max-width: 520px) {
+    .report-dialog-content {
+        padding: 18px;
+    }
+
+    .report-dialog-content dl {
+        grid-template-columns: 1fr;
+        gap: 4px;
+    }
+
+    .report-dialog-content dd {
+        margin-bottom: 10px;
+    }
+}

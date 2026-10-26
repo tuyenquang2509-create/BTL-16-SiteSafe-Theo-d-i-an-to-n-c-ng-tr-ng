@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width,initial-scale=1" name="viewport"/>
+    <meta content="SiteSafe - hệ thống theo dõi an toàn công trường nhiều vai trò" name="description"/>
+    <title>Cán bộ an toàn – Trợ lý AI | SiteSafe
+    </title>
+    <link href="https://fonts.googleapis.com" rel="preconnect"/>
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+    <link href="../css/style.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="../css/safety-ai-assistant.css">
+  </head>
+  <body data-initial-page="ai" data-initial-role="safety">
+    <div class="app-shell">
+      <aside aria-label="Điều hướng chính" class="sidebar" id="sidebar">
+        <div class="brand"><span class="brand-mark">✓</span><span>SiteSafe</span>
+        </div>
+        <div class="role-label">CÁN BỘ AN TOÀN
+        </div>
+        <div class="form-field" style="padding:0 7px">
+          <label for="roleSelect">Chuyển vai trò (demo)
+          </label>
+          <select class="field-control" id="roleSelect">
+            <option value="safety">Cán bộ an toàn
+            </option>
+            <option value="worker">Nhân sự hiện trường
+            </option>
+            <option value="manager">Quản lý công trường
+            </option>
+            <option value="admin">Quản trị hệ thống
+            </option>
+          </select>
+        </div>
+        <nav aria-label="Các màn hình" id="nav">
+        </nav>
+        <div class="sidebar-bottom">
+          <div class="site-mini"><strong>RIVERSIDE – KHỐI A</strong><span>RS-A · Đang thi công</span>
+          </div>
+          <button class="nav-item" data-page="help"><span>ⓘ</span>Trợ giúp &amp; hướng dẫn
+          </button>
+          <button class="nav-item" data-page="profile"><span>♙</span>Hồ sơ cá nhân
+          </button>
+        </div>
+      </aside>
+      <main class="workspace">
+        <header class="topbar">
+          <button aria-label="Mở menu" class="mobile-menu" id="mobileMenu">☰
+          </button>
+          <button class="site-switch" id="siteSwitch">Riverside – Khối A <span>⌄</span>
+          </button>
+          <div class="topbar-right">
+            <button aria-label="Thông báo" class="icon-btn" id="notifications" title="Thông báo">♧<i></i>
+            </button>
+            <div class="user-chip">
+              <div class="avatar" id="avatar">TA
+              </div>
+              <div><strong id="userName">Trần An</strong><small id="userRole">Cán bộ an toàn</small>
+              </div>
+            </div>
+          </div>
+        </header>
+        <section aria-live="polite" class="page-content" id="pageContent">
+          <div class="fg-screen">
+            <div class="fg-crumb">Cán bộ an toàn / AI phân loại nguy cơ
+            </div>
+            <div class="fg-heading">
+              <div>
+                <h1>AI phân loại nguy cơ
+                </h1>
+                <p>Gợi ý nhóm và độ ưu tiên; con người xác nhận quyết định.
+                </p>
+              </div>
+              <button class="btn btn-primary" data-demo="run-ai" title="Minh họa giao diện — chức năng này chưa được kết nối">Phân tích nguy cơ
+              </button>
+            </div>
+            <div class="fg-caption">Dữ liệu minh họa · 03/10/2026 · Không phải số liệu thực tế
+            </div>
+            <section class="fg-panel">
+              <div class="fg-section-head">
+                <div>
+                  <h2>1. Chọn báo cáo hoặc nhập quan sát
+                  </h2>
+                </div>
+              </div>
+              <div class="fg-form-grid">
+                <label class="fg-field fg-wide"><span>Nguy cơ nguồn</span>
+                  <select>
+                    <option>HZ-024 · Thiếu lan can tại mép sàn
+                    </option>
+                    <option>Khác
+                    </option>
+                  </select>
+                </label>
+                <label class="fg-field fg-wide"><span>Mô tả quan sát *</span>
+                  <textarea rows="3">Mép sàn phía đông tầng 2 chưa lắp lan can. Tổ cốp pha tiếp cận bằng lối chưa giới hạn.
+                  </textarea>
+                </label>
+                <label class="fg-field"><span>Khu vực *</span>
+                  <input type="text" value="RS-A / Z-A2"/>
+                </label>
+                <label class="fg-field"><span>Người có thể bị ảnh hưởng</span>
+                  <input type="text" value="Tổ cốp pha · 6 người"/>
+                </label>
+              </div>
+              <div class="fg-actions">
+                <button class="btn btn-primary" data-demo="run-ai" title="Minh họa giao diện — chức năng này chưa được kết nối">Phân tích nguy cơ
+                </button>
+                <button class="btn btn-light" data-stage20-manual="true">Nhập thủ công
+                </button>
+              </div>
+              <div class="stage20-ai-notice">Gợi ý AI chỉ phục vụ minh họa. Cán bộ an toàn cần đối chiếu hiện trường trước khi xác nhận.
+              </div>
+            </section>
+            <section class="fg-panel">
+              <div class="fg-section-head">
+                <div>
+                  <h2>2. Kết quả gợi ý
+                  </h2>
+                </div>
+              </div>
+              <div class="fg-form-grid">
+                <label class="fg-field"><span>Nhóm đề xuất</span>
+                  <input type="text" value="Ngã cao"/>
+                </label>
+                <label class="fg-field"><span>Ưu tiên đề xuất</span>
+                  <input type="text" value="Cao"/>
+                </label>
+              </div>
+              <div class="fg-note fg-blue">Chắc chắn: cần kiểm tra tại chỗ · AI chưa áp dụng vào dữ liệu đã duyệt.
+              </div>
+              <div class="table-wrap">
+                <table class="fg-table">
+                  <thead>
+                    <tr>
+                      <th>Nguồn giá trị
+                      </th>
+                      <th>Nhóm
+                      </th>
+                      <th>Ưu tiên
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Người báo · Nguyễn Minh
+                      </td>
+                      <td>Ngã cao
+                      </td>
+                      <td>Cao
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>AI · chưa áp dụng
+                      </td>
+                      <td>Ngã cao
+                      </td>
+                      <td>Cao
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Người duyệt · Trần An
+                      </td>
+                      <td>Chưa xác nhận
+                      </td>
+                      <td>Chưa xác nhận
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="fg-actions">
+                <button class="btn btn-primary" data-demo="save-ai" title="Minh họa giao diện — chức năng này chưa được kết nối">Chấp nhận lựa chọn
+                </button>
+                <button class="btn btn-light" data-demo="preview" title="Minh họa giao diện — chức năng này chưa được kết nối">Sửa đề xuất
+                </button>
+                <button class="btn btn-light" data-demo="preview" title="Minh họa giao diện — chức năng này chưa được kết nối">Từ chối
+                </button>
+                <button class="btn btn-light" data-demo="run-ai" title="Minh họa giao diện — chức năng này chưa được kết nối">Tạo lại
+                </button>
+              </div>
+            </section>
+            <section class="fg-panel">
+              <div class="fg-section-head">
+                <div>
+                  <h2>3. Vì sao có đề xuất này?
+                  </h2>
+                </div>
+              </div>
+              <div class="fg-note fg-blue">Quan sát làm cơ sở: “Mép sàn tầng 2”, “Chưa lắp lan can”, “Tổ cốp pha tiếp cận”.
+              </div>
+              <div class="fg-note fg-yellow">Giới hạn: không đo chiều cao, chất lượng lan can hay mức phơi nhiễm thực. AI không tự xác nhận hoặc đóng nguy cơ.
+              </div>
+            </section>
+            <div class="fg-footer">safety-ai-assistant.html · Quyền thao tác theo vai trò được gán. Mọi thay đổi giữ lịch sử và minh chứng.
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+    <div aria-live="polite" class="toast" id="toast" role="status">
+    </div>
+    <div class="modal-backdrop" id="modalBackdrop">
+      <section aria-labelledby="modalTitle" aria-modal="true" class="modal" role="dialog">
+        <div class="modal-head">
+          <h2 id="modalTitle">Thêm mới
+          </h2>
+          <button aria-label="Đóng" class="icon-btn" id="closeModal">✕
+          </button>
+        </div>
+        <div class="modal-body" id="modalBody">
+        </div>
+      </section>
+    </div>
+    <script src="../js/script.js">
+    </script>
+    <script src="../js/figma-demo.js">
+    </script>
+    <script src="../js/safety-ai-assistant.js">
+    </script>
+</body>
+</html>

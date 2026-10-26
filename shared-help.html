@@ -1,28 +1,148 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="vi">
-<head>
-  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="description" content="SiteSafe - hệ thống theo dõi an toàn công trường nhiều vai trò">
-  <title>SiteSafe – Trợ giúp | SiteSafe</title>
-  <link rel="stylesheet" href="style.css">
-  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-</head>
-<body data-initial-page="help" data-initial-role="safety">
-<div class="app-shell">
-  <aside class="sidebar" id="sidebar" aria-label="Điều hướng chính">
-    <div class="brand"><span class="brand-mark">✓</span><span>SiteSafe</span></div>
-    <div class="role-label">VAI TRÒ ĐANG MÔ PHỎNG</div>
-    <div class="form-field" style="padding:0 7px"><label for="roleSelect">Chuyển vai trò</label><select id="roleSelect" class="field-control"><option value="safety">Cán bộ an toàn</option><option value="worker">Công nhân</option><option value="manager">Quản lý công trường</option><option value="admin">Quản trị hệ thống</option></select></div>
-    <nav id="nav" aria-label="Các màn hình"></nav>
-    <div class="sidebar-bottom"><div class="site-mini"><strong>RIVERSIDE – KHỐI A</strong><span>RS-A · Đang thi công</span></div><button class="nav-item" data-page="help"><span>ⓘ</span>Trợ giúp & hướng dẫn</button><button class="nav-item" data-page="profile"><span>♙</span>Hồ sơ cá nhân</button></div>
-  </aside>
-  <main class="workspace">
-    <header class="topbar"><button class="mobile-menu" id="mobileMenu" aria-label="Mở menu">☰</button><button class="site-switch" id="siteSwitch">Riverside – Khối A <span>⌄</span></button><div class="topbar-right"><button class="icon-btn" id="notifications" title="Thông báo" aria-label="Thông báo">♧<i></i></button><div class="user-chip"><div class="avatar" id="avatar">TA</div><div><strong id="userName">Trần An</strong><small id="userRole">Cán bộ an toàn</small></div></div></div></header>
-    <section class="page-content" id="pageContent" aria-live="polite"></section>
-  </main>
-</div>
-<div class="toast" id="toast" role="status" aria-live="polite"></div>
-<div class="modal-backdrop" id="modalBackdrop"><section class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><div class="modal-head"><h2 id="modalTitle">Thêm mới</h2><button class="icon-btn" id="closeModal" aria-label="Đóng">✕</button></div><div class="modal-body" id="modalBody"></div></section></div>
-<script src="script.js"></script>
-</body></html>
+  <head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width,initial-scale=1" name="viewport"/>
+    <meta content="SiteSafe - hệ thống theo dõi an toàn công trường nhiều vai trò" name="description"/>
+    <title>SiteSafe – Trợ giúp | SiteSafe
+    </title>
+    <link href="https://fonts.googleapis.com" rel="preconnect"/>
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+    <link href="css/style.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="css/shared-help.css">
+  </head>
+  <body data-initial-page="help" data-initial-role="safety">
+    <div class="app-shell">
+      <aside aria-label="Điều hướng chính" class="sidebar" id="sidebar">
+        <div class="brand"><span class="brand-mark">✓</span><span>SiteSafe</span>
+        </div>
+        <div class="role-label">CÁN BỘ AN TOÀN
+        </div>
+        <div class="form-field" style="padding:0 7px">
+          <label for="roleSelect">Chuyển vai trò (demo)
+          </label>
+          <select class="field-control" id="roleSelect">
+            <option value="safety">Cán bộ an toàn
+            </option>
+            <option value="worker">Nhân sự hiện trường
+            </option>
+            <option value="manager">Quản lý công trường
+            </option>
+            <option value="admin">Quản trị hệ thống
+            </option>
+          </select>
+        </div>
+        <nav aria-label="Các màn hình" id="nav">
+        </nav>
+        <div class="sidebar-bottom">
+          <div class="site-mini"><strong>RIVERSIDE – KHỐI A</strong><span>RS-A · Đang thi công</span>
+          </div>
+          <button class="nav-item" data-page="help"><span>ⓘ</span>Trợ giúp &amp; hướng dẫn
+          </button>
+          <button class="nav-item" data-page="profile"><span>♙</span>Hồ sơ cá nhân
+          </button>
+        </div>
+      </aside>
+      <main class="workspace">
+        <header class="topbar">
+          <button aria-label="Mở menu" class="mobile-menu" id="mobileMenu">☰
+          </button>
+          <button class="site-switch" id="siteSwitch">Riverside – Khối A <span>⌄</span>
+          </button>
+          <div class="topbar-right">
+            <button aria-label="Thông báo" class="icon-btn" id="notifications" title="Thông báo">♧<i></i>
+            </button>
+            <div class="user-chip">
+              <div class="avatar" id="avatar">TA
+              </div>
+              <div><strong id="userName">Trần An</strong><small id="userRole">Cán bộ an toàn</small>
+              </div>
+            </div>
+          </div>
+        </header>
+        <section aria-live="polite" class="page-content" id="pageContent">
+          <!-- Nội dung HTML của màn hình; JavaScript xử lý dữ liệu và thao tác -->
+          <div class="page-heading">
+            <div>
+              <div class="eyebrow">SITESAFE / Cán bộ an toàn
+              </div>
+              <h1>Trợ giúp &amp; hướng dẫn
+              </h1>
+              <p>Hướng dẫn thao tác và giới hạn của nguyên mẫu.
+              </p>
+            </div>
+            <div class="heading-actions">
+            </div>
+          </div>
+          <section class="content-card">
+            <h2>Luồng xử lý nguy cơ
+            </h2>
+            <p>Ghi nhận → phân loại → phân công hành động → kiểm tra lại → xác nhận khắc phục → lưu trữ.
+            </p>
+            <h2>Trạng thái giao diện
+            </h2>
+            <p>Các danh sách có trạng thái rỗng khi không có dữ liệu phù hợp. Biểu mẫu có validation cơ bản. Dữ liệu được lưu trong LocalStorage của trình duyệt.
+            </p>
+            <h2>Giới hạn
+            </h2>
+            <p>Đăng nhập, phân quyền, thông báo và AI đang được mô phỏng. Không có máy chủ, cơ sở dữ liệu dùng chung hay AI LLM thật. Các thao tác không thay thế quy trình an toàn công trường.
+            </p>
+            <h2>Hỗ trợ bàn phím
+            </h2>
+            <p>Dùng Tab để di chuyển giữa nút và trường nhập liệu; Enter/Space để kích hoạt nút. Có thể đóng hộp thoại bằng nút Đóng hoặc phím Escape.
+            </p>
+          </section>
+          <section aria-labelledby="demoGuideTitle" class="content-card" id="demoGuide">
+            <h2 id="demoGuideTitle">Kịch bản demo xuyên suốt 4 vai trò
+            </h2>
+            <p>Thực hiện các bước theo thứ tự trong cùng trình duyệt. Các trang liên kết bên dưới mở trong cùng tab để giữ dữ liệu demo.
+            </p>
+            <ol class="demo-steps">
+              <li><strong>Nhân sự hiện trường — Gửi nguy cơ:</strong><a href="worker/worker-report-create.html">Mở biểu mẫu Báo nguy cơ</a>. Nhập nội dung, gửi và ghi lại mã HZ vừa tạo.
+              </li>
+              <li><strong>Cán bộ an toàn — Duyệt:</strong><a href="safety/safety-risks.html">Mở Quản lý nguy cơ</a>. Chọn đúng mã HZ, quyết định “Xác nhận”, điền người phụ trách và hạn xử lý.
+              </li>
+              <li><strong>Quản lý công trường — Khắc phục:</strong><a href="manager/manager-corrective-actions.html">Mở Hành động khắc phục</a>. Tìm mã hành động CA phát sinh và nộp mô tả minh chứng.
+              </li>
+              <li><strong>Cán bộ an toàn — Xác minh:</strong><a href="safety/safety-risks.html">Quay lại Quản lý nguy cơ</a>, tìm mục “Chờ xác minh” và xác nhận đóng.
+              </li>
+              <li><strong>Đối chiếu:</strong><a href="safety/safety-dashboard.html">Dashboard an toàn</a>, <a href="manager/manager-dashboard.html">Dashboard quản lý</a> và <a href="worker/worker-report-history.html">Nguy cơ của tôi</a> để kiểm tra trạng thái.
+              </li>
+            </ol>
+            <h3>Trạng thái dữ liệu demo trong trình duyệt này
+            </h3>
+            <div aria-live="polite" class="demo-summary" id="demoSummary" role="status">Đang đọc dữ liệu demo…
+            </div>
+            <div class="demo-actions">
+              <button class="btn btn-light" id="demoRefresh" type="button">Làm mới thống kê
+              </button>
+              <button class="btn btn-light" id="demoReset" type="button">Xóa dữ liệu luồng demo
+              </button>
+            </div>
+            <p class="demo-warning">Lưu ý: Xóa dữ liệu sẽ xóa báo cáo nguy cơ phát sinh và quyết định/hành động của luồng demo trong trình duyệt hiện tại. Không xóa các dữ liệu quản trị, bản nháp checklist hoặc dữ liệu minh họa Figma.
+            </p>
+          </section>
+        </section>
+      </main>
+    </div>
+    <div aria-live="polite" class="toast" id="toast" role="status">
+    </div>
+    <div class="modal-backdrop" id="modalBackdrop">
+      <section aria-labelledby="modalTitle" aria-modal="true" class="modal" role="dialog">
+        <div class="modal-head">
+          <h2 id="modalTitle">Thêm mới
+          </h2>
+          <button aria-label="Đóng" class="icon-btn" id="closeModal">✕
+          </button>
+        </div>
+        <div class="modal-body" id="modalBody">
+        </div>
+      </section>
+    </div>
+    <script src="js/script.js">
+    </script>
+    <script src="js/shared-help.js">
+    </script>
+</body>
+</html>

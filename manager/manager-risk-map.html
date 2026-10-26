@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width,initial-scale=1" name="viewport"/>
+    <meta content="SiteSafe - hệ thống theo dõi an toàn công trường nhiều vai trò" name="description"/>
+    <title>Quản lý – Bản đồ rủi ro | SiteSafe
+    </title>
+    <link href="https://fonts.googleapis.com" rel="preconnect"/>
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+    <link href="../css/style.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="../css/manager-risk-map.css">
+  </head>
+  <body data-initial-page="zones" data-initial-role="manager">
+    <div class="app-shell">
+      <aside aria-label="Điều hướng chính" class="sidebar" id="sidebar">
+        <div class="brand"><span class="brand-mark">✓</span><span>SiteSafe</span>
+        </div>
+        <div class="role-label">QUẢN LÝ CÔNG TRƯỜNG
+        </div>
+        <div class="form-field" style="padding:0 7px">
+          <label for="roleSelect">Chuyển vai trò (demo)
+          </label>
+          <select class="field-control" id="roleSelect">
+            <option value="safety">Cán bộ an toàn
+            </option>
+            <option value="worker">Nhân sự hiện trường
+            </option>
+            <option value="manager">Quản lý công trường
+            </option>
+            <option value="admin">Quản trị hệ thống
+            </option>
+          </select>
+        </div>
+        <nav aria-label="Các màn hình" id="nav">
+        </nav>
+        <div class="sidebar-bottom">
+          <div class="site-mini"><strong>RIVERSIDE – KHỐI A</strong><span>RS-A · Đang thi công</span>
+          </div>
+          <button class="nav-item" data-page="help"><span>ⓘ</span>Trợ giúp &amp; hướng dẫn
+          </button>
+          <button class="nav-item" data-page="profile"><span>♙</span>Hồ sơ cá nhân
+          </button>
+        </div>
+      </aside>
+      <main class="workspace">
+        <header class="topbar">
+          <button aria-label="Mở menu" class="mobile-menu" id="mobileMenu">☰
+          </button>
+          <button class="site-switch" id="siteSwitch">Riverside – Khối A <span>⌄</span>
+          </button>
+          <div class="topbar-right">
+            <button aria-label="Thông báo" class="icon-btn" id="notifications" title="Thông báo">♧<i></i>
+            </button>
+            <div class="user-chip">
+              <div class="avatar" id="avatar">TA
+              </div>
+              <div><strong id="userName">Trần An</strong><small id="userRole">Quản lý công trường</small>
+              </div>
+            </div>
+          </div>
+        </header>
+        <section aria-live="polite" class="page-content" id="pageContent">
+          <div class="fg-screen">
+            <div class="fg-crumb">Quản lý công trường / Bản đồ rủi ro
+            </div>
+            <div class="fg-heading">
+              <div>
+                <h1>Bản đồ rủi ro
+                </h1>
+                <p>Sơ đồ công trường và các khu vực cần ưu tiên · không phải bản đồ địa lý.
+                </p>
+              </div>
+              <button class="btn btn-primary" data-risk-action="overdue">Xem hành động quá hạn
+              </button>
+            </div>
+            <div class="fg-caption">Dữ liệu minh họa · 03/10/2026 · Không phải số liệu thực tế
+            </div>
+            <section class="fg-panel">
+              <div class="fg-section-head">
+                <div>
+                  <h2>Tìm kiếm và bộ lọc
+                  </h2>
+                </div>
+              </div>
+              <div class="fg-form-grid">
+                <label class="fg-field"><span>Tìm kiếm</span>
+                  <input id="stage21-zone-search" placeholder="Mã khu vực hoặc tên khu vực" type="search"/>
+                </label>
+                <label class="fg-field"><span>Công trường</span>
+                  <select>
+                    <option>Riverside – Khối A
+                    </option>
+                    <option>Khác
+                    </option>
+                  </select>
+                </label>
+                <label class="fg-field"><span>Bộ lọc</span>
+                  <select>
+                    <option>27/09–03/10 · tất cả khu vực
+                    </option>
+                    <option>Khác
+                    </option>
+                  </select>
+                </label>
+              </div>
+            </section>
+            <section class="fg-panel">
+              <div class="fg-section-head">
+                <div>
+                  <h2>Riverside – Khối A · Sơ đồ vận hành
+                  </h2>
+                </div>
+              </div>
+              <div class="fg-note fg-blue">BẮC ↑ · RIVERSIDE – KHỐI A · SƠ ĐỒ VẬN HÀNH
+              </div>
+              <div class="fg-zone-grid">
+                <button aria-pressed="true" class="fg-zone fg-red" data-zone-index="0" title="Chọn khu vực để xem chi tiết" type="button"><span><span class="fg-pill fg-red">Cao</span></span><strong>Z-A2 · Tầng 2</strong><small>8 nguy cơ mở · 2 việc quá hạn</small>
+                </button>
+                <button aria-pressed="false" class="fg-zone fg-yellow" data-zone-index="1" title="Chọn khu vực để xem chi tiết" type="button"><span><span class="fg-pill fg-yellow">Vừa</span></span><strong>Z-A1 · Tầng 1</strong><small>6 nguy cơ mở · 1 việc quá hạn</small>
+                </button>
+                <button aria-pressed="false" class="fg-zone fg-yellow" data-zone-index="2" title="Chọn khu vực để xem chi tiết" type="button"><span><span class="fg-pill fg-yellow">Vừa</span></span><strong>Z-K1 · Kho vật tư</strong><small>4 nguy cơ mở</small>
+                </button>
+                <button aria-pressed="false" class="fg-zone fg-green" data-zone-index="3" title="Chọn khu vực để xem chi tiết" type="button"><span><span class="fg-pill fg-green">Thấp</span></span><strong>Z-C1 · Cổng chính</strong><small>2 nguy cơ mở</small>
+                </button>
+              </div>
+              <div class="fg-note fg-blue">Z-B1 · Bãi tập kết: 4 nguy cơ mở, 2 ưu tiên cao. Z-M1 · Phòng máy: thiếu dữ liệu.
+              </div>
+              <p class="fg-muted">! Cao: ≥3 nguy cơ cao · △ Vừa: 1–2 nguy cơ cao · ○ Thấp: 0 nguy cơ cao, có ghi nhận · — Thiếu dữ liệu.
+              </p>
+            </section>
+            <div class="fg-columns">
+              <section class="fg-panel" id="stage21-selected-zone">
+                <div class="fg-section-head">
+                  <div>
+                    <h2>Khu vực đã chọn · Z-A2
+                    </h2>
+                  </div>
+                </div><span class="fg-pill fg-red">Rủi ro cao</span>
+                <p>8 nguy cơ mở · 3 ưu tiên cao · 2 hành động quá hạn · 1 kiểm tra đang thực hiện
+                </p>
+                <p>Nguy cơ nổi bật: HZ-024 · Thiếu lan can tại mép sàn.
+                </p>
+                <div class="fg-actions">
+                  <button class="btn btn-light" data-risk-action="show-zone-risks">Xem 8 nguy cơ
+                  </button>
+                  <button class="btn btn-light" data-risk-action="overdue">Mở việc quá hạn
+                  </button>
+                </div>
+              </section>
+              <section class="fg-panel" id="stage21-zone-rank">
+                <div class="fg-section-head">
+                  <div>
+                    <h2>Xếp hạng khu vực
+                    </h2>
+                  </div>
+                </div>
+                <div class="table-wrap">
+                  <table class="fg-table">
+                    <thead>
+                      <tr>
+                        <th>Khu vực
+                        </th>
+                        <th>Mở / cao
+                        </th>
+                        <th>Quá hạn
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>Z-A2 · Cao
+                        </td>
+                        <td>8 / 3
+                        </td>
+                        <td>2
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>Z-B1 · Vừa
+                        </td>
+                        <td>4 / 2
+                        </td>
+                        <td>0
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>Z-A1 · Vừa
+                        </td>
+                        <td>6 / 1
+                        </td>
+                        <td>1
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>Z-K1 · Vừa
+                        </td>
+                        <td>4 / 1
+                        </td>
+                        <td>0
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>Z-C1 · Thấp
+                        </td>
+                        <td>2 / 0
+                        </td>
+                        <td>0
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>Z-M1 · Thiếu dữ liệu
+                        </td>
+                        <td>—
+                        </td>
+                        <td>—
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </section>
+            </div>
+            <div class="fg-footer">manager-risk-map.html · Quyền thao tác theo vai trò được gán. Mọi thay đổi giữ lịch sử và minh chứng.
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+    <div aria-live="polite" class="toast" id="toast" role="status">
+    </div>
+    <div class="modal-backdrop" id="modalBackdrop">
+      <section aria-labelledby="modalTitle" aria-modal="true" class="modal" role="dialog">
+        <div class="modal-head">
+          <h2 id="modalTitle">Thêm mới
+          </h2>
+          <button aria-label="Đóng" class="icon-btn" id="closeModal">✕
+          </button>
+        </div>
+        <div class="modal-body" id="modalBody">
+        </div>
+      </section>
+    </div>
+    <script src="../js/script.js">
+    </script>
+    <script src="../js/manager-risk-map.js">
+    </script>
+</body>
+</html>
