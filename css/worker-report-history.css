@@ -1,6 +1,239 @@
+/* ===== worker-report-history.css (chuyển từ bản gốc) ===== */
 /* CSS rieng cho worker-report-history. Cac quy tac goc duoc giu trong style.css de dam bao tuong thich. */
 /* SiteSafe · kiểu dáng riêng: worker-history */
-
-
 /* Figma: page-specific finishing for worker-report-history */
-body[data-initial-role="worker"] .page-content > :first-child{scroll-margin-top:85px}
+body[data-initial-role="worker"] .page-content > :first-child {
+    scroll-margin-top:85px
+}
+
+/* ===== figma-polish.css (chuyển từ bản gốc) ===== */
+/* Bổ sung UI giai đoạn 1 – giữ các thành phần Figma, không ghi đè bố cục trang */
+:root {
+    --sitesafe-navy:#112c3d;
+    --sitesafe-teal:#087f8c;
+    --sitesafe-canvas:#eaf3f8
+}
+
+:focus-visible {
+    outline:3px solid #2ba6ad!important;
+    outline-offset:2px
+}
+
+.fg-screen .fg-panel {
+    scroll-margin-top:90px
+}
+
+.fg-screen input,.fg-screen textarea,.fg-screen select {
+    max-width:100%
+}
+
+.fg-screen button:disabled {
+    cursor:not-allowed;
+    opacity:.55
+}
+
+@media (max-width:760px) {
+    .fg-screen .fg-form-grid {
+        grid-template-columns:1fr!important
+    }
+
+    .fg-screen .fg-actions {
+        flex-wrap:wrap
+    }
+
+}
+
+/* ===== workflow-phase3.css (chuyển từ bản gốc) ===== */
+/* Chỉ bổ sung thành phần nghiệp vụ; không ghi đè token, sidebar hay bố cục Figma. */
+.workflow-panel {
+    margin-top:22px
+}
+
+.workflow-hint {
+    color:#64748b;
+    font-size:13px;
+    line-height:1.6
+}
+
+.workflow-item {
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:18px;
+    padding:15px 0;
+    border-bottom:1px solid #e5edf2
+}
+
+.workflow-item:last-child {
+    border-bottom:0
+}
+
+.workflow-item strong {
+    display:block;
+    color:#123047;
+    font-size:14px
+}
+
+.workflow-item small {
+    display:block;
+    color:#64748b;
+    font-size:12px;
+    margin-top:5px;
+    line-height:1.5
+}
+
+.workflow-item .btn {
+    flex-shrink:0
+}
+
+#workflowReviewForm .fg-form-grid {
+    margin-top:12px
+}
+
+#workflowReviewForm>.fg-field {
+    max-width:420px
+}
+
+#wfReviewStatus {
+    padding:10px 0;
+    color:#0f766e;
+    font-weight:600
+}
+
+@media(max-width:700px) {
+    .workflow-item {
+        align-items:stretch;
+        flex-direction:column
+    }
+
+    .workflow-item .btn {
+        align-self:flex-start
+    }
+
+}
+
+/* ===== worker-stage7.css (chuyển từ bản gốc) ===== */
+/* Giai đoạn 7: chỉ các trang công nhân, không đổi token/bố cục toàn hệ thống. */
+.worker-evidence-status {
+    margin:8px 0 0;
+    font-size:13px;
+    color:#52677d;
+    overflow-wrap:anywhere
+}
+
+.worker-evidence-status.invalid {
+    color:#a62c38;
+    font-weight:600
+}
+
+.worker-stage7-toolbar {
+    display:flex;
+    align-items:center;
+    gap:16px;
+    flex-wrap:wrap;
+    margin:12px 0 20px
+}
+
+.worker-stage7-toolbar span {
+    font-size:13px;
+    color:#62788c
+}
+
+body[data-initial-page="worker-checklist"] .fg-note textarea:required {
+    border-left:3px solid #db7d64
+}
+
+@media(max-width:680px) {
+    .worker-stage7-toolbar {
+        align-items:flex-start;
+        flex-direction:column
+    }
+
+}
+
+/* ===== stage33-ui.css (chuyển từ bản gốc) ===== */
+/* Giai doan 33: shared UI consistency and keyboard/mobile polish. */
+/* Prevent dense headings, long identifiers and tables from breaking cards. */
+.fg-screen,.fg-screen .fg-panel,.fg-screen .fg-metric,.fg-screen .fg-columns > * {
+    min-width:0
+}
+
+.fg-screen .fg-heading > div {
+    min-width:0
+}
+
+.fg-screen .fg-heading h1,.fg-screen .fg-heading p {
+    overflow-wrap:anywhere
+}
+
+.fg-screen .fg-table {
+    border-collapse:collapse;
+    width:100%
+}
+
+.fg-screen .table-wrap {
+    max-width:100%;
+    overflow-x:auto;
+    -webkit-overflow-scrolling:touch
+}
+
+.fg-screen .fg-metric strong {
+    overflow-wrap:anywhere
+}
+
+/* Keep interactive controls visibly navigable with keyboard. */
+.fg-screen :is(button,a,input,select,textarea,[tabindex]):focus-visible, .sidebar :is(button,a,select):focus-visible, .topbar :is(button,a):focus-visible {
+    outline:3px solid #0b8997;
+    outline-offset:3px
+}
+
+.fg-screen :is(button,input,select,textarea) {
+    font:inherit
+}
+
+.fg-screen button:disabled {
+    cursor:not-allowed;
+    opacity:.55
+}
+
+@media(max-width:600px) {
+    .fg-screen .fg-heading {
+        align-items:stretch
+    }
+
+    .fg-screen .fg-heading > .btn {
+        max-width:100%;
+        white-space:normal
+    }
+
+    .fg-screen .fg-actions {
+        flex-wrap:wrap
+    }
+
+    .fg-screen .fg-actions > .btn {
+        max-width:100%;
+        white-space:normal
+    }
+
+    .fg-screen .fg-metric {
+        min-height:0
+    }
+
+    .fg-screen .fg-metric strong {
+        font-size:clamp(21px,6vw,31px)
+    }
+
+    .fg-screen .fg-zone {
+        padding:14px
+    }
+
+}
+
+@media(prefers-reduced-motion:reduce) {
+    .fg-screen *, .fg-screen *::before,.fg-screen *::after {
+        scroll-behavior:auto!important;
+        animation-duration:.01ms!important;
+        transition-duration:.01ms!important
+    }
+
+}

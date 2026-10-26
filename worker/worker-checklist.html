@@ -1,31 +1,322 @@
 <!DOCTYPE html>
-
 <html lang="vi">
-<head>
-<meta charset="utf-8"/><meta content="width=device-width,initial-scale=1" name="viewport"/>
-<meta content="SiteSafe - hệ thống theo dõi an toàn công trường nhiều vai trò" name="description"/>
-<title>Công nhân – Checklist của tôi | SiteSafe</title>
-<link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
-<link href="../css/style.css" rel="stylesheet"/>
-<link href="../css/worker-checklist.css" rel="stylesheet"/>
-</head>
-<body data-initial-page="worker-checklist" data-initial-role="worker">
-<div class="app-shell">
-<aside aria-label="Điều hướng chính" class="sidebar" id="sidebar">
-<div class="brand"><span class="brand-mark">✓</span><span>SiteSafe</span></div>
-<div class="role-label">NHÂN SỰ HIỆN TRƯỜNG</div>
-<div class="form-field" style="padding:0 7px"><label for="roleSelect">Chuyển vai trò (demo)</label><select class="field-control" id="roleSelect"><option value="safety">Cán bộ an toàn</option><option value="worker">Nhân sự hiện trường</option><option value="manager">Quản lý công trường</option><option value="admin">Quản trị hệ thống</option></select></div>
-<nav aria-label="Các màn hình" id="nav"></nav>
-<div class="sidebar-bottom"><div class="site-mini"><strong>RIVERSIDE – KHỐI A</strong><span>RS-A · Đang thi công</span></div><button class="nav-item" data-page="help"><span>ⓘ</span>Trợ giúp &amp; hướng dẫn</button><button class="nav-item" data-page="profile"><span>♙</span>Hồ sơ cá nhân</button></div>
-</aside>
-<main class="workspace">
-<header class="topbar"><button aria-label="Mở menu" class="mobile-menu" id="mobileMenu">☰</button><button class="site-switch" id="siteSwitch">Riverside – Khối A <span>⌄</span></button><div class="topbar-right"><button aria-label="Thông báo" class="icon-btn" id="notifications" title="Thông báo">♧<i></i></button><div class="user-chip"><div class="avatar" id="avatar">TA</div><div><strong id="userName">Trần An</strong><small id="userRole">Cán bộ an toàn</small></div></div></div></header>
-<section aria-live="polite" class="page-content" id="pageContent"><div class="fg-screen"><div class="fg-crumb">Nhân sự hiện trường / Checklist an toàn</div><div class="fg-heading"><div><h1>Checklist an toàn</h1><p>CL-018 · Kiểm tra trước ca · Nguyễn Minh · 03/10/2026</p></div><button class="btn btn-primary" data-demo="submit-checklist" title="Minh họa giao diện — chức năng này chưa được kết nối">Gửi checklist</button></div><div class="fg-caption">Dữ liệu minh họa · 03/10/2026 · Không phải số liệu thực tế</div><section class="fg-panel"><div class="fg-section-head"><div><h2>Ngữ cảnh kiểm tra</h2></div></div><div class="fg-form-grid"><label class="fg-field"><span>Công trường *</span><input type="text" value="Riverside – Khối A"/></label><label class="fg-field"><span>Khu vực *</span><select><option>Z-A2 · Tầng 2</option><option>Khác</option></select></label><label class="fg-field"><span>Loại công việc *</span><select><option>Làm việc trên cao</option><option>Khác</option></select></label><label class="fg-field"><span>Mẫu đang dùng</span><input type="text" value="TMP-01 · v2.1 · Đã phát hành"/></label></div></section><section class="fg-panel"><div class="fg-section-head"><div><h2>Bước 2 / 4 · Bảo vệ mép sàn</h2><p>Đã trả lời 4 / 8 mục · Bản nháp lưu lúc 08:40</p></div></div><div class="fg-steps"><span>1. Chuẩn bị</span><span>2. Mép sàn</span><span>3. Thiết bị</span><span>4. Xem lại</span></div><div class="fg-note fg-red"><strong>Lan can bảo vệ đủ chiều cao và liên tục *</strong><div class="fg-radio"><label><input name="rail" type="radio"/> Đạt</label><label><input checked="" name="rail" type="radio"/> Không đạt</label><label><input name="rail" type="radio"/> Không áp dụng</label></div><div class="fg-form-grid"><label class="fg-field fg-wide"><span>Ghi chú khi không đạt *</span><textarea rows="3">Mép sàn phía đông chưa có lan can; có người đang tiếp cận.</textarea></label></div><div class="fg-note fg-yellow">Liên kết nguy cơ HZ-024 · Mục không đạt được giữ trong CL-018.</div></div><div class="fg-note fg-blue">Dải chắn chân ngăn vật rơi * <div class="fg-radio"><label><input checked="" name="bar" type="radio"/> Đạt</label><label><input name="bar" type="radio"/> Không đạt</label></div></div><div class="fg-note fg-blue">Lối tiếp cận được giới hạn và có cảnh báo * <div class="fg-radio"><label><input checked="" name="entry" type="radio"/> Đạt</label><label><input name="entry" type="radio"/> Không đạt</label></div></div><div class="fg-actions"><button class="btn btn-primary" data-demo="next-checklist" title="Minh họa giao diện — chức năng này chưa được kết nối">Tiếp tục →</button><button class="btn btn-light" data-demo="preview" title="Minh họa giao diện — chức năng này chưa được kết nối">← Quay lại</button><button class="btn btn-light" data-demo="save-checklist" title="Minh họa giao diện — chức năng này chưa được kết nối">Lưu nháp</button></div></section><section class="fg-panel"><div class="fg-section-head"><div><h2>Bước xem lại và xác nhận</h2></div></div><div class="fg-note fg-blue">8 mục · 7 Đạt · 1 Không đạt · 0 Không áp dụng · Liên kết HZ-024</div><label class="fg-check"><input type="checkbox"/> Tôi xác nhận kết quả phản ánh quan sát thực tế.</label><div class="fg-actions"><button class="btn btn-primary" data-demo="submit-checklist" title="Minh họa giao diện — chức năng này chưa được kết nối">Gửi checklist để duyệt</button><button class="btn btn-light" data-demo="preview" title="Minh họa giao diện — chức năng này chưa được kết nối">Sửa kết quả</button></div></section><div class="fg-footer">worker-checklist.html · Quyền thao tác theo vai trò được gán. Mọi thay đổi giữ lịch sử và minh chứng.</div></div></section>
-</main>
-</div>
-<div aria-live="polite" class="toast" id="toast" role="status"></div>
-<div class="modal-backdrop" id="modalBackdrop"><section aria-labelledby="modalTitle" aria-modal="true" class="modal" role="dialog"><div class="modal-head"><h2 id="modalTitle">Thêm mới</h2><button aria-label="Đóng" class="icon-btn" id="closeModal">✕</button></div><div class="modal-body" id="modalBody"></div></section></div>
-<script src="../js/script.js"></script>
-<script src="../js/worker-checklist.js"></script>
-</body></html>
+  <head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width,initial-scale=1" name="viewport"/>
+    <meta content="SiteSafe - hệ thống theo dõi an toàn công trường nhiều vai trò" name="description"/>
+    <title>Công nhân – Checklist của tôi | SiteSafe
+    </title>
+    <link href="https://fonts.googleapis.com" rel="preconnect"/>
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+    <link href="../css/style.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="../css/worker-checklist.css">
+  </head>
+  <body data-initial-page="worker-checklist" data-initial-role="worker">
+    <div class="app-shell">
+      <aside aria-label="Điều hướng chính" class="sidebar" id="sidebar">
+        <div class="brand"><span class="brand-mark">✓</span><span>SiteSafe</span>
+        </div>
+        <div class="role-label">NHÂN SỰ HIỆN TRƯỜNG
+        </div>
+        <div class="form-field" style="padding:0 7px">
+          <label for="roleSelect">Chuyển vai trò (demo)
+          </label>
+          <select class="field-control" id="roleSelect">
+            <option value="safety">Cán bộ an toàn
+            </option>
+            <option value="worker">Nhân sự hiện trường
+            </option>
+            <option value="manager">Quản lý công trường
+            </option>
+            <option value="admin">Quản trị hệ thống
+            </option>
+          </select>
+        </div>
+        <nav aria-label="Các màn hình" id="nav">
+        </nav>
+        <div class="sidebar-bottom">
+          <div class="site-mini"><strong>RIVERSIDE – KHỐI A</strong><span>RS-A · Đang thi công</span>
+          </div>
+          <button class="nav-item" data-page="help"><span>ⓘ</span>Trợ giúp &amp; hướng dẫn
+          </button>
+          <button class="nav-item" data-page="profile"><span>♙</span>Hồ sơ cá nhân
+          </button>
+        </div>
+      </aside>
+      <main class="workspace">
+        <header class="topbar">
+          <button aria-label="Mở menu" class="mobile-menu" id="mobileMenu">☰
+          </button>
+          <button class="site-switch" id="siteSwitch">Riverside – Khối A <span>⌄</span>
+          </button>
+          <div class="topbar-right">
+            <button aria-label="Thông báo" class="icon-btn" id="notifications" title="Thông báo">♧<i></i>
+            </button>
+            <div class="user-chip">
+              <div class="avatar" id="avatar">TA
+              </div>
+              <div><strong id="userName">Trần An</strong><small id="userRole">Nhân sự hiện trường</small>
+              </div>
+            </div>
+          </div>
+        </header>
+        <section aria-live="polite" class="page-content" id="pageContent">
+          <div class="fg-screen">
+            <div class="fg-crumb">Nhân sự hiện trường / Checklist an toàn
+            </div>
+            <div class="fg-heading">
+              <div>
+                <h1>Checklist an toàn
+                </h1>
+                <p>CL-018 · Kiểm tra trước ca · Nguyễn Minh · 03/10/2026
+                </p>
+              </div>
+              <button class="btn btn-primary" data-demo="submit-checklist" id="ss-top-submit" title="Kiểm tra đầy đủ 8 mục trước khi gửi">Gửi checklist
+              </button>
+            </div>
+            <div class="fg-caption">Dữ liệu minh họa · 03/10/2026 · Không phải số liệu thực tế
+            </div>
+            <section class="fg-panel">
+              <div class="fg-section-head">
+                <div>
+                  <h2>Ngữ cảnh kiểm tra
+                  </h2>
+                </div>
+              </div>
+              <div class="fg-form-grid">
+                <label class="fg-field"><span>Công trường *</span>
+                  <input name="demo_field_0" type="text" value="Riverside – Khối A"/>
+                </label>
+                <label class="fg-field"><span>Khu vực *</span>
+                  <select name="demo_field_1">
+                    <option>Z-A2 · Tầng 2
+                    </option>
+                    <option>Khác
+                    </option>
+                  </select>
+                </label>
+                <label class="fg-field"><span>Loại công việc *</span>
+                  <select name="demo_field_2">
+                    <option>Làm việc trên cao
+                    </option>
+                    <option>Khác
+                    </option>
+                  </select>
+                </label>
+                <label class="fg-field"><span>Mẫu đang dùng</span>
+                  <input name="demo_field_3" type="text" value="TMP-01 · v2.1 · Đã phát hành"/>
+                </label>
+              </div>
+            </section>
+            <section class="fg-panel ss-checklist-wizard" id="checklist-wizard">
+              <div class="fg-section-head">
+                <div>
+                  <h2 id="ss-step-title">Bước 1 / 4 · Chuẩn bị
+                  </h2>
+                  <p aria-live="polite" id="ss-progress-label">Đã trả lời 0 / 8 mục · Bản nháp trong trình duyệt
+                  </p>
+                </div>
+              </div>
+              <div aria-label="Các bước checklist" class="fg-steps ss-stepper" role="group">
+                <button data-step="0" type="button">1. Chuẩn bị
+                </button>
+                <button data-step="1" type="button">2. Mép sàn
+                </button>
+                <button data-step="2" type="button">3. Thiết bị
+                </button>
+                <button data-step="3" type="button">4. Xem lại
+                </button>
+              </div>
+              <div class="ss-step-content" data-step-content="0">
+                <div class="ss-question" data-question="q1"><strong>1. Khu vực làm việc đã được dọn dẹp, lối đi thông thoáng *</strong>
+                  <div aria-label="Kết quả mục 1" class="fg-radio ss-answers" role="group">
+                    <label>
+                      <input data-answer="Đạt" name="ss_q1" type="radio" value="Đạt"/> Đạt
+                    </label>
+                    <label>
+                      <input data-answer="Không đạt" name="ss_q1" type="radio" value="Không đạt"/> Không đạt
+                    </label>
+                    <label>
+                      <input data-answer="Không áp dụng" name="ss_q1" type="radio" value="Không áp dụng"/> Không áp dụng
+                    </label>
+                  </div>
+                  <label class="fg-field ss-note-wrap" hidden=""><span>Ghi chú khi không đạt *</span>
+                    <textarea name="ss_note1" placeholder="Mô tả vị trí và vấn đề quan sát được" rows="2">
+                    </textarea>
+                  </label>
+                </div>
+                <div class="ss-question" data-question="q2"><strong>2. Đã phổ biến nội dung an toàn trước ca *</strong>
+                  <div aria-label="Kết quả mục 2" class="fg-radio ss-answers" role="group">
+                    <label>
+                      <input data-answer="Đạt" name="ss_q2" type="radio" value="Đạt"/> Đạt
+                    </label>
+                    <label>
+                      <input data-answer="Không đạt" name="ss_q2" type="radio" value="Không đạt"/> Không đạt
+                    </label>
+                    <label>
+                      <input data-answer="Không áp dụng" name="ss_q2" type="radio" value="Không áp dụng"/> Không áp dụng
+                    </label>
+                  </div>
+                  <label class="fg-field ss-note-wrap" hidden=""><span>Ghi chú khi không đạt *</span>
+                    <textarea name="ss_note2" placeholder="Mô tả vị trí và vấn đề quan sát được" rows="2">
+                    </textarea>
+                  </label>
+                </div>
+              </div>
+              <div class="ss-step-content" data-step-content="1" hidden="">
+                <div class="ss-question" data-question="q3"><strong>3. Lan can bảo vệ đủ chiều cao và liên tục *</strong>
+                  <p class="ss-hint">Nếu không đạt, ghi rõ vị trí và liên kết nguy cơ HZ-024 nếu phù hợp.
+                  </p>
+                  <div aria-label="Kết quả mục 3" class="fg-radio ss-answers" role="group">
+                    <label>
+                      <input data-answer="Đạt" name="ss_q3" type="radio" value="Đạt"/> Đạt
+                    </label>
+                    <label>
+                      <input data-answer="Không đạt" name="ss_q3" type="radio" value="Không đạt"/> Không đạt
+                    </label>
+                    <label>
+                      <input data-answer="Không áp dụng" name="ss_q3" type="radio" value="Không áp dụng"/> Không áp dụng
+                    </label>
+                  </div>
+                  <label class="fg-field ss-note-wrap" hidden=""><span>Ghi chú khi không đạt *</span>
+                    <textarea name="ss_note3" placeholder="Mô tả vị trí và vấn đề quan sát được" rows="2">
+                    </textarea>
+                  </label>
+                </div>
+                <div class="ss-question" data-question="q4"><strong>4. Dải chắn chân ngăn vật rơi *</strong>
+                  <div aria-label="Kết quả mục 4" class="fg-radio ss-answers" role="group">
+                    <label>
+                      <input data-answer="Đạt" name="ss_q4" type="radio" value="Đạt"/> Đạt
+                    </label>
+                    <label>
+                      <input data-answer="Không đạt" name="ss_q4" type="radio" value="Không đạt"/> Không đạt
+                    </label>
+                    <label>
+                      <input data-answer="Không áp dụng" name="ss_q4" type="radio" value="Không áp dụng"/> Không áp dụng
+                    </label>
+                  </div>
+                  <label class="fg-field ss-note-wrap" hidden=""><span>Ghi chú khi không đạt *</span>
+                    <textarea name="ss_note4" placeholder="Mô tả vị trí và vấn đề quan sát được" rows="2">
+                    </textarea>
+                  </label>
+                </div>
+                <div class="ss-question" data-question="q5"><strong>5. Lối tiếp cận được giới hạn và có cảnh báo *</strong>
+                  <div aria-label="Kết quả mục 5" class="fg-radio ss-answers" role="group">
+                    <label>
+                      <input data-answer="Đạt" name="ss_q5" type="radio" value="Đạt"/> Đạt
+                    </label>
+                    <label>
+                      <input data-answer="Không đạt" name="ss_q5" type="radio" value="Không đạt"/> Không đạt
+                    </label>
+                    <label>
+                      <input data-answer="Không áp dụng" name="ss_q5" type="radio" value="Không áp dụng"/> Không áp dụng
+                    </label>
+                  </div>
+                  <label class="fg-field ss-note-wrap" hidden=""><span>Ghi chú khi không đạt *</span>
+                    <textarea name="ss_note5" placeholder="Mô tả vị trí và vấn đề quan sát được" rows="2">
+                    </textarea>
+                  </label>
+                </div>
+              </div>
+              <div class="ss-step-content" data-step-content="2" hidden="">
+                <div class="ss-question" data-question="q6"><strong>6. Dây an toàn và điểm neo đã được kiểm tra *</strong>
+                  <div aria-label="Kết quả mục 6" class="fg-radio ss-answers" role="group">
+                    <label>
+                      <input data-answer="Đạt" name="ss_q6" type="radio" value="Đạt"/> Đạt
+                    </label>
+                    <label>
+                      <input data-answer="Không đạt" name="ss_q6" type="radio" value="Không đạt"/> Không đạt
+                    </label>
+                    <label>
+                      <input data-answer="Không áp dụng" name="ss_q6" type="radio" value="Không áp dụng"/> Không áp dụng
+                    </label>
+                  </div>
+                  <label class="fg-field ss-note-wrap" hidden=""><span>Ghi chú khi không đạt *</span>
+                    <textarea name="ss_note6" placeholder="Mô tả vị trí và vấn đề quan sát được" rows="2">
+                    </textarea>
+                  </label>
+                </div>
+                <div class="ss-question" data-question="q7"><strong>7. Giàn giáo và thang tiếp cận ở trạng thái phù hợp *</strong>
+                  <div aria-label="Kết quả mục 7" class="fg-radio ss-answers" role="group">
+                    <label>
+                      <input data-answer="Đạt" name="ss_q7" type="radio" value="Đạt"/> Đạt
+                    </label>
+                    <label>
+                      <input data-answer="Không đạt" name="ss_q7" type="radio" value="Không đạt"/> Không đạt
+                    </label>
+                    <label>
+                      <input data-answer="Không áp dụng" name="ss_q7" type="radio" value="Không áp dụng"/> Không áp dụng
+                    </label>
+                  </div>
+                  <label class="fg-field ss-note-wrap" hidden=""><span>Ghi chú khi không đạt *</span>
+                    <textarea name="ss_note7" placeholder="Mô tả vị trí và vấn đề quan sát được" rows="2">
+                    </textarea>
+                  </label>
+                </div>
+                <div class="ss-question" data-question="q8"><strong>8. Trang bị bảo hộ cá nhân đầy đủ và phù hợp *</strong>
+                  <div aria-label="Kết quả mục 8" class="fg-radio ss-answers" role="group">
+                    <label>
+                      <input data-answer="Đạt" name="ss_q8" type="radio" value="Đạt"/> Đạt
+                    </label>
+                    <label>
+                      <input data-answer="Không đạt" name="ss_q8" type="radio" value="Không đạt"/> Không đạt
+                    </label>
+                    <label>
+                      <input data-answer="Không áp dụng" name="ss_q8" type="radio" value="Không áp dụng"/> Không áp dụng
+                    </label>
+                  </div>
+                  <label class="fg-field ss-note-wrap" hidden=""><span>Ghi chú khi không đạt *</span>
+                    <textarea name="ss_note8" placeholder="Mô tả vị trí và vấn đề quan sát được" rows="2">
+                    </textarea>
+                  </label>
+                </div>
+              </div>
+              <div class="ss-step-content" data-step-content="3" hidden="">
+                <h3>Xem lại kết quả kiểm tra
+                </h3>
+                <div class="ss-review-rows" id="ss-review-rows">
+                </div>
+                <label class="fg-check">
+                  <input id="ss-confirm" name="checklist_confirmation_0" type="checkbox"/> Tôi xác nhận kết quả phản ánh quan sát thực tế; checklist không phải giấy chứng nhận công trường an toàn.
+                </label>
+              </div>
+              <div class="fg-actions ss-wizard-actions">
+                <button class="btn btn-light" id="ss-prev" type="button">← Quay lại
+                </button>
+                <button class="btn btn-light" data-demo="save-checklist" type="button">Lưu nháp
+                </button>
+                <button class="btn btn-primary" id="ss-next" type="button">Tiếp tục →
+                </button>
+                <button class="btn btn-primary" data-demo="submit-checklist" hidden="" id="ss-submit" type="button">Gửi checklist để duyệt
+                </button>
+              </div>
+            </section>
+            <div class="fg-footer">worker-checklist.html · Quyền thao tác theo vai trò được gán. Mọi thay đổi giữ lịch sử và minh chứng.
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+    <div aria-live="polite" class="toast" id="toast" role="status">
+    </div>
+    <div class="modal-backdrop" id="modalBackdrop">
+      <section aria-labelledby="modalTitle" aria-modal="true" class="modal" role="dialog">
+        <div class="modal-head">
+          <h2 id="modalTitle">Thêm mới
+          </h2>
+          <button aria-label="Đóng" class="icon-btn" id="closeModal">✕
+          </button>
+        </div>
+        <div class="modal-body" id="modalBody">
+        </div>
+      </section>
+    </div>
+    <script src="../js/script.js">
+    </script>
+    <script src="../js/figma-demo.js">
+    </script>
+    <script src="../js/worker-checklist.js">
+    </script>
+</body>
+</html>

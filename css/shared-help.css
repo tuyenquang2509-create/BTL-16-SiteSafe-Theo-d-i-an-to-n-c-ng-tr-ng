@@ -1,6 +1,98 @@
+/* ===== shared-help.css (chuyển từ bản gốc) ===== */
 /* CSS rieng cho shared-help. Cac quy tac goc duoc giu trong style.css de dam bao tuong thich. */
 /* SiteSafe · kiểu dáng riêng: help */
-
-
 /* Figma: page-specific finishing for shared-help */
-body[data-initial-role="safety"] .page-content > :first-child{scroll-margin-top:85px}
+body[data-initial-role="safety"] .page-content > :first-child {
+    scroll-margin-top:85px
+}
+
+/* ===== figma-polish.css (chuyển từ bản gốc) ===== */
+/* Bổ sung UI giai đoạn 1 – giữ các thành phần Figma, không ghi đè bố cục trang */
+:root {
+    --sitesafe-navy:#112c3d;
+    --sitesafe-teal:#087f8c;
+    --sitesafe-canvas:#eaf3f8
+}
+
+:focus-visible {
+    outline:3px solid #2ba6ad!important;
+    outline-offset:2px
+}
+
+.fg-screen .fg-panel {
+    scroll-margin-top:90px
+}
+
+.fg-screen input,.fg-screen textarea,.fg-screen select {
+    max-width:100%
+}
+
+.fg-screen button:disabled {
+    cursor:not-allowed;
+    opacity:.55
+}
+
+@media (max-width:760px) {
+    .fg-screen .fg-form-grid {
+        grid-template-columns:1fr!important
+    }
+
+    .fg-screen .fg-actions {
+        flex-wrap:wrap
+    }
+
+}
+
+/* ===== demo-stage18.css (chuyển từ bản gốc) ===== */
+/* Giai doan 18: phan huong dan demo tren trang Tro giup */
+#demoGuide {
+    margin-top:20px
+}
+
+#demoGuide .demo-steps {
+    padding-left:1.5rem;
+    line-height:1.75
+}
+
+#demoGuide .demo-steps li {
+    margin:0 0 12px
+}
+
+#demoGuide a {
+    color:#087c87;
+    text-decoration:underline;
+    text-underline-offset:2px
+}
+
+#demoGuide .demo-summary {
+    display:flex;
+    flex-wrap:wrap;
+    gap:12px;
+    margin:12px 0
+}
+
+#demoGuide .demo-stat {
+    background:#f2f7fa;
+    border:1px solid #d9e7ed;
+    border-radius:10px;
+    padding:12px 16px;
+    min-width:150px
+}
+
+#demoGuide .demo-stat strong {
+    display:block;
+    font-size:1.35rem;
+    color:#123d52
+}
+
+#demoGuide .demo-actions {
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    margin:12px 0
+}
+
+#demoGuide .demo-warning {
+    font-size:.9rem;
+    color:#64748b
+}

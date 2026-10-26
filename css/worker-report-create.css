@@ -1,6 +1,205 @@
+/* ===== worker-report-create.css (chuyển từ bản gốc) ===== */
 /* CSS rieng cho worker-report-create. Cac quy tac goc duoc giu trong style.css de dam bao tuong thich. */
 /* SiteSafe · kiểu dáng riêng: worker-report */
-
-
 /* Figma: page-specific finishing for worker-report-create */
-body[data-initial-role="worker"] .page-content > :first-child{scroll-margin-top:85px}
+body[data-initial-role="worker"] .page-content > :first-child {
+    scroll-margin-top:85px
+}
+
+/* ===== figma-polish.css (chuyển từ bản gốc) ===== */
+/* Bổ sung UI giai đoạn 1 – giữ các thành phần Figma, không ghi đè bố cục trang */
+:root {
+    --sitesafe-navy:#112c3d;
+    --sitesafe-teal:#087f8c;
+    --sitesafe-canvas:#eaf3f8
+}
+
+:focus-visible {
+    outline:3px solid #2ba6ad!important;
+    outline-offset:2px
+}
+
+.fg-screen .fg-panel {
+    scroll-margin-top:90px
+}
+
+.fg-screen input,.fg-screen textarea,.fg-screen select {
+    max-width:100%
+}
+
+.fg-screen button:disabled {
+    cursor:not-allowed;
+    opacity:.55
+}
+
+@media (max-width:760px) {
+    .fg-screen .fg-form-grid {
+        grid-template-columns:1fr!important
+    }
+
+    .fg-screen .fg-actions {
+        flex-wrap:wrap
+    }
+
+}
+
+/* ===== worker-stage7.css (chuyển từ bản gốc) ===== */
+/* Giai đoạn 7: chỉ các trang công nhân, không đổi token/bố cục toàn hệ thống. */
+.worker-evidence-status {
+    margin:8px 0 0;
+    font-size:13px;
+    color:#52677d;
+    overflow-wrap:anywhere
+}
+
+.worker-evidence-status.invalid {
+    color:#a62c38;
+    font-weight:600
+}
+
+.worker-stage7-toolbar {
+    display:flex;
+    align-items:center;
+    gap:16px;
+    flex-wrap:wrap;
+    margin:12px 0 20px
+}
+
+.worker-stage7-toolbar span {
+    font-size:13px;
+    color:#62788c
+}
+
+body[data-initial-page="worker-checklist"] .fg-note textarea:required {
+    border-left:3px solid #db7d64
+}
+
+@media(max-width:680px) {
+    .worker-stage7-toolbar {
+        align-items:flex-start;
+        flex-direction:column
+    }
+
+}
+
+/* ===== figma-stage9.css (chuyển từ bản gốc) ===== */
+/* SiteSafe giai doan 9: cac thanh phan nho, khong thay doi mau nen/sidebar Figma. */
+.phase9-subnote {
+    font-size:12px;
+    color:#526878;
+    margin:8px 0 16px
+}
+
+.phase9-evidence-list {
+    display:grid;
+    gap:6px;
+    margin:10px 0 16px
+}
+
+.phase9-evidence-item {
+    padding:9px 12px;
+    background:#f0f8fa;
+    border:1px solid #d5e8ec;
+    border-radius:8px;
+    font-size:13px;
+    overflow-wrap:anywhere
+}
+
+.fg-field input:focus-visible,.fg-field select:focus-visible,.fg-field textarea:focus-visible {
+    outline:2px solid #0f9e9c;
+    outline-offset:2px
+}
+
+@media(max-width:760px) {
+    .phase9-evidence-item {
+        font-size:12px
+    }
+
+}
+
+/* ===== stage33-ui.css (chuyển từ bản gốc) ===== */
+/* Giai doan 33: shared UI consistency and keyboard/mobile polish. */
+/* Prevent dense headings, long identifiers and tables from breaking cards. */
+.fg-screen,.fg-screen .fg-panel,.fg-screen .fg-metric,.fg-screen .fg-columns > * {
+    min-width:0
+}
+
+.fg-screen .fg-heading > div {
+    min-width:0
+}
+
+.fg-screen .fg-heading h1,.fg-screen .fg-heading p {
+    overflow-wrap:anywhere
+}
+
+.fg-screen .fg-table {
+    border-collapse:collapse;
+    width:100%
+}
+
+.fg-screen .table-wrap {
+    max-width:100%;
+    overflow-x:auto;
+    -webkit-overflow-scrolling:touch
+}
+
+.fg-screen .fg-metric strong {
+    overflow-wrap:anywhere
+}
+
+/* Keep interactive controls visibly navigable with keyboard. */
+.fg-screen :is(button,a,input,select,textarea,[tabindex]):focus-visible, .sidebar :is(button,a,select):focus-visible, .topbar :is(button,a):focus-visible {
+    outline:3px solid #0b8997;
+    outline-offset:3px
+}
+
+.fg-screen :is(button,input,select,textarea) {
+    font:inherit
+}
+
+.fg-screen button:disabled {
+    cursor:not-allowed;
+    opacity:.55
+}
+
+@media(max-width:600px) {
+    .fg-screen .fg-heading {
+        align-items:stretch
+    }
+
+    .fg-screen .fg-heading > .btn {
+        max-width:100%;
+        white-space:normal
+    }
+
+    .fg-screen .fg-actions {
+        flex-wrap:wrap
+    }
+
+    .fg-screen .fg-actions > .btn {
+        max-width:100%;
+        white-space:normal
+    }
+
+    .fg-screen .fg-metric {
+        min-height:0
+    }
+
+    .fg-screen .fg-metric strong {
+        font-size:clamp(21px,6vw,31px)
+    }
+
+    .fg-screen .fg-zone {
+        padding:14px
+    }
+
+}
+
+@media(prefers-reduced-motion:reduce) {
+    .fg-screen *, .fg-screen *::before,.fg-screen *::after {
+        scroll-behavior:auto!important;
+        animation-duration:.01ms!important;
+        transition-duration:.01ms!important
+    }
+
+}

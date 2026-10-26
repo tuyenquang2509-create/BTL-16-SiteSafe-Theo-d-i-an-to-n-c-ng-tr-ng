@@ -1,31 +1,301 @@
 <!DOCTYPE html>
-
 <html lang="vi">
-<head>
-<meta charset="utf-8"/><meta content="width=device-width,initial-scale=1" name="viewport"/>
-<meta content="SiteSafe - hệ thống theo dõi an toàn công trường nhiều vai trò" name="description"/>
-<title>Cán bộ an toàn – Kiểm tra hiện trường | SiteSafe</title>
-<link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
-<link href="../css/style.css" rel="stylesheet"/>
-<link href="../css/safety-inspections.css" rel="stylesheet"/>
-</head>
-<body data-initial-page="inspections" data-initial-role="safety">
-<div class="app-shell">
-<aside aria-label="Điều hướng chính" class="sidebar" id="sidebar">
-<div class="brand"><span class="brand-mark">✓</span><span>SiteSafe</span></div>
-<div class="role-label">CÁN BỘ AN TOÀN</div>
-<div class="form-field" style="padding:0 7px"><label for="roleSelect">Chuyển vai trò (demo)</label><select class="field-control" id="roleSelect"><option value="safety">Cán bộ an toàn</option><option value="worker">Nhân sự hiện trường</option><option value="manager">Quản lý công trường</option><option value="admin">Quản trị hệ thống</option></select></div>
-<nav aria-label="Các màn hình" id="nav"></nav>
-<div class="sidebar-bottom"><div class="site-mini"><strong>RIVERSIDE – KHỐI A</strong><span>RS-A · Đang thi công</span></div><button class="nav-item" data-page="help"><span>ⓘ</span>Trợ giúp &amp; hướng dẫn</button><button class="nav-item" data-page="profile"><span>♙</span>Hồ sơ cá nhân</button></div>
-</aside>
-<main class="workspace">
-<header class="topbar"><button aria-label="Mở menu" class="mobile-menu" id="mobileMenu">☰</button><button class="site-switch" id="siteSwitch">Riverside – Khối A <span>⌄</span></button><div class="topbar-right"><button aria-label="Thông báo" class="icon-btn" id="notifications" title="Thông báo">♧<i></i></button><div class="user-chip"><div class="avatar" id="avatar">TA</div><div><strong id="userName">Trần An</strong><small id="userRole">Cán bộ an toàn</small></div></div></div></header>
-<section aria-live="polite" class="page-content" id="pageContent"><div class="fg-screen"><div class="fg-crumb">Cán bộ an toàn / Lịch kiểm tra</div><div class="fg-heading"><div><h1>Lịch kiểm tra</h1><p>Lập lịch, theo dõi kết quả và giữ lý do khi thay đổi kế hoạch.</p></div><button class="btn btn-primary" data-action="new-inspection">+ Lên lịch kiểm tra</button></div><div class="fg-caption">Dữ liệu minh họa · 03/10/2026 · Không phải số liệu thực tế</div><section class="fg-panel"><div class="fg-section-head"><div><h2>Tìm kiếm và lọc</h2></div></div><div class="fg-form-grid"><label class="fg-field"><span>Tìm kiếm</span><input type="text" value="IN-018"/></label><label class="fg-field"><span>Công trường</span><select><option>Riverside – Khối A</option><option>Khác</option></select></label><label class="fg-field"><span>Bộ lọc</span><select><option>Tuần 01–07/10/2026</option><option>Khác</option></select></label></div></section><section class="fg-panel"><div class="fg-section-head"><div><h2>Các cuộc kiểm tra</h2></div></div><div class="table-wrap"><table class="fg-table"><thead><tr><th>Mã / Khu vực</th><th>Người kiểm tra</th><th>Thời gian</th><th>Trạng thái</th><th>Thao tác</th></tr></thead><tbody><tr><td>IN-018 · Z-A2</td><td>Trần An</td><td>03/10 · 09:00</td><td><span class="fg-pill fg-blue">Đang thực hiện</span></td><td><button class="btn btn-light" data-page="checklists">Mở checklist</button></td></tr><tr><td>IN-019 · Z-K1</td><td>Mai Lan</td><td>04/10 · 08:00</td><td><span class="fg-pill fg-teal">Đã lên lịch</span></td><td><button class="btn btn-light" data-action="new-inspection">Đổi lịch</button></td></tr><tr><td>IN-017 · Z-A1</td><td>Trần An</td><td>02/10 · 10:00</td><td>Hoàn thành</td><td><button class="btn btn-light" data-demo="preview" title="Minh họa giao diện — chức năng này chưa được kết nối">Xem kết quả</button></td></tr><tr><td>IN-020 · Z-B1</td><td>Mai Lan</td><td>05/10 · 08:00</td><td>Bản nháp</td><td><button class="btn btn-light" data-action="new-inspection">Sửa / Hủy</button></td></tr></tbody></table></div></section><div class="fg-columns"><section class="fg-panel"><div class="fg-section-head"><div><h2>IN-018 · Kết quả kiểm tra</h2></div></div><span class="fg-pill fg-blue">Đang thực hiện</span><p>CL-018 · Mẫu TMP-01 v2.1 · 8 mục · 7 Đạt · 1 Không đạt</p><div class="fg-note fg-yellow">Lan can bảo vệ chưa đạt · đã liên kết HZ-024.</div><div class="fg-actions"><button class="btn btn-light" data-page="checklists">Xem checklist</button><button class="btn btn-light" data-page="risks">Xem nguy cơ</button></div></section><section class="fg-panel"><div class="fg-section-head"><div><h2>Lịch tuần · 01–07/10</h2></div></div><div class="fg-note fg-blue">Thứ Sáu 02/10 · IN-017 ✓</div><div class="fg-note fg-blue">Thứ Bảy 03/10 · IN-018 ●</div><div class="fg-note fg-blue">Chủ Nhật 04/10 · IN-019 ○</div><div class="fg-note fg-blue">Thứ Hai 05/10 · IN-020 · bản nháp</div></section></div><section class="fg-panel"><div class="fg-section-head"><div><h2>Lên lịch kiểm tra</h2></div></div><div class="fg-form-grid"><label class="fg-field"><span>Khu vực *</span><select><option>Z-K1 · Kho vật tư</option><option>Khác</option></select></label><label class="fg-field"><span>Mẫu checklist *</span><select><option>TMP-03 · Kho vật tư v1.2</option><option>Khác</option></select></label><label class="fg-field"><span>Người kiểm tra *</span><select><option>Mai Lan</option><option>Khác</option></select></label><label class="fg-field"><span>Hạn hoàn thành *</span><input type="text" value="04/10/2026 · 08:00"/></label></div><div class="fg-actions"><button class="btn btn-primary" data-action="new-inspection">Lưu lịch</button><button class="btn btn-light" data-demo="preview" title="Minh họa giao diện — chức năng này chưa được kết nối">Hủy</button></div></section><div class="fg-footer">safety-inspections.html · Quyền thao tác theo vai trò được gán. Mọi thay đổi giữ lịch sử và minh chứng.</div></div></section>
-</main>
-</div>
-<div aria-live="polite" class="toast" id="toast" role="status"></div>
-<div class="modal-backdrop" id="modalBackdrop"><section aria-labelledby="modalTitle" aria-modal="true" class="modal" role="dialog"><div class="modal-head"><h2 id="modalTitle">Thêm mới</h2><button aria-label="Đóng" class="icon-btn" id="closeModal">✕</button></div><div class="modal-body" id="modalBody"></div></section></div>
-<script src="../js/script.js"></script>
-<script src="../js/safety-inspections.js"></script>
-</body></html>
+  <head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width,initial-scale=1" name="viewport"/>
+    <meta content="SiteSafe - hệ thống theo dõi an toàn công trường nhiều vai trò" name="description"/>
+    <title>Cán bộ an toàn – Kiểm tra hiện trường | SiteSafe
+    </title>
+    <link href="https://fonts.googleapis.com" rel="preconnect"/>
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+    <link href="../css/style.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="../css/safety-inspections.css">
+  </head>
+  <body data-initial-page="inspections" data-initial-role="safety">
+    <div class="app-shell">
+      <aside aria-label="Điều hướng chính" class="sidebar" id="sidebar">
+        <div class="brand"><span class="brand-mark">✓</span><span>SiteSafe</span>
+        </div>
+        <div class="role-label">CÁN BỘ AN TOÀN
+        </div>
+        <div class="form-field" style="padding:0 7px">
+          <label for="roleSelect">Chuyển vai trò (demo)
+          </label>
+          <select class="field-control" id="roleSelect">
+            <option value="safety">Cán bộ an toàn
+            </option>
+            <option value="worker">Nhân sự hiện trường
+            </option>
+            <option value="manager">Quản lý công trường
+            </option>
+            <option value="admin">Quản trị hệ thống
+            </option>
+          </select>
+        </div>
+        <nav aria-label="Các màn hình" id="nav">
+        </nav>
+        <div class="sidebar-bottom">
+          <div class="site-mini"><strong>RIVERSIDE – KHỐI A</strong><span>RS-A · Đang thi công</span>
+          </div>
+          <button class="nav-item" data-page="help"><span>ⓘ</span>Trợ giúp &amp; hướng dẫn
+          </button>
+          <button class="nav-item" data-page="profile"><span>♙</span>Hồ sơ cá nhân
+          </button>
+        </div>
+      </aside>
+      <main class="workspace">
+        <header class="topbar">
+          <button aria-label="Mở menu" class="mobile-menu" id="mobileMenu">☰
+          </button>
+          <button class="site-switch" id="siteSwitch">Riverside – Khối A <span>⌄</span>
+          </button>
+          <div class="topbar-right">
+            <button aria-label="Thông báo" class="icon-btn" id="notifications" title="Thông báo">♧<i></i>
+            </button>
+            <div class="user-chip">
+              <div class="avatar" id="avatar">TA
+              </div>
+              <div><strong id="userName">Trần An</strong><small id="userRole">Cán bộ an toàn</small>
+              </div>
+            </div>
+          </div>
+        </header>
+        <section aria-live="polite" class="page-content" id="pageContent">
+          <div class="fg-screen">
+            <div class="fg-crumb">Cán bộ an toàn / Lịch kiểm tra
+            </div>
+            <div class="fg-heading">
+              <div>
+                <h1>Lịch kiểm tra
+                </h1>
+                <p>Lập lịch, theo dõi kết quả và giữ lý do khi thay đổi kế hoạch.
+                </p>
+              </div>
+              <button class="btn btn-primary" data-action="new-inspection">+ Lên lịch kiểm tra
+              </button>
+            </div>
+            <div class="fg-caption">Dữ liệu minh họa · 03/10/2026 · Không phải số liệu thực tế
+            </div>
+            <section class="fg-panel">
+              <div class="fg-section-head">
+                <div>
+                  <h2>Tìm kiếm và lọc
+                  </h2>
+                </div>
+              </div>
+              <div class="fg-form-grid">
+                <label class="fg-field"><span>Tìm kiếm</span>
+                  <input aria-label="Tìm kiếm cuộc kiểm tra" id="stage20-inspection-search" placeholder="Mã, khu vực, người kiểm tra..." type="text" value="IN-018"/>
+                </label>
+                <label class="fg-field"><span>Công trường</span>
+                  <select id="stage20-inspection-site">
+                    <option>Riverside – Khối A
+                    </option>
+                    <option>Khác
+                    </option>
+                  </select>
+                </label>
+                <label class="fg-field"><span>Bộ lọc</span>
+                  <select id="stage20-inspection-week">
+                    <option>Tuần 01–07/10/2026
+                    </option>
+                    <option>Khác
+                    </option>
+                  </select>
+                </label>
+              </div>
+            </section>
+            <section class="fg-panel">
+              <div class="fg-section-head">
+                <div>
+                  <h2>Các cuộc kiểm tra
+                  </h2>
+                </div>
+              </div>
+              <div class="table-wrap">
+                <p class="stage20-count" id="stage20-inspection-count">
+                </p>
+                <table class="fg-table" id="stage20-inspection-table">
+                  <thead>
+                    <tr>
+                      <th>Mã / Khu vực
+                      </th>
+                      <th>Người kiểm tra
+                      </th>
+                      <th>Thời gian
+                      </th>
+                      <th>Trạng thái
+                      </th>
+                      <th>Thao tác
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>IN-018 · Z-A2
+                      </td>
+                      <td>Trần An
+                      </td>
+                      <td>03/10 · 09:00
+                      </td>
+                      <td><span class="fg-pill fg-blue">Đang thực hiện</span>
+                      </td>
+                      <td>
+                        <button class="btn btn-light" data-page="checklists" title="Mở trang mẫu checklist">Mở checklist
+                        </button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>IN-019 · Z-K1
+                      </td>
+                      <td>Mai Lan
+                      </td>
+                      <td>04/10 · 08:00
+                      </td>
+                      <td><span class="fg-pill fg-teal">Đã lên lịch</span>
+                      </td>
+                      <td>
+                        <button class="btn btn-light" data-action="new-inspection">Đổi lịch
+                        </button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>IN-017 · Z-A1
+                      </td>
+                      <td>Trần An
+                      </td>
+                      <td>02/10 · 10:00
+                      </td>
+                      <td>Hoàn thành
+                      </td>
+                      <td>
+                        <button class="btn btn-light" data-demo="preview" title="Minh họa giao diện — chức năng này chưa được kết nối">Xem kết quả
+                        </button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>IN-020 · Z-B1
+                      </td>
+                      <td>Mai Lan
+                      </td>
+                      <td>05/10 · 08:00
+                      </td>
+                      <td>Bản nháp
+                      </td>
+                      <td>
+                        <button class="btn btn-light" data-action="new-inspection">Sửa / Hủy
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </section>
+            <div class="fg-columns">
+              <section class="fg-panel">
+                <div class="fg-section-head">
+                  <div>
+                    <h2>IN-018 · Kết quả kiểm tra
+                    </h2>
+                  </div>
+                </div><span class="fg-pill fg-blue">Đang thực hiện</span>
+                <p>CL-018 · Mẫu TMP-01 v2.1 · 8 mục · 7 Đạt · 1 Không đạt
+                </p>
+                <div class="fg-note fg-yellow">Lan can bảo vệ chưa đạt · đã liên kết HZ-024.
+                </div>
+                <div class="fg-actions">
+                  <button class="btn btn-light" data-page="checklists" title="Mở trang mẫu checklist">Xem checklist
+                  </button>
+                  <button class="btn btn-light" data-page="risks" title="Mở chi tiết nguy cơ">Xem nguy cơ
+                  </button>
+                </div>
+              </section>
+              <section class="fg-panel">
+                <div class="fg-section-head">
+                  <div>
+                    <h2>Lịch tuần · 01–07/10
+                    </h2>
+                  </div>
+                </div>
+                <div class="fg-note fg-blue">Thứ Sáu 02/10 · IN-017 ✓
+                </div>
+                <div class="fg-note fg-blue">Thứ Bảy 03/10 · IN-018 ●
+                </div>
+                <div class="fg-note fg-blue">Chủ Nhật 04/10 · IN-019 ○
+                </div>
+                <div class="fg-note fg-blue">Thứ Hai 05/10 · IN-020 · bản nháp
+                </div>
+              </section>
+            </div>
+            <section class="fg-panel">
+              <div class="fg-section-head">
+                <div>
+                  <h2>Lên lịch kiểm tra
+                  </h2>
+                </div>
+              </div>
+              <div class="fg-form-grid">
+                <label class="fg-field"><span>Khu vực *</span>
+                  <select>
+                    <option>Z-K1 · Kho vật tư
+                    </option>
+                    <option>Khác
+                    </option>
+                  </select>
+                </label>
+                <label class="fg-field"><span>Mẫu checklist *</span>
+                  <select>
+                    <option>TMP-03 · Kho vật tư v1.2
+                    </option>
+                    <option>Khác
+                    </option>
+                  </select>
+                </label>
+                <label class="fg-field"><span>Người kiểm tra *</span>
+                  <select>
+                    <option>Mai Lan
+                    </option>
+                    <option>Khác
+                    </option>
+                  </select>
+                </label>
+                <label class="fg-field"><span>Hạn hoàn thành *</span>
+                  <input type="text" value="04/10/2026 · 08:00"/>
+                </label>
+              </div>
+              <div class="fg-actions">
+                <button class="btn btn-primary" data-action="new-inspection">Lưu lịch
+                </button>
+                <button class="btn btn-light" data-demo="preview" title="Minh họa giao diện — chức năng này chưa được kết nối">Hủy
+                </button>
+              </div>
+            </section>
+            <div class="fg-footer">safety-inspections.html · Quyền thao tác theo vai trò được gán. Mọi thay đổi giữ lịch sử và minh chứng.
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+    <div aria-live="polite" class="toast" id="toast" role="status">
+    </div>
+    <div class="modal-backdrop" id="modalBackdrop">
+      <section aria-labelledby="modalTitle" aria-modal="true" class="modal" role="dialog">
+        <div class="modal-head">
+          <h2 id="modalTitle">Thêm mới
+          </h2>
+          <button aria-label="Đóng" class="icon-btn" id="closeModal">✕
+          </button>
+        </div>
+        <div class="modal-body" id="modalBody">
+        </div>
+      </section>
+    </div>
+    <script src="../js/script.js">
+    </script>
+    <script src="../js/figma-demo.js">
+    </script>
+    <script src="../js/safety-inspections.js">
+    </script>
+</body>
+</html>

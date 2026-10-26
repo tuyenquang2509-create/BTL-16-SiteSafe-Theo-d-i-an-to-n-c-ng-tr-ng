@@ -1,6 +1,336 @@
+/* ===== manager-corrective-actions.css (chuyển từ bản gốc) ===== */
 /* CSS rieng cho manager-corrective-actions. Cac quy tac goc duoc giu trong style.css de dam bao tuong thich. */
 /* SiteSafe · kiểu dáng riêng: actions */
-
-
 /* Figma: page-specific finishing for manager-corrective-actions */
-body[data-initial-role="manager"] .page-content > :first-child{scroll-margin-top:85px}
+body[data-initial-role="manager"] .page-content > :first-child {
+    scroll-margin-top:85px
+}
+
+/* ===== figma-polish.css (chuyển từ bản gốc) ===== */
+/* Bổ sung UI giai đoạn 1 – giữ các thành phần Figma, không ghi đè bố cục trang */
+:root {
+    --sitesafe-navy:#112c3d;
+    --sitesafe-teal:#087f8c;
+    --sitesafe-canvas:#eaf3f8
+}
+
+:focus-visible {
+    outline:3px solid #2ba6ad!important;
+    outline-offset:2px
+}
+
+.fg-screen .fg-panel {
+    scroll-margin-top:90px
+}
+
+.fg-screen input,.fg-screen textarea,.fg-screen select {
+    max-width:100%
+}
+
+.fg-screen button:disabled {
+    cursor:not-allowed;
+    opacity:.55
+}
+
+@media (max-width:760px) {
+    .fg-screen .fg-form-grid {
+        grid-template-columns:1fr!important
+    }
+
+    .fg-screen .fg-actions {
+        flex-wrap:wrap
+    }
+
+}
+
+/* ===== workflow-phase3.css (chuyển từ bản gốc) ===== */
+/* Chỉ bổ sung thành phần nghiệp vụ; không ghi đè token, sidebar hay bố cục Figma. */
+.workflow-panel {
+    margin-top:22px
+}
+
+.workflow-hint {
+    color:#64748b;
+    font-size:13px;
+    line-height:1.6
+}
+
+.workflow-item {
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:18px;
+    padding:15px 0;
+    border-bottom:1px solid #e5edf2
+}
+
+.workflow-item:last-child {
+    border-bottom:0
+}
+
+.workflow-item strong {
+    display:block;
+    color:#123047;
+    font-size:14px
+}
+
+.workflow-item small {
+    display:block;
+    color:#64748b;
+    font-size:12px;
+    margin-top:5px;
+    line-height:1.5
+}
+
+.workflow-item .btn {
+    flex-shrink:0
+}
+
+#workflowReviewForm .fg-form-grid {
+    margin-top:12px
+}
+
+#workflowReviewForm>.fg-field {
+    max-width:420px
+}
+
+#wfReviewStatus {
+    padding:10px 0;
+    color:#0f766e;
+    font-weight:600
+}
+
+@media(max-width:700px) {
+    .workflow-item {
+        align-items:stretch;
+        flex-direction:column
+    }
+
+    .workflow-item .btn {
+        align-self:flex-start
+    }
+
+}
+
+/* ===== figma-stage9.css (chuyển từ bản gốc) ===== */
+/* SiteSafe giai doan 9: cac thanh phan nho, khong thay doi mau nen/sidebar Figma. */
+.phase9-subnote {
+    font-size:12px;
+    color:#526878;
+    margin:8px 0 16px
+}
+
+.phase9-evidence-list {
+    display:grid;
+    gap:6px;
+    margin:10px 0 16px
+}
+
+.phase9-evidence-item {
+    padding:9px 12px;
+    background:#f0f8fa;
+    border:1px solid #d5e8ec;
+    border-radius:8px;
+    font-size:13px;
+    overflow-wrap:anywhere
+}
+
+.fg-field input:focus-visible,.fg-field select:focus-visible,.fg-field textarea:focus-visible {
+    outline:2px solid #0f9e9c;
+    outline-offset:2px
+}
+
+@media(max-width:760px) {
+    .phase9-evidence-item {
+        font-size:12px
+    }
+
+}
+
+/* ===== manager-stage22.css (chuyển từ bản gốc) ===== */
+/* Stage 22 — styles scoped to new manager demo controls */
+.m22-summary {
+    margin:16px 0 22px;
+    padding:16px 18px;
+    background:#fff;
+    border:1px solid #dbe8ed;
+    border-radius:12px
+}
+
+.m22-summary-title {
+    display:flex;
+    flex-wrap:wrap;
+    align-items:baseline;
+    gap:10px;
+    margin-bottom:13px;
+    color:#19394b
+}
+
+.m22-summary-title span {
+    font-size:12px;
+    color:#6b7f8b
+}
+
+.m22-counts {
+    display:grid;
+    grid-template-columns:repeat(4,minmax(0,1fr));
+    gap:10px
+}
+
+.m22-count {
+    background:#f3f8fa;
+    border-radius:9px;
+    padding:12px;
+    display:flex;
+    flex-direction:column;
+    gap:4px
+}
+
+.m22-count strong {
+    font-size:24px;
+    color:#147e86
+}
+
+.m22-count span {
+    font-size:12px;
+    color:#506875
+}
+
+.m22-tools {
+    display:flex;
+    flex-wrap:wrap;
+    align-items:end;
+    gap:12px;
+    margin:12px 0 16px
+}
+
+.m22-tools label {
+    display:flex;
+    flex-direction:column;
+    gap:5px;
+    font-size:12px;
+    color:#456171
+}
+
+.m22-tools input,.m22-tools select {
+    border:1px solid #c8d8df;
+    border-radius:8px;
+    background:white;
+    padding:9px;
+    font:inherit;
+    min-width:170px;
+    max-width:100%
+}
+
+.m22-result {
+    font-size:12px;
+    color:#607784;
+    margin:0 0 8px
+}
+
+#workflowActions .workflow-item[hidden] {
+    display:none!important
+}
+
+@media(max-width:680px) {
+    .m22-counts {
+        grid-template-columns:repeat(2,minmax(0,1fr))
+    }
+
+    .m22-tools {
+        display:grid;
+        grid-template-columns:1fr
+    }
+
+    .m22-tools input,.m22-tools select {
+        width:100%
+    }
+
+}
+
+/* ===== stage33-ui.css (chuyển từ bản gốc) ===== */
+/* Giai doan 33: shared UI consistency and keyboard/mobile polish. */
+/* Prevent dense headings, long identifiers and tables from breaking cards. */
+.fg-screen,.fg-screen .fg-panel,.fg-screen .fg-metric,.fg-screen .fg-columns > * {
+    min-width:0
+}
+
+.fg-screen .fg-heading > div {
+    min-width:0
+}
+
+.fg-screen .fg-heading h1,.fg-screen .fg-heading p {
+    overflow-wrap:anywhere
+}
+
+.fg-screen .fg-table {
+    border-collapse:collapse;
+    width:100%
+}
+
+.fg-screen .table-wrap {
+    max-width:100%;
+    overflow-x:auto;
+    -webkit-overflow-scrolling:touch
+}
+
+.fg-screen .fg-metric strong {
+    overflow-wrap:anywhere
+}
+
+/* Keep interactive controls visibly navigable with keyboard. */
+.fg-screen :is(button,a,input,select,textarea,[tabindex]):focus-visible, .sidebar :is(button,a,select):focus-visible, .topbar :is(button,a):focus-visible {
+    outline:3px solid #0b8997;
+    outline-offset:3px
+}
+
+.fg-screen :is(button,input,select,textarea) {
+    font:inherit
+}
+
+.fg-screen button:disabled {
+    cursor:not-allowed;
+    opacity:.55
+}
+
+@media(max-width:600px) {
+    .fg-screen .fg-heading {
+        align-items:stretch
+    }
+
+    .fg-screen .fg-heading > .btn {
+        max-width:100%;
+        white-space:normal
+    }
+
+    .fg-screen .fg-actions {
+        flex-wrap:wrap
+    }
+
+    .fg-screen .fg-actions > .btn {
+        max-width:100%;
+        white-space:normal
+    }
+
+    .fg-screen .fg-metric {
+        min-height:0
+    }
+
+    .fg-screen .fg-metric strong {
+        font-size:clamp(21px,6vw,31px)
+    }
+
+    .fg-screen .fg-zone {
+        padding:14px
+    }
+
+}
+
+@media(prefers-reduced-motion:reduce) {
+    .fg-screen *, .fg-screen *::before,.fg-screen *::after {
+        scroll-behavior:auto!important;
+        animation-duration:.01ms!important;
+        transition-duration:.01ms!important
+    }
+
+}

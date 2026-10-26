@@ -1,6 +1,48 @@
-/* CSS rieng cho manager-dashboard. Cac quy tac goc duoc giu trong style.css de dam bao tuong thich. */
-/* SiteSafe · kiểu dáng riêng: manager-home */
+/* ==========================================================
+   DASHBOARD QUẢN LÝ CÔNG TRƯỜNG
+   Chỉ dùng cho manager-dashboard.html
 
+   Các thành phần dùng chung như .fg-panel, .fg-table,
+   .fg-metrics và .fg-metric được khai báo ở style.css.
+   File này điều chỉnh bố cục và cách hiển thị riêng của dashboard.
+   ========================================================== */
 
-/* Figma: page-specific finishing for manager-dashboard */
-body[data-initial-role="manager"] .page-content > :first-child{scroll-margin-top:85px}
+/* 1. Các thẻ chỉ số tổng quan */
+body[data-initial-page="manager-home"] .fg-metrics {
+    align-items: stretch;
+}
+
+body[data-initial-page="manager-home"] .fg-metric {
+    height: 100%;
+}
+
+body[data-initial-page="manager-home"] .fg-metric strong {
+    display: block;
+    margin-top: 4px;
+}
+
+body[data-initial-page="manager-home"] .fg-metric small {
+    margin-top: auto;
+    padding-top: 6px;
+}
+
+/* 2. Các bảng và khối thông tin bên dưới */
+body[data-initial-page="manager-home"] .fg-columns > .fg-panel {
+    min-width: 0;
+}
+
+body[data-initial-page="manager-home"] .fg-panel .table-wrap {
+    overflow-x: auto;
+}
+
+/* 3. Khoảng cách khi cuộn đến nội dung */
+body[data-initial-page="manager-home"] .page-content > :first-child {
+    scroll-margin-top: 85px;
+}
+
+/* 4. Giao diện trên điện thoại */
+@media (max-width: 600px) {
+    body[data-initial-page="manager-home"] .fg-metric strong {
+        font-size: 26px;
+    }
+}

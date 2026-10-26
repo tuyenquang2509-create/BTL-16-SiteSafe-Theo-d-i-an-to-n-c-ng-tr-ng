@@ -1,7 +1,273 @@
+/* ===== safety-dashboard.css (chuyển từ bản gốc) ===== */
 /* CSS rieng cho safety-dashboard. Cac quy tac goc duoc giu trong style.css de dam bao tuong thich. */
 /* SiteSafe · kiểu dáng riêng: dashboard */
-.figma-dashboard-columns{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(320px,1fr);gap:16px;align-items:stretch}
-@media (max-width:1000px){.figma-dashboard-columns{grid-template-columns:1fr}}
+.figma-dashboard-columns {
+    display:grid;
+    grid-template-columns:minmax(0,1.2fr) minmax(320px,1fr);
+    gap:16px;
+    align-items:stretch
+}
+
+@media (max-width:1000px) {
+    .figma-dashboard-columns {
+        grid-template-columns:1fr
+    }
+
+}
 
 /* Figma: page-specific finishing for safety-dashboard */
-body[data-initial-role="safety"] .page-content > :first-child{scroll-margin-top:85px}
+body[data-initial-role="safety"] .page-content > :first-child {
+    scroll-margin-top:85px
+}
+
+/* ===== figma-polish.css (chuyển từ bản gốc) ===== */
+/* Bổ sung UI giai đoạn 1 – giữ các thành phần Figma, không ghi đè bố cục trang */
+:root {
+    --sitesafe-navy:#112c3d;
+    --sitesafe-teal:#087f8c;
+    --sitesafe-canvas:#eaf3f8
+}
+
+:focus-visible {
+    outline:3px solid #2ba6ad!important;
+    outline-offset:2px
+}
+
+.fg-screen .fg-panel {
+    scroll-margin-top:90px
+}
+
+.fg-screen input,.fg-screen textarea,.fg-screen select {
+    max-width:100%
+}
+
+.fg-screen button:disabled {
+    cursor:not-allowed;
+    opacity:.55
+}
+
+@media (max-width:760px) {
+    .fg-screen .fg-form-grid {
+        grid-template-columns:1fr!important
+    }
+
+    .fg-screen .fg-actions {
+        flex-wrap:wrap
+    }
+
+}
+
+/* ===== figma-stage6.css (chuyển từ bản gốc) ===== */
+/* Giai đoạn 6: hiệu chỉnh trang Tổng quan an toàn theo PDF Figma trang 9. */
+.figma-dashboard .figma-queue-item {
+    align-items:flex-start
+}
+
+.figma-dashboard .figma-queue-item .text-btn {
+    padding:5px 0;
+    margin-top:4px
+}
+
+.figma-dashboard .figma-queue-item strong {
+    font-size:14px
+}
+
+.figma-dashboard .figma-queue-item p {
+    margin:5px 0;
+    color:#657b8b
+}
+
+.figma-recent .stage6-data-note {
+    font-size:12px;
+    color:#6a7f8e;
+    margin:12px 0 0
+}
+
+.figma-recent tr[data-live-record] {
+    background:#f1faf9
+}
+
+.figma-recent .stage6-live-tag {
+    display:inline-block;
+    font-size:10px;
+    padding:2px 6px;
+    border-radius:5px;
+    background:#d8f3ec;
+    color:#12675f;
+    margin-left:5px
+}
+
+.figma-recent .table-wrap {
+    overflow-x:auto
+}
+
+@media(max-width:760px) {
+    .figma-dashboard .figma-queue-item {
+        gap:8px
+    }
+
+    .figma-recent table {
+        min-width:750px
+    }
+
+}
+
+/* ===== figma-stage19.css (chuyển từ bản gốc) ===== */
+/* Giai đoạn 19: đối chiếu trang 9 PDF Figma – scoped visual adjustments. */
+body[data-initial-role="safety"][data-initial-page="dashboard"] .figma-dashboard {
+    gap:17px
+}
+
+body[data-initial-role="safety"][data-initial-page="dashboard"] .figma-stat {
+    min-height:112px
+}
+
+body[data-initial-role="safety"][data-initial-page="dashboard"] .figma-alert {
+    padding:13px 16px
+}
+
+body[data-initial-role="safety"][data-initial-page="dashboard"] .figma-recent .table-wrap, body[data-initial-role="safety"][data-initial-page="dashboard"] .stage19-activity .table-wrap {
+    border:0;
+    border-radius:0
+}
+
+body[data-initial-role="safety"][data-initial-page="dashboard"] .figma-recent table, body[data-initial-role="safety"][data-initial-page="dashboard"] .stage19-activity table {
+    min-width:620px
+}
+
+body[data-initial-role="safety"][data-initial-page="dashboard"] .figma-recent th, body[data-initial-role="safety"][data-initial-page="dashboard"] .stage19-activity th {
+    background:#f0f5f7;
+    color:#486273;
+    font-size:11px;
+    letter-spacing:0;
+    text-transform:none
+}
+
+body[data-initial-role="safety"][data-initial-page="dashboard"] .figma-recent td:first-child strong, body[data-initial-role="safety"][data-initial-page="dashboard"] .stage19-activity td:first-child strong {
+    color:#087f8c
+}
+
+body[data-initial-role="safety"][data-initial-page="dashboard"] .stage19-activity-note {
+    margin:12px 0 0;
+    color:#647b89;
+    font-size:11px;
+    line-height:1.6
+}
+
+body[data-initial-role="safety"][data-initial-page="dashboard"] .stage19-activity .figma-card-head {
+    margin-bottom:12px
+}
+
+@media(max-width:1000px) {
+    body[data-initial-role="safety"][data-initial-page="dashboard"] .figma-dashboard-columns {
+        grid-template-columns:1fr
+    }
+
+}
+
+@media(max-width:600px) {
+    body[data-initial-role="safety"][data-initial-page="dashboard"] .figma-stats {
+        grid-template-columns:1fr 1fr
+    }
+
+    body[data-initial-role="safety"][data-initial-page="dashboard"] .figma-stat {
+        padding:12px;
+        min-height:105px
+    }
+
+    body[data-initial-role="safety"][data-initial-page="dashboard"] .figma-stat strong {
+        font-size:25px
+    }
+
+    body[data-initial-role="safety"][data-initial-page="dashboard"] .figma-card {
+        padding:13px
+    }
+
+}
+
+/* ===== stage33-ui.css (chuyển từ bản gốc) ===== */
+/* Giai doan 33: shared UI consistency and keyboard/mobile polish. */
+/* Prevent dense headings, long identifiers and tables from breaking cards. */
+.fg-screen,.fg-screen .fg-panel,.fg-screen .fg-metric,.fg-screen .fg-columns > * {
+    min-width:0
+}
+
+.fg-screen .fg-heading > div {
+    min-width:0
+}
+
+.fg-screen .fg-heading h1,.fg-screen .fg-heading p {
+    overflow-wrap:anywhere
+}
+
+.fg-screen .fg-table {
+    border-collapse:collapse;
+    width:100%
+}
+
+.fg-screen .table-wrap {
+    max-width:100%;
+    overflow-x:auto;
+    -webkit-overflow-scrolling:touch
+}
+
+.fg-screen .fg-metric strong {
+    overflow-wrap:anywhere
+}
+
+/* Keep interactive controls visibly navigable with keyboard. */
+.fg-screen :is(button,a,input,select,textarea,[tabindex]):focus-visible, .sidebar :is(button,a,select):focus-visible, .topbar :is(button,a):focus-visible {
+    outline:3px solid #0b8997;
+    outline-offset:3px
+}
+
+.fg-screen :is(button,input,select,textarea) {
+    font:inherit
+}
+
+.fg-screen button:disabled {
+    cursor:not-allowed;
+    opacity:.55
+}
+
+@media(max-width:600px) {
+    .fg-screen .fg-heading {
+        align-items:stretch
+    }
+
+    .fg-screen .fg-heading > .btn {
+        max-width:100%;
+        white-space:normal
+    }
+
+    .fg-screen .fg-actions {
+        flex-wrap:wrap
+    }
+
+    .fg-screen .fg-actions > .btn {
+        max-width:100%;
+        white-space:normal
+    }
+
+    .fg-screen .fg-metric {
+        min-height:0
+    }
+
+    .fg-screen .fg-metric strong {
+        font-size:clamp(21px,6vw,31px)
+    }
+
+    .fg-screen .fg-zone {
+        padding:14px
+    }
+
+}
+
+@media(prefers-reduced-motion:reduce) {
+    .fg-screen *, .fg-screen *::before,.fg-screen *::after {
+        scroll-behavior:auto!important;
+        animation-duration:.01ms!important;
+        transition-duration:.01ms!important
+    }
+
+}

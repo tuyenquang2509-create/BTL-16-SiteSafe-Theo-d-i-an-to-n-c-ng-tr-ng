@@ -2,10 +2,13 @@
 
 <html lang="vi">
 <head>
-<meta charset="utf-8"/><meta content="width=device-width,initial-scale=1" name="viewport"/>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
 <meta content="SiteSafe - hệ thống theo dõi an toàn công trường nhiều vai trò" name="description"/>
-<title>Quản lý – Báo cáo an toàn | SiteSafe</title>
-<link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<title>Quản lý – Báo cáo an toàn | SiteSafe
+    </title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
 <link href="../css/style.css" rel="stylesheet"/>
 <link href="../css/manager-reports.css" rel="stylesheet"/>
@@ -13,19 +16,272 @@
 <body data-initial-page="reports" data-initial-role="manager">
 <div class="app-shell">
 <aside aria-label="Điều hướng chính" class="sidebar" id="sidebar">
-<div class="brand"><span class="brand-mark">✓</span><span>SiteSafe</span></div>
-<div class="role-label">QUẢN LÝ CÔNG TRƯỜNG</div>
-<div class="form-field" style="padding:0 7px"><label for="roleSelect">Chuyển vai trò (demo)</label><select class="field-control" id="roleSelect"><option value="safety">Cán bộ an toàn</option><option value="worker">Nhân sự hiện trường</option><option value="manager">Quản lý công trường</option><option value="admin">Quản trị hệ thống</option></select></div>
-<nav aria-label="Các màn hình" id="nav"></nav>
-<div class="sidebar-bottom"><div class="site-mini"><strong>RIVERSIDE – KHỐI A</strong><span>RS-A · Đang thi công</span></div><button class="nav-item" data-page="help"><span>ⓘ</span>Trợ giúp &amp; hướng dẫn</button><button class="nav-item" data-page="profile"><span>♙</span>Hồ sơ cá nhân</button></div>
+<div class="brand"><span class="brand-mark">✓</span><span>SiteSafe</span>
+</div>
+<div class="role-label">QUẢN LÝ CÔNG TRƯỜNG
+        </div>
+<div class="form-field" style="padding:0 7px">
+<label for="roleSelect">Chuyển vai trò (demo)
+          </label>
+<select class="field-control" id="roleSelect">
+<option value="safety">Cán bộ an toàn
+            </option>
+<option value="worker">Nhân sự hiện trường
+            </option>
+<option value="manager">Quản lý công trường
+            </option>
+<option value="admin">Quản trị hệ thống
+            </option>
+</select>
+</div>
+<nav aria-label="Các màn hình" id="nav">
+</nav>
+<div class="sidebar-bottom">
+<div class="site-mini"><strong>RIVERSIDE – KHỐI A</strong><span>RS-A · Đang thi công</span>
+</div>
+<button class="nav-item" data-page="help"><span>ⓘ</span>Trợ giúp &amp; hướng dẫn
+          </button>
+<button class="nav-item" data-page="profile"><span>♙</span>Hồ sơ cá nhân
+          </button>
+</div>
 </aside>
 <main class="workspace">
-<header class="topbar"><button aria-label="Mở menu" class="mobile-menu" id="mobileMenu">☰</button><button class="site-switch" id="siteSwitch">Riverside – Khối A <span>⌄</span></button><div class="topbar-right"><button aria-label="Thông báo" class="icon-btn" id="notifications" title="Thông báo">♧<i></i></button><div class="user-chip"><div class="avatar" id="avatar">TA</div><div><strong id="userName">Trần An</strong><small id="userRole">Cán bộ an toàn</small></div></div></div></header>
-<section aria-live="polite" class="page-content" id="pageContent"><div class="fg-screen"><div class="fg-crumb">Quản lý công trường / Báo cáo an toàn</div><div class="fg-heading"><div><h1>Báo cáo an toàn</h1><p>Tổng hợp nguy cơ, hành động và kết quả kiểm tra theo kỳ.</p></div><button class="btn btn-primary" data-demo="export-reports" title="Minh họa giao diện — chức năng này chưa được kết nối">+ Tạo báo cáo</button></div><div class="fg-caption">Dữ liệu minh họa · 03/10/2026 · Không phải số liệu thực tế</div><section class="fg-panel"><div class="fg-section-head"><div><h2>Tìm kiếm và bộ lọc</h2></div></div><div class="fg-form-grid"><label class="fg-field"><span>Tìm kiếm</span><input type="search" value="Mã, nội dung hoặc người phụ trách"/></label><label class="fg-field"><span>Công trường</span><select><option>Riverside – Khối A</option><option>Khác</option></select></label><label class="fg-field"><span>Bộ lọc</span><select><option>27/09–03/10/2026</option><option>Khác</option></select></label></div></section><div class="fg-metrics"><div class="fg-metric"><span>Nguy cơ đang mở</span><strong>24</strong><small>6 khu vực</small></div><div class="fg-metric"><span>Ưu tiên cao</span><strong>7</strong><small>Cần xem xét</small></div><div class="fg-metric"><span>Hành động quá hạn</span><strong>3</strong><small>Chưa hoàn thành</small></div><div class="fg-metric"><span>Chờ duyệt</span><strong>5</strong><small>Cán bộ an toàn</small></div></div><section class="fg-panel"><div class="fg-section-head"><div><h2>Báo cáo an toàn</h2></div></div><div class="table-wrap"><table class="fg-table"><thead><tr><th>Mã / báo cáo</th><th>Kỳ báo cáo</th><th>Người tạo</th><th>Trạng thái</th><th>Thao tác</th></tr></thead><tbody><tr><td>RP-040 · An toàn tuần 40</td><td>27/09–03/10</td><td>Lê Hoàng</td><td><span class="fg-pill fg-green">Đã phát hành</span></td><td><button class="btn btn-light" data-demo="preview" title="Minh họa giao diện — chức năng này chưa được kết nối">Xem</button></td></tr><tr><td>RP-039 · An toàn tuần 39</td><td>20/09–26/09</td><td>Lê Hoàng</td><td><span class="fg-pill fg-green">Đã phát hành</span></td><td><button class="btn btn-light" data-demo="preview" title="Minh họa giao diện — chức năng này chưa được kết nối">Xem</button></td></tr><tr><td>RP-041 · Báo cáo tháng 10</td><td>Tháng 10</td><td>Lê Hoàng</td><td><span class="fg-pill fg-yellow">Bản nháp</span></td><td><button class="btn btn-light" data-demo="preview" title="Minh họa giao diện — chức năng này chưa được kết nối">Sửa</button></td></tr></tbody></table></div></section><div class="fg-columns"><section class="fg-panel"><div class="fg-section-head"><div><h2>Xu hướng nguy cơ</h2></div></div><div class="fg-note fg-blue">27/09–03/10 · số nguy cơ ghi nhận mới theo ngày</div><div class="fg-bars"><div><i style="height:75px"></i><small>27/9</small></div><div><i style="height:62px"></i><small>28/9</small></div><div><i style="height:87px"></i><small>29/9</small></div><div><i style="height:49px"></i><small>30/9</small></div><div><i style="height:69px"></i><small>1/10</small></div><div><i style="height:57px"></i><small>2/10</small></div><div><i style="height:40px"></i><small>3/10</small></div></div></section><section class="fg-panel"><div class="fg-section-head"><div><h2>Điểm cần chú ý</h2></div></div><div class="fg-note fg-red">Z-A2 · 8 nguy cơ mở · 2 hành động quá hạn</div><div class="fg-note fg-yellow">Z-A1 · 6 nguy cơ mở · 1 hành động quá hạn</div><div class="fg-note fg-blue">Chỉ số là dữ liệu minh họa; không suy ra an toàn từ số 0.</div></section></div><section class="fg-panel"><div class="fg-section-head"><div><h2>Tạo báo cáo</h2></div></div><div class="fg-form-grid"><label class="fg-field fg-wide"><span>Tên báo cáo *</span><input type="text" value="Báo cáo an toàn tuần 40 – Riverside Khối A"/></label><label class="fg-field"><span>Từ ngày *</span><input type="text" value="27/09/2026"/></label><label class="fg-field"><span>Đến ngày *</span><input type="text" value="03/10/2026"/></label></div><div class="fg-actions"><button class="btn btn-primary" data-demo="export-reports" title="Minh họa giao diện — chức năng này chưa được kết nối">Tạo báo cáo</button><button class="btn btn-light" data-demo="export-reports" title="Minh họa giao diện — chức năng này chưa được kết nối">Xuất CSV</button></div></section><div class="fg-footer">manager-reports.html · Quyền thao tác theo vai trò được gán. Mọi thay đổi giữ lịch sử và minh chứng.</div></div></section>
+<header class="topbar">
+<button aria-label="Mở menu" class="mobile-menu" id="mobileMenu">☰
+          </button>
+<button class="site-switch" id="siteSwitch">Riverside – Khối A <span>⌄</span>
+</button>
+<div class="topbar-right">
+<button aria-label="Thông báo" class="icon-btn" id="notifications" title="Thông báo">♧<i></i>
+</button>
+<div class="user-chip">
+<div class="avatar" id="avatar">TA
+              </div>
+<div><strong id="userName">Trần An</strong><small id="userRole">Quản lý công trường</small>
+</div>
+</div>
+</div>
+</header>
+<section aria-live="polite" class="page-content" id="pageContent">
+<div class="fg-screen">
+<div class="fg-crumb">Quản lý công trường / Báo cáo an toàn
+            </div>
+<div class="fg-heading">
+<div>
+<h1>Báo cáo an toàn
+                </h1>
+<p>Tổng hợp nguy cơ, hành động và kết quả kiểm tra theo kỳ.
+                </p>
+</div>
+<button class="btn btn-primary" id="openReportForm" type="button">+ Tạo báo cáo
+              </button>
+</div><form class="fg-panel report-form" hidden="" id="reportForm">
+<h2>Tạo bản nháp báo cáo</h2>
+<div class="fg-form-grid">
+<label class="fg-field"><span>Tên báo cáo *</span><input minlength="5" name="title" placeholder="Báo cáo an toàn tuần 40" required=""/></label>
+<label class="fg-field"><span>Kỳ báo cáo *</span><select name="period"><option value="27/09–03/10">27/09–03/10</option><option value="20/09–26/09">20/09–26/09</option><option value="13/09–19/09">13/09–19/09</option></select></label>
+<label class="fg-field"><span>Người tạo *</span><input name="author" required="" value="Lê Hoàng"/></label>
+</div>
+<div class="fg-actions"><button class="btn btn-primary" type="submit">Lưu bản nháp</button><button class="btn btn-light" id="cancelReportForm" type="button">Hủy</button></div>
+<p class="report-hint">Bản nháp chỉ lưu trong trình duyệt hiện tại.</p>
+</form>
+<div class="fg-caption">Dữ liệu minh họa · 03/10/2026 · Không phải số liệu thực tế
+            </div>
+<section class="fg-panel">
+<div class="fg-section-head">
+<div>
+<h2>Tìm kiếm và bộ lọc
+                  </h2>
+</div>
+</div>
+<div class="fg-form-grid">
+<label class="fg-field"><span>Tìm kiếm</span>
+<input id="reportSearch" placeholder="Tìm mã, tên báo cáo hoặc người tạo" type="search"/>
+</label>
+<label class="fg-field"><span>Công trường</span>
+<select><option value="riverside">Riverside – Khối A</option></select>
+</label>
+<label class="fg-field"><span>Bộ lọc</span>
+<select id="reportPeriod"><option value="all">Tất cả kỳ báo cáo</option><option value="40">Tuần 40</option><option value="39">Tuần 39</option><option value="38">Tuần 38</option><option value="month">Báo cáo tháng</option></select>
+</label>
+</div>
+</section>
+<div class="fg-metrics">
+<div class="fg-metric"><span>Nguy cơ đang mở</span><strong>24</strong><small>6 khu vực</small>
+</div>
+<div class="fg-metric"><span>Ưu tiên cao</span><strong>7</strong><small>Cần xem xét</small>
+</div>
+<div class="fg-metric"><span>Hành động quá hạn</span><strong>3</strong><small>Chưa hoàn thành</small>
+</div>
+<div class="fg-metric"><span>Chờ duyệt</span><strong>5</strong><small>Cán bộ an toàn</small>
+</div>
+</div>
+<section class="fg-panel">
+<div class="fg-section-head">
+<div>
+<h2>Báo cáo an toàn
+                  </h2>
+</div>
+</div>
+<div class="table-wrap">
+<table class="fg-table" id="reportsTable">
+<thead>
+<tr>
+<th>Mã / báo cáo
+                      </th>
+<th>Kỳ báo cáo
+                      </th>
+<th>Người tạo
+                      </th>
+<th>Trạng thái
+                      </th>
+<th>Thao tác
+                      </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>RP-040 · An toàn tuần 40
+                      </td>
+<td>27/09–03/10
+                      </td>
+<td>Lê Hoàng
+                      </td>
+<td><span class="fg-pill fg-green">Đã phát hành</span>
+</td>
+<td>
+<button class="btn btn-light view-report" type="button">Xem</button>
+</td>
+</tr>
+<tr>
+<td>RP-039 · An toàn tuần 39
+                      </td>
+<td>20/09–26/09
+                      </td>
+<td>Lê Hoàng
+                      </td>
+<td><span class="fg-pill fg-green">Đã phát hành</span>
+</td>
+<td>
+<button class="btn btn-light view-report" type="button">Xem</button>
+</td>
+</tr>
+<tr>
+<td>RP-041 · Báo cáo tháng 10
+                      </td>
+<td>Tháng 10
+                      </td>
+<td>Lê Hoàng
+                      </td>
+<td><span class="fg-pill fg-yellow">Bản nháp</span>
+</td>
+<td>
+<button class="btn btn-light view-report" type="button">Xem</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p class="report-count" id="reportCount"></p><dialog aria-labelledby="reportDetailTitle" class="report-dialog" id="reportDetailDialog">
+<div class="report-dialog-content">
+<h2 id="reportDetailTitle">Chi tiết báo cáo</h2>
+<dl id="reportDetailList"></dl>
+<p class="report-hint">Thông tin tóm tắt từ bảng báo cáo, được lưu trong trình duyệt.</p>
+<form method="dialog"><button class="btn btn-primary" type="submit">Đóng</button></form>
+</div>
+</dialog></section>
+<div class="fg-columns">
+<section class="fg-panel">
+<div class="fg-section-head">
+<div>
+<h2>Xu hướng nguy cơ
+                    </h2>
+</div>
+</div>
+<div class="fg-note fg-blue">27/09–03/10 · số nguy cơ ghi nhận mới theo ngày
+                </div>
+<div class="fg-bars">
+<div><i style="height:75px"></i><small>27/9</small>
+</div>
+<div><i style="height:62px"></i><small>28/9</small>
+</div>
+<div><i style="height:87px"></i><small>29/9</small>
+</div>
+<div><i style="height:49px"></i><small>30/9</small>
+</div>
+<div><i style="height:69px"></i><small>1/10</small>
+</div>
+<div><i style="height:57px"></i><small>2/10</small>
+</div>
+<div><i style="height:40px"></i><small>3/10</small>
+</div>
+</div>
+</section>
+<section class="fg-panel">
+<div class="fg-section-head">
+<div>
+<h2>Điểm cần chú ý
+                    </h2>
+</div>
+</div>
+<div class="fg-note fg-red">Z-A2 · 8 nguy cơ mở · 2 hành động quá hạn
+                </div>
+<div class="fg-note fg-yellow">Z-A1 · 6 nguy cơ mở · 1 hành động quá hạn
+                </div>
+<div class="fg-note fg-blue">Chỉ số là dữ liệu minh họa; không suy ra an toàn từ số 0.
+                </div>
+</section>
+</div>
+<section class="fg-panel">
+<div class="fg-section-head">
+<div>
+<h2>Tạo báo cáo
+                  </h2>
+</div>
+</div>
+<div class="fg-form-grid">
+<label class="fg-field fg-wide"><span>Tên báo cáo *</span>
+<input type="text" value="Báo cáo an toàn tuần 40 – Riverside Khối A"/>
+</label>
+<label class="fg-field"><span>Từ ngày *</span>
+<input type="text" value="27/09/2026"/>
+</label>
+<label class="fg-field"><span>Đến ngày *</span>
+<input type="text" value="03/10/2026"/>
+</label>
+</div>
+<div class="fg-actions">
+<button class="btn btn-primary" id="openReportFormBottom" type="button">Tạo báo cáo
+                </button>
+<button class="btn btn-light" id="exportReportsCsv" type="button">Xuất CSV
+                </button>
+</div>
+</section>
+<div class="fg-footer">manager-reports.html · Quyền thao tác theo vai trò được gán. Mọi thay đổi giữ lịch sử và minh chứng.
+            </div>
+</div>
+</section>
 </main>
 </div>
-<div aria-live="polite" class="toast" id="toast" role="status"></div>
-<div class="modal-backdrop" id="modalBackdrop"><section aria-labelledby="modalTitle" aria-modal="true" class="modal" role="dialog"><div class="modal-head"><h2 id="modalTitle">Thêm mới</h2><button aria-label="Đóng" class="icon-btn" id="closeModal">✕</button></div><div class="modal-body" id="modalBody"></div></section></div>
-<script src="../js/script.js"></script>
-<script src="../js/manager-reports.js"></script>
-</body></html>
+<div aria-live="polite" class="toast" id="toast" role="status">
+</div>
+<div class="modal-backdrop" id="modalBackdrop">
+<section aria-labelledby="modalTitle" aria-modal="true" class="modal" role="dialog">
+<div class="modal-head">
+<h2 id="modalTitle">Thêm mới
+          </h2>
+<button aria-label="Đóng" class="icon-btn" id="closeModal">✕
+          </button>
+</div>
+<div class="modal-body" id="modalBody">
+</div>
+</section>
+</div>
+<script src="../js/script.js">
+</script>
+<script src="../js/figma-demo.js">
+</script>
+<script src="../js/manager-reports.js">
+</script>
+</body>
+</html>

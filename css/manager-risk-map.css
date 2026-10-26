@@ -1,6 +1,66 @@
-/* CSS rieng cho manager-risk-map. Cac quy tac goc duoc giu trong style.css de dam bao tuong thich. */
-/* SiteSafe · kiểu dáng riêng: risks */
+/* ==========================================================
+   BẢN ĐỒ RỦI RO - QUẢN LÝ CÔNG TRƯỜNG
+   Chỉ dùng cho manager-risk-map.html
+   ========================================================== */
 
+/* 1. Lưới các khu vực và trạng thái nguy cơ */
+.fg-zone-grid {
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:12px;
+    margin:16px 0
+}
 
-/* Figma: page-specific finishing for manager-risk-map */
-body[data-initial-role="manager"] .page-content > :first-child{scroll-margin-top:85px}
+.fg-zone {
+    border:1px solid #cbdfe6;
+    background:#eef5f8;
+    border-radius:7px;
+    text-align:left;
+    padding:20px;
+    display:flex;
+    flex-direction:column;
+    gap:9px;
+    color:#193e4d;
+    cursor:pointer
+}
+
+.fg-zone strong {
+    font-size:17px
+}
+
+.fg-zone small {
+    color:#5e7b89
+}
+
+.fg-zone.fg-red {
+    background:#fff1ef;
+    border-color:#e6c5c1
+}
+
+.fg-zone.fg-yellow {
+    background:#fff7e7;
+    border-color:#e6d6b1
+}
+
+.fg-zone.fg-green {
+    background:#eaf7f1;
+    border-color:#c3dfd0
+}
+
+/* 2. Trạng thái khu vực đang được người dùng chọn */
+body[data-initial-page="zones"][data-initial-role="manager"] .fg-zone[aria-pressed="true"] {
+    outline: 2px solid #1769e0;
+    outline-offset: 2px;
+}
+
+/* 3. Khoảng cách khi cuộn đến nội dung */
+body[data-initial-page="zones"][data-initial-role="manager"] .page-content > :first-child {
+    scroll-margin-top: 85px;
+}
+
+/* 4. Giao diện trên màn hình nhỏ */
+@media (max-width: 600px) {
+    .fg-zone-grid {
+        grid-template-columns: 1fr;
+    }
+}
