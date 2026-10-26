@@ -1,5 +1,6 @@
 (()=>{
   'use strict';
+  window.safetySingleApp=true;
   const pages=[
     ['dashboard','▦','Tổng quan an toàn'],
     ['risks','⚠','Chi tiết nguy cơ'],
