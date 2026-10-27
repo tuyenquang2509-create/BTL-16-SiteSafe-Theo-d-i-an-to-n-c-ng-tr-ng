@@ -584,7 +584,19 @@ document.addEventListener('submit',e=>{e.preventDefault();if(e.target.id==='enti
 document.addEventListener('input',e=>{if(e.target.id==='dashboardSearch'){const q=e.target.value.toLowerCase();const list=db.risks.filter(x=>x.status!=='Đã khắc phục'&&(`${x.id} ${x.title} ${x.zone} ${x.owner}`.toLowerCase().includes(q)));const region=$('#dashboardRiskRows');if(region)region.innerHTML=riskTable(list.slice(0,4));}});
 document.addEventListener('change',e=>{if(e.target.id==='dashboardFilter'){const filter=e.target.value;const region=$('#dashboardRiskRows');if(!region)return;let list=db.risks.filter(x=>x.status!=='Đã khắc phục');if(filter==='high')list=list.filter(x=>x.level==='Cao');if(filter==='pending')list=list.filter(x=>x.status==='Mới ghi nhận');if(filter==='overdue')list=db.actions.filter(x=>x.status!=='Hoàn thành').map(a=>({id:a.id,title:a.title,zone:a.risk,level:a.priority,status:a.status,owner:a.owner,date:a.due}));region.innerHTML=filter==='overdue'?`<div class="table-wrap"><table><thead><tr><th>Mã / Hành động</th><th>Nguy cơ</th><th>Mức độ</th><th>Trạng thái</th><th>Phụ trách</th></tr></thead><tbody>${list.map(x=>`<tr><td>${esc(x.id)} · ${esc(x.title)}</td><td>${esc(x.zone)}</td><td>${badge(x.level)}</td><td>${badge(x.status)}</td><td>${esc(x.owner)}</td></tr>`).join('')}</tbody></table></div>`:riskTable(list.slice(0,4));}});
 document.addEventListener('input',e=>{if(e.target.id==='searchInput'){const pos=e.target.selectionStart;searchTerm=e.target.value;const p=currentPage;const renderer={risks:risksPage,inspections:inspectionsPage,actions:actionsPage,checklists:checklistsPage,users:usersPage,zones:zonesPage,'worker-history':workerHistory}[p];if(renderer){$('#pageContent').innerHTML=renderer();const next=$('#searchInput');if(next){next.focus();next.setSelectionRange(pos,pos)}}}});
-document.addEventListener('change',e=>{if(e.target.id==='roleSelect'){currentRole=e.target.value;currentPage=roleConfig[currentRole].pages[0][0];renderPage()}if(e.target.id==='statusFilter'){activeFilter=e.target.value;const p=currentPage;const renderer={risks:risksPage,inspections:inspectionsPage,actions:actionsPage,checklists:checklistsPage,users:usersPage,zones:zonesPage,'worker-history':workerHistory}[p];if(renderer){$('#pageContent').innerHTML=renderer();const s=$('#statusFilter');if(s)s.value=activeFilter}}});
+document.addEventListener('change',e=>{if(e.target.id==='roleSelect'){
+  const selectedRole=e.target.value;
+  const destinations={
+    safety:'../safety/safety-dashboard.html',
+    manager:'../manager/manager-dashboard.html',
+    admin:'../admin/admin-dashboard.html',
+    worker:'../worker/worker-dashboard.html'
+  };
+  if(destinations[selectedRole]){
+    window.location.href=destinations[selectedRole];
+  }
+  return;
+}if(e.target.id==='statusFilter'){activeFilter=e.target.value;const p=currentPage;const renderer={risks:risksPage,inspections:inspectionsPage,actions:actionsPage,checklists:checklistsPage,users:usersPage,zones:zonesPage,'worker-history':workerHistory}[p];if(renderer){$('#pageContent').innerHTML=renderer();const s=$('#statusFilter');if(s)s.value=activeFilter}}});
 $('#mobileMenu').addEventListener('click',()=>$('#sidebar').classList.toggle('open'));$('#closeModal').addEventListener('click',closeModal);$('#modalBackdrop').addEventListener('click',e=>{if(e.target.id==='modalBackdrop')closeModal()});document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeModal();$('#sidebar').classList.remove('open')}});$('#siteSwitch').addEventListener('click',()=>toast('Nguyên mẫu hiện có một công trường: Riverside – Khối A.'));$('#notifications').addEventListener('click',()=>{const unread=db.notifications.filter(n=>!n.read);modalForm('Thông báo',unread.map((n,i)=>({name:`n${i}`,label:n.title,type:'textarea',value:`${n.desc}\n${n.time}`})));$('#modalBody textarea').forEach(x=>x.readOnly=true);db.notifications.forEach(n=>n.read=true);saveDB()});
 renderPage();
 
