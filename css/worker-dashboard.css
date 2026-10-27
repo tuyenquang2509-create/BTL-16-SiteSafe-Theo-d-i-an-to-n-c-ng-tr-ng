@@ -166,3 +166,39 @@ body[data-initial-role="worker"] .page-content > :first-child {
     }
 
 }
+
+
+/* ===== Worker UI refresh · đối chiếu thiết kế SiteSafe (trang 6–8) ===== */
+body[data-initial-role="worker"] .fg-screen { --worker-accent:#087f8c; --worker-ink:#173747; --worker-border:#d7e6ed; max-width:1280px; }
+body[data-initial-role="worker"] .fg-crumb { font-size:13px; font-weight:600; margin-bottom:12px; }
+body[data-initial-role="worker"] .fg-heading { align-items:center; margin-bottom:16px; }
+body[data-initial-role="worker"] .fg-heading h1 { font-size:clamp(23px,2.4vw,31px); line-height:1.2; color:var(--worker-ink); }
+body[data-initial-role="worker"] .fg-heading p { font-size:14px; line-height:1.6; }
+body[data-initial-role="worker"] .fg-panel { border:1px solid var(--worker-border); border-radius:12px; padding:clamp(16px,2vw,26px); box-shadow:0 5px 18px rgba(17,44,61,.045); }
+body[data-initial-role="worker"] .fg-section-head h2 { font-size:17px; color:var(--worker-ink); }
+body[data-initial-role="worker"] .fg-note { border-radius:9px; font-size:13px; }
+body[data-initial-role="worker"] .fg-field { font-size:13px; gap:8px; }
+body[data-initial-role="worker"] .fg-field input,
+body[data-initial-role="worker"] .fg-field select,
+body[data-initial-role="worker"] .fg-field textarea { min-height:43px; border-radius:8px; font-size:14px; }
+body[data-initial-role="worker"] .fg-field textarea { min-height:94px; }
+body[data-initial-role="worker"] .fg-field :is(input,select,textarea):focus { border-color:var(--worker-accent); box-shadow:0 0 0 3px rgba(8,127,140,.12); outline:0; }
+body[data-initial-role="worker"] .fg-screen .btn { border-radius:8px; min-height:38px; font-weight:650; transition:transform .16s ease,box-shadow .16s ease; }
+body[data-initial-role="worker"] .fg-screen .btn:not(:disabled):hover { transform:translateY(-1px); box-shadow:0 4px 12px rgba(17,44,61,.10); }
+body[data-initial-role="worker"] .fg-screen :is(button,a,input,select,textarea):focus-visible { outline:3px solid #0b8997; outline-offset:3px; }
+body[data-initial-role="worker"] .fg-caption,body[data-initial-role="worker"] .data-caption { line-height:1.5; }
+@media(max-width:760px) {
+ body[data-initial-role="worker"] .fg-heading { flex-direction:column; align-items:stretch; }
+ body[data-initial-role="worker"] .fg-form-grid,body[data-initial-role="worker"] .fg-columns,body[data-initial-role="worker"] .fg-metrics { grid-template-columns:1fr; }
+ body[data-initial-role="worker"] .fg-panel { padding:16px; }
+ body[data-initial-role="worker"] .fg-heading>.btn { align-self:flex-start; }
+}
+@media(prefers-reduced-motion:reduce) { body[data-initial-role="worker"] .fg-screen .btn { transition:none; } }
+
+
+/* Bảng điều khiển đầu ca: nhấn mạnh trạng thái và lối vào nghiệp vụ. */
+body[data-initial-page="worker-home"] .fg-metric { border:1px solid #d7e6ed; border-radius:12px; padding:18px; background:#fff; }
+body[data-initial-page="worker-home"] .fg-metric strong { color:#087f8c; font-size:30px; }
+body[data-initial-page="worker-home"] .fg-columns .fg-panel { display:flex; flex-direction:column; align-items:flex-start; gap:12px; }
+body[data-initial-page="worker-home"] .fg-columns .fg-panel .btn { margin-top:auto; }
+body[data-initial-page="worker-home"] .fg-table { width:100%; }
