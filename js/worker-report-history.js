@@ -70,3 +70,44 @@ window.addEventListener('storage', function (event) {
         target?.insertAdjacentElement('afterend', add);
     }
 })();
+
+
+/* Worker: lọc đồng thời theo từ khóa và trạng thái; không sửa dữ liệu gốc. */
+(() => {
+  'use strict';
+  if (document.body.dataset.initialPage !== 'worker-history') return;
+  const screen = document.querySelector('.fg-screen');
+  const search = document.getElementById('searchInput');
+  const status = document.getElementById('statusFilter');
+  const list = screen?.querySelector('.worker-report-list');
+  const count = screen?.querySelector('.reference-count');
+  if (!search || !status || !list) return;
+  const empty = document.createElement('p');
+  empty.className = 'worker-empty-state';
+  empty.setAttribute('role','status');
+  empty.textContent = 'Không tìm thấy báo cáo phù hợp. Hãy thử từ khóa hoặc trạng thái khác.';
+  empty.hidden = true;
+  list.appendChild(empty);
+  search.setAttribute('aria-label','Tìm kiếm nguy cơ của tôi');
+  status.setAttribute('aria-label','Lọc theo trạng thái nguy cơ');
+  if (count) count.setAttribute('aria-live','polite');
+  const normalize = s => (s || '').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/đ/g,'d').toLowerCase().trim();
+  function applyFilter() {
+    const query = normalize(search.value);
+    const selected = normalize(status.value);
+    const cards = [...list.querySelectorAll('.worker-report-card')];
+    let shown = 0;
+    cards.forEach(card => {
+      const content = normalize(card.textContent);
+      const state = normalize(card.querySelector('.worker-report-meta')?.textContent);
+      const match = content.includes(query) && (selected === 'tat ca' || !selected || state.includes(selected));
+      card.hidden = !match;
+      if (match) shown++;
+    });
+    empty.hidden = shown !== 0;
+    if (count) count.textContent = `${shown} / ${cards.length} báo cáo phù hợp · Dữ liệu minh họa, không phải số liệu thực tế.`;
+  }
+  search.addEventListener('input',applyFilter);
+  status.addEventListener('change',applyFilter);
+  applyFilter();
+})();
