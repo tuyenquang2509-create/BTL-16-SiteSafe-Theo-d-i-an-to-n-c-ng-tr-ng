@@ -1,0 +1,26 @@
+/* Giai doan 33: shared UI consistency and keyboard/mobile polish. */
+/* Prevent dense headings, long identifiers and tables from breaking cards. */
+.fg-screen,.fg-screen .fg-panel,.fg-screen .fg-metric,.fg-screen .fg-columns > *{min-width:0}
+.fg-screen .fg-heading > div{min-width:0}
+.fg-screen .fg-heading h1,.fg-screen .fg-heading p{overflow-wrap:anywhere}
+.fg-screen .fg-table{border-collapse:collapse;width:100%}
+.fg-screen .table-wrap{max-width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.fg-screen .fg-metric strong{overflow-wrap:anywhere}
+/* Keep interactive controls visibly navigable with keyboard. */
+.fg-screen :is(button,a,input,select,textarea,[tabindex]):focus-visible,
+.sidebar :is(button,a,select):focus-visible,
+.topbar :is(button,a):focus-visible{outline:3px solid #0b8997;outline-offset:3px}
+.fg-screen :is(button,input,select,textarea){font:inherit}
+.fg-screen button:disabled{cursor:not-allowed;opacity:.55}
+@media(max-width:600px){
+ .fg-screen .fg-heading{align-items:stretch}
+ .fg-screen .fg-heading > .btn{max-width:100%;white-space:normal}
+ .fg-screen .fg-actions{flex-wrap:wrap}
+ .fg-screen .fg-actions > .btn{max-width:100%;white-space:normal}
+ .fg-screen .fg-metric{min-height:0}
+ .fg-screen .fg-metric strong{font-size:clamp(21px,6vw,31px)}
+ .fg-screen .fg-zone{padding:14px}
+}
+@media(prefers-reduced-motion:reduce){
+ .fg-screen *, .fg-screen *::before,.fg-screen *::after{scroll-behavior:auto!important;animation-duration:.01ms!important;transition-duration:.01ms!important}
+}

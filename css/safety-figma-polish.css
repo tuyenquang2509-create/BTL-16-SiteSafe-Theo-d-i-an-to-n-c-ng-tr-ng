@@ -1,0 +1,7 @@
+/* Bổ sung UI giai đoạn 1 – giữ các thành phần Figma, không ghi đè bố cục trang */
+:root{--sitesafe-navy:#112c3d;--sitesafe-teal:#087f8c;--sitesafe-canvas:#eaf3f8}
+:focus-visible{outline:3px solid #2ba6ad!important;outline-offset:2px}
+.fg-screen .fg-panel{scroll-margin-top:90px}
+.fg-screen input,.fg-screen textarea,.fg-screen select{max-width:100%}
+.fg-screen button:disabled{cursor:not-allowed;opacity:.55}
+@media (max-width:760px){.fg-screen .fg-form-grid{grid-template-columns:1fr!important}.fg-screen .fg-actions{flex-wrap:wrap}}
